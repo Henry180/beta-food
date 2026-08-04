@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Beta Food serves delicious Jollof Rice, Fried Rice and Pasta in Nsukka with fast delivery.">
+
+<meta name="keywords" content="Beta Food, Nsukka food, Rice, Jollof, Fried Rice, Spaghetti, Food Delivery">
+
+<meta name="author" content="Beta Food">
+
+<meta property="og:title" content="Beta Food">
+
+<meta property="og:description" content="Better Food For Better People">
+
+<meta property="og:image" content="images/logo.png">
+
+<meta property="og:type" content="website">
+
+        <title>BETA FOOD FOR BETTER PEOPLE</title>
+
+<meta name="description" content="Beta Food serves delicious Jollof Rice, Fried Rice, Pasta and fast food delivery in Nsukka.">
+
+<meta name="keywords" content="Beta Food, Nsukka Food, Food Delivery, Rice, Fried Rice, Pasta, Jollof Rice, Chicken">
+
+<meta name="author" content="Beta Food">
+
+<meta name="robots" content="index, follow">
+
+<meta property="og:title" content="Beta Food">
+
+<meta property="og:description" content="Better Food For Better People. Fresh Rice, Pasta and Fast Delivery in Nsukka.">
+
+<meta property="og:image" content="images/logo.png">
+
+<meta property="og:type" content="website">
+
+        <link rel="icon" type="image/png" href="images/logo.png">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+</head>
+
+<body>
+
+    <div id="loader">
+
+<img src="images/logo.png" alt="Loading">
+
+</div>
+
+<a
+href="https://wa.me/2349169452392?text=Hello%20Beta%20Food!"
+class="whatsapp"
+target="_blank">
+💬
+</a>
+    <body>
+       
+<nav>
+
+    <img src="images/logo.png" alt="Beta Food Logo">
+
+    <div class="menu-toggle">
+    <i class="fa-solid fa-bars"></i>
+</div>
+
+    <div class="nav-links">
+<a href="#home" class="active">Home</a>
+<a href="#menu">Menu</a>
+<a href="#about">About</a>
+<a href="#contact">Contact</a>
+    </div>
+
+<div class="cart-icon">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span id="cart-count">0</span>
+</div>
+
+<div class="theme-toggle" id="theme-toggle">
+    <i class="fa-solid fa-moon"></i>
+</div>
+
+<div class="cart-box">
+
+    <h3>Your Cart</h3>
+
+    <div id="cart-items">
+        Your cart is empty
+    </div>
+
+    <h4>Total: ₦<span id="cart-total">0</span></h4>
+
+    <button class="checkout-btn" id="checkout-btn">
+        Checkout
+    </button>
+
+
+    <!-- Checkout Form -->
+
+    <div class="checkout-form" id="checkout-form">
+
+        <h3>Complete Your Order</h3>
+
+        <input
+            type="text"
+            id="customer-name"
+            placeholder="Your Name"
+        >
+
+        <input
+            type="tel"
+            id="customer-phone"
+            placeholder="Phone Number"
+        >
+
+        <textarea
+            id="customer-address"
+            placeholder="Delivery Address"
+        ></textarea>
+
+        <button id="place-order">
+            Proceed to Payment
+        </button>
+
+    </div>
+
+
+    <!-- PAYMENT POPUP -->
+
+    <div class="payment-popup" id="payment-popup">
+
+        <h2>🎉 Thank You For Your Order!</h2>
+
+        <p>
+            Please complete payment using the account below.
+        </p>
+
+        <hr>
+
+        <p><strong>Bank:</strong> Opay</p>
+
+        <p><strong>Account Name:</strong> Tochukwu Beta Food</p>
+
+        <p>
+            <strong>Account Number:</strong>
+            <span id="account-number">9169452392</span>
+        </p>
+
+        <button id="copy-account">
+            📋 Copy Account Number
+        </button>
+
+        <br><br>
+
+        <label class="payment-check">
+
+            <input
+                type="checkbox"
+                id="payment-check"
+            >
+
+            I have completed my payment
+
+        </label>
+
+        <button id="payment-done">
+            I've Made Payment
+        </button>
+
+    
+    </div>
+
+</div>
+
+</nav>  
+
+<section class="hero" id="home" data-aos="fade-up">
+    
+    <h1>Better Food For Better People</h1>
+
+    <p>
+        Freshly prepared Rice and Spaghetti Meals made with quality ingredients, served with love and care.
+    </p>
+
+    <a href="https://wa.me/2349169452392?text=Hello%20Beta%20Food!%20I'd%20like%20to%20place%20an%20order." 
+    class="btn"
+    target="_blank">
+    ORDER NOW!
+</a>
+    
+<div class="scroll-down">
+    <i class="fa-solid fa-chevron-down"></i>
+</div>
+
+</section>
+
+<section class="menu" id="menu" data-aos="fade-up">
+
+            <h2>Our Menu</h2>
+            <div class="filter-buttons">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="rice">Rice</button>
+    <button class="filter-btn" data-filter="pasta">Pasta</button>
+    <button class="filter-btn" data-filter="drinks">Drinks</button>
+</div>
+            <input type="text" id="search" placeholder="Search for food...">
+            <div class="menu-container">
+
+                <div class="food-card" data-category="rice">
+                    <img src="images/jollof.jpg" alt="jollof rice">
+                    <h3>Jollof Rice and Chicken</h3>
+                    <p>Rich, Smoky and Delicious</p>
+                    <h4>3,500</h4>
+                    <button class="btn add-to-cart" data-price="3500">
+                     Add to Cart
+                    </button>
+                </div>
+            
+
+                <div class="food-card" data-category="rice">
+                    <img src="images/fried-rice.jpg" alt="fried rice">
+                    <h3>Fried Rice</h3>
+                    <p>Fresh Vegetables with Chicken.</p>
+                    <h4>3,500</h4>
+                    <button class="btn add-to-cart" data-price="3500">
+                    Add to Cart
+                    </button>
+                </div>
+
+                <div class="food-card" data-category="pasta">
+                    <img src="images/spaghetti.jpg" alt="spaghetti">
+                    <h3>Stir Fried Pasta with Chicken</h3>
+                    <p>Tomato Sauce with Tasty Protien</p>
+                    <h4>3,500</h4>
+                   <button class="btn add-to-cart" data-price="3500">
+                    Add to Cart
+                    </button>
+                </div>
+
+            
+            
+            </div>
+</section>
+
+
+<section class="hours">
+    <h2>Opening Hours</h2>
+    <p><strong>Monday - Friday: </strong>8:00AM - 8:00PM</p>
+    <p><strong>Saturday: </strong>9:00AM - 9:00PM</p>
+    <p><strong>Sunday: </strong>12:00PM - 6:00PM</p>
+    <p1>Last Orders are accepted 30 minutes before closing.</p1>
+    
+</section>
+
+<section class="about" id="about" data-aos="fade-right">
+
+    <h2>About Beta Food</h2>
+
+    <p>
+        At Beta Food, we belive everyone deserves fresh, delicious meals prepared with quality ingredients
+        Our mission is to serve tasty rice and spaghetti dishes that bring people together while delivering
+        excellent customer servive everday.
+    </p>
+
+</section>
+
+<section class="gallery" data-aos="zoom-in">
+
+    <h2>Food Gallery</h2>
+    <div class="gallery-container">
+        <img src="images/jollof.jpg"alt="Jollof Rice">
+        <img src="images/fried-rice.jpg" alt="Fried Rice">
+        <img src="images/spaghetti.jpg" alt="Spaghetti">
+    </div>
+
+</section>
+
+<section class="testimonials" data-aos="fade-left">
+
+    <h2>What Our Customers Say</h2>
+
+    <div class="testimonial-container">
+
+        <div class="testimonial">
+            <p>"The Jollof Rice was delicious and the service was excellent!"</p>
+            <h4>- Chioma</h4>
+        </div>
+
+        <div class="testimonial">
+            <p>"Affordable meals with generous portions. I'll definitely order again."</p>
+            <h4>- Emeka</h4>
+        </div>
+
+        <div class="testimonial">
+            <p>"The spaghetti was fresh, tasty, and delivered on time."</p>
+            <h4>- Ada</h4>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="contact" id="contact" data-aos="fade-up">
+
+    <h2><i class="fa-solid fa-phone"></i> Contact Us</h2>
+    <p><i class="fa-solid fa-phone"></i> 09169452392</p>
+    <p><i class="fa-brands fa-whatsapp"></i> 09169452392</p>
+    <p><i class="fa-solid fa-envelope"></i> betafood247@gmail.com</p>
+    <p><i class="fa-solid fa-location-dot"></i> Nsukka, Enugu State</p>
+<div class="map-container">
+
+<iframe
+src="https://www.google.com/maps?q=Nsukka,+Enugu+State&output=embed"
+width="100%"
+height="300"
+style="border:0;"
+allowfullscreen=""
+loading="lazy">
+</iframe>
+
+</div>
+
+</section>
+<footer>
+
+    <h3>© 2026 Beta Food</h3>
+    <p>Better Food For Better People</p>
+    <p>Designed with ❤️ by Beta Food</p>
+   <p>
+<a href="privacy.html">Privacy Policy</a> |
+<a href="terms.html">Terms & Conditions</a>
+</p>
+
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+    AOS.init();
+</script>
+
+<script src="js/script.js"></script>
+
+<a href="#home" class="back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+</a>
+
+</body>
+</html>
