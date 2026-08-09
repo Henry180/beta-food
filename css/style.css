@@ -2584,16 +2584,24 @@ body.dark #receipt {
     }
 }
 
-/* Mobile: 3 per row */
+/* Mobile: 2 per row */
+@media (max-width: 768px) {
+    .meal-options {
+        grid-template-columns: repeat(2, 1fr); /* 2 per row */
+        gap: 12px;
+    }
+}
+
+/* Mobile phones (480px and below) - still 2 per row */
 @media (max-width: 480px) {
     .meal-options {
-        grid-template-columns: repeat(3, 1fr); /* 3 per row */
-        gap: 8px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
-    /* Super compact cards for 3-column layout */
+    /* Compact cards for mobile */
     .meal-option {
-        padding: 8px 4px !important;
+        padding: 12px 8px !important;
         flex-direction: column !important;
         align-items: center !important;
         text-align: center;
@@ -2601,86 +2609,94 @@ body.dark #receipt {
     }
 
     .meal-option img {
-        width: 50px !important;
-        height: 50px !important;
+        width: 60px !important;
+        height: 60px !important;
         object-fit: cover;
         border-radius: 50%;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
     }
 
     .meal-option h4 {
-        font-size: 11px !important;
-        margin: 2px 0 !important;
+        font-size: 13px !important;
+        margin: 4px 0 !important;
         line-height: 1.2;
     }
 
     .meal-option p {
-        font-size: 10px !important;
-        margin: 1px 0 !important;
+        font-size: 12px !important;
+        margin: 2px 0 !important;
         font-weight: 600;
     }
 
-    /* Quantity controls - tiny but clickable */
+    /* Quantity controls */
     .quantity-control {
-        margin-top: 4px !important;
+        margin-top: 6px !important;
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
     }
 
     .quantity-control button {
-        width: 22px !important;
-        height: 22px !important;
-        font-size: 14px !important;
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 16px !important;
         border-radius: 50% !important;
         padding: 0 !important;
         display: flex;
         align-items: center;
         justify-content: center;
+        background: #f0f0f0;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .quantity-control button:active {
+        background: #ddd;
+    }
+
+    .quantity-control .quantity {
+        font-size: 14px !important;
+        min-width: 24px !important;
+        font-weight: 600;
+        text-align: center;
+    }
+}
+
+/* Very small phones (below 360px) - still 2 per row */
+@media (max-width: 360px) {
+    .meal-options {
+        gap: 8px;
+    }
+
+    .meal-option {
+        padding: 8px 4px !important;
+    }
+
+    .meal-option img {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .meal-option h4 {
+        font-size: 11px !important;
+    }
+
+    .meal-option p {
+        font-size: 10px !important;
+    }
+
+    .quantity-control button {
+        width: 22px !important;
+        height: 22px !important;
+        font-size: 13px !important;
     }
 
     .quantity-control .quantity {
         font-size: 12px !important;
-        min-width: 18px !important;
-        font-weight: 600;
+        min-width: 20px !important;
     }
 }
-
-/* Extra small phones (below 360px) - still 3 per row, just tinier */
-@media (max-width: 360px) {
-    .meal-options {
-        gap: 5px;
-    }
-
-    .meal-option {
-        padding: 6px 2px !important;
-    }
-
-    .meal-option img {
-        width: 40px !important;
-        height: 40px !important;
-    }
-
-    .meal-option h4 {
-        font-size: 9px !important;
-    }
-
-    .meal-option p {
-        font-size: 8px !important;
-    }
-
-    .quantity-control button {
-        width: 18px !important;
-        height: 18px !important;
-        font-size: 10px !important;
-    }
-
-    .quantity-control .quantity {
-        font-size: 10px !important;
-        min-width: 14px !important;
-    }
-}
-
 /* Delete review button */
 .delete-review {
     background: none;
