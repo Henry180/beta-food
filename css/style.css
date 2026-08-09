@@ -2363,94 +2363,354 @@ body.dark #receipt {
 }
 
 
-/* =========================================================
-   FLOATING ADD MEAL TO CART
-   ========================================================= */
-
-#add-built-meal.floating-cart {
-    position: fixed !important;
-
-    left: 50% !important;
-    bottom: 25px !important;
-
-    transform: translateX(-50%) !important;
-
-    width: min(400px, 90vw) !important;
-
-    margin: 0 !important;
-
-    z-index: 999999 !important;
-
-    border-radius: 50px !important;
-
-    display: block !important;
-
-    visibility: visible !important;
-
-    opacity: 1 !important;
-
-    pointer-events: auto !important;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.35) !important;
-}
-
-#add-built-meal.floating-cart:hover {
-    transform:
-        translateX(-50%)
-        translateY(-4px) !important;
-}
-
-
-/* Placeholder keeps the page from jumping */
-
-.add-meal-placeholder {
-    width: 100%;
-    height: 55px;
-    margin: 30px auto;
-}
-
-
-/* MOBILE */
-
-@media (max-width: 600px) {
-
-    #add-built-meal.floating-cart {
-
-        width: 90% !important;
-
-        bottom: 20px !important;
-
-        font-size: 16px;
-
-        padding: 14px 20px;
-    }
-
-}
-
-/* Floating Add to Cart Button */
 #floating-add-btn {
-    display: none; /* Hidden by default */
-    position: fixed;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%) scale(0.95);
-    z-index: 9999;
-    width: 92%;
-    max-width: 420px;
-    text-align: center;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-    animation: floatUp 0.3s ease forwards;
-    padding: 16px 20px; /* Slightly bigger for floating */
+    transition: opacity 0.3s ease, transform 0.3s ease !important;
 }
 
-@keyframes floatUp {
-    0% {
-        transform: translateX(-50%) scale(0.90);
-        opacity: 0;
+/* ========================================= */
+/* CUSTOMER REVIEWS SECTION */
+/* ========================================= */
+
+.customer-reviews {
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: #f9f9f9;
+    border-radius: 16px;
+    margin-bottom: 40px;
+}
+
+.customer-reviews h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.review-intro {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Star Rating */
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.star-rating .star {
+    font-size: 40px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0.3;
+    user-select: none;
+}
+
+.star-rating .star.active {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.star-rating .star:hover {
+    transform: scale(1.2);
+}
+
+.rating-text {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* Review Form */
+.review-form {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
+
+.review-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
+}
+
+.review-form textarea:focus {
+    outline: none;
+    border-color: #FF6B35;
+}
+
+.review-form input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
+}
+
+.review-form input:focus {
+    outline: none;
+    border-color: #FF6B35;
+}
+
+#submit-review {
+    width: 100%;
+    padding: 14px;
+    background: #FF6B35;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#submit-review:hover {
+    background: #e55a2b;
+}
+
+/* Reviews List */
+#reviews-container h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.review-item {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border-left: 4px solid #FF6B35;
+}
+
+.review-item .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.review-item .review-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+}
+
+.review-item .review-stars {
+    color: #FFB800;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.review-item .review-comment {
+    color: #555;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 5px 0 8px 0;
+}
+
+.review-item .review-date {
+    color: #999;
+    font-size: 12px;
+}
+
+.no-reviews {
+    text-align: center;
+    color: #999;
+    padding: 30px 0;
+    font-size: 16px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .customer-reviews {
+        padding: 30px 15px;
+        margin: 0 10px 30px 10px;
     }
-    100% {
-        transform: translateX(-50%) scale(1);
-        opacity: 1;
+
+    .review-form {
+        padding: 20px;
+    }
+
+    .star-rating .star {
+        font-size: 32px;
+    }
+
+    .review-item .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+}
+
+/* ========================================= */
+/* MOBILE GRID FIX: 2-3 Meals Per Row */
+/* ========================================= */
+
+.meal-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 on desktop */
+    gap: 15px;
+}
+
+/* Tablet: 2 per row */
+@media (max-width: 768px) {
+    .meal-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+
+/* Mobile: 3 per row */
+@media (max-width: 480px) {
+    .meal-options {
+        grid-template-columns: repeat(3, 1fr); /* 3 per row */
+        gap: 8px;
+    }
+
+    /* Super compact cards for 3-column layout */
+    .meal-option {
+        padding: 8px 4px !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center;
+        border-radius: 10px;
+    }
+
+    .meal-option img {
+        width: 50px !important;
+        height: 50px !important;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 4px;
+    }
+
+    .meal-option h4 {
+        font-size: 11px !important;
+        margin: 2px 0 !important;
+        line-height: 1.2;
+    }
+
+    .meal-option p {
+        font-size: 10px !important;
+        margin: 1px 0 !important;
+        font-weight: 600;
+    }
+
+    /* Quantity controls - tiny but clickable */
+    .quantity-control {
+        margin-top: 4px !important;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .quantity-control button {
+        width: 22px !important;
+        height: 22px !important;
+        font-size: 14px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .quantity-control .quantity {
+        font-size: 12px !important;
+        min-width: 18px !important;
+        font-weight: 600;
+    }
+}
+
+/* Extra small phones (below 360px) - still 3 per row, just tinier */
+@media (max-width: 360px) {
+    .meal-options {
+        gap: 5px;
+    }
+
+    .meal-option {
+        padding: 6px 2px !important;
+    }
+
+    .meal-option img {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .meal-option h4 {
+        font-size: 9px !important;
+    }
+
+    .meal-option p {
+        font-size: 8px !important;
+    }
+
+    .quantity-control button {
+        width: 18px !important;
+        height: 18px !important;
+        font-size: 10px !important;
+    }
+
+    .quantity-control .quantity {
+        font-size: 10px !important;
+        min-width: 14px !important;
+    }
+}
+
+/* Delete review button */
+.delete-review {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    opacity: 0.5;
+    margin-left: 8px;
+}
+
+.delete-review:hover {
+    opacity: 1;
+    background: #ffebee;
+    transform: scale(1.1);
+}
+
+/* Review header on mobile */
+@media (max-width: 480px) {
+    .review-item .review-header {
+        flex-direction: row !important;
+        align-items: center !important;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .delete-review {
+        font-size: 14px;
+        padding: 0 4px;
     }
 }

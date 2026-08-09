@@ -493,7 +493,7 @@ target="_blank">
 
 <section class="gallery" data-aos="zoom-in">
 
-   ```html
+
 <h2>Food Gallery</h2>
 
 <div class="gallery-container">
@@ -542,6 +542,49 @@ target="_blank">
 
     </div>
 
+</section>
+
+<!-- ========================================= -->
+<!-- CUSTOMER REVIEWS SECTION -->
+<!-- ========================================= -->
+<section class="customer-reviews" data-aos="fade-up" id="reviews">
+    <h2>📝 Customer Reviews</h2>
+    <p class="review-intro">Share your experience with Beta Food!</p>
+
+    <!-- Review Form -->
+    <div class="review-form">
+        <div class="star-rating">
+            <span class="star" data-value="1">⭐</span>
+            <span class="star" data-value="2">⭐</span>
+            <span class="star" data-value="3">⭐</span>
+            <span class="star" data-value="4">⭐</span>
+            <span class="star" data-value="5">⭐</span>
+        </div>
+        <p class="rating-text">Tap a star to rate</p>
+
+        <textarea 
+            id="review-comment" 
+            placeholder="Write your review here..." 
+            rows="3"
+        ></textarea>
+
+        <input 
+            type="text" 
+            id="review-name" 
+            placeholder="Your name (optional)"
+        >
+
+        <button id="submit-review" class="btn">Submit Review</button>
+    </div>
+
+    <!-- Reviews List -->
+    <div id="reviews-container">
+        <h3>What our customers are saying</h3>
+        <div id="reviews-list">
+            <!-- Reviews will be displayed here -->
+            <p class="no-reviews">Be the first to leave a review! 🌟</p>
+        </div>
+    </div>
 </section>
 
 <section class="contact" id="contact" data-aos="fade-up">

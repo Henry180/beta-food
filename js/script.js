@@ -1242,323 +1242,326 @@ function generateReceipt() {
 }
 
 // =========================================
-// FLOATING ADD MEAL TO CART BUTTON
+// FLOATING ADD TO CART - FINAL POLISHED
+// (Exactly as you described)
 // =========================================
 
-const floatingMealButton = document.querySelector("#add-built-meal");
+(function() {
+    'use strict';
 
-if (floatingMealButton) {
+    document.addEventListener('DOMContentLoaded', function() {
 
-    // Save the button's original position
-    const originalParent = floatingMealButton.parentNode;
-    const originalNextSibling = floatingMealButton.nextSibling;
+        const originalBtn = document.getElementById('add-built-meal');
+        if (!originalBtn) return;
 
-    // Create a placeholder so the page does not jump
-    const mealButtonPlaceholder = document.createElement("div");
+        // --- 1. Create the floating button ---
+        let floatingBtn = document.getElementById('floating-add-btn');
+        if (!floatingBtn) {
+            floatingBtn = document.createElement('button');
+            floatingBtn.id = 'floating-add-btn';
+            floatingBtn.className = 'btn';
+            floatingBtn.textContent = '🛒 Add Meal to Cart';
 
-    mealButtonPlaceholder.className = "add-meal-placeholder";
+            floatingBtn.style.position = 'fixed';
+            floatingBtn.style.bottom = '30px';
+            floatingBtn.style.left = '50%';
+            floatingBtn.style.transform = 'translateX(-50%) translateY(20px) scale(0.9)';
+            floatingBtn.style.opacity = '0';
+            floatingBtn.style.pointerEvents = 'none';
+            floatingBtn.style.zIndex = '999999';
+            floatingBtn.style.width = '90%';
+            floatingBtn.style.maxWidth = '400px';
+            floatingBtn.style.padding = '16px 20px';
+            floatingBtn.style.borderRadius = '50px';
+            floatingBtn.style.boxShadow = '0 8px 30px rgba(0,0,0,0.3)';
+            floatingBtn.style.fontSize = '16px';
+            floatingBtn.style.fontWeight = '600';
+            floatingBtn.style.cursor = 'pointer';
+            floatingBtn.style.border = 'none';
+            floatingBtn.style.background = '#FF6B35';
+            floatingBtn.style.color = '#fff';
+            floatingBtn.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            floatingBtn.style.willChange = 'transform, opacity';
 
-    // Initially keep placeholder hidden
-    mealButtonPlaceholder.style.display = "none";
+            document.body.appendChild(floatingBtn);
+        }
 
-    // =========================================
-    // CHECK IF FOOD HAS BEEN SELECTED
-    // =========================================
+        // --- 2. Check if any item is selected ---
+        function hasSelectedItems() {
+            const quantities = document.querySelectorAll('.quantity');
+            let total = 0;
+            quantities.forEach(function(el) {
+                total += parseInt(el.textContent || '0', 10);
+            });
+            return total > 0;
+        }
 
-    function hasSelectedMeal() {
+        // --- 3. Open the cart ---
+        function openCart() {
+            const cartIcon = document.querySelector('.cart-icon');
+            if (cartIcon) cartIcon.click();
+        }
 
-        const quantities = document.querySelectorAll(
-            ".meal-option .quantity"
-        );
+        // --- 4. Click handlers ---
+        function handleAddToCart() {
+            setTimeout(openCart, 150);
+        }
+        originalBtn.addEventListener('click', handleAddToCart);
+        floatingBtn.addEventListener('click', function() {
+            originalBtn.click();
+        });
 
-        for (const quantity of quantities) {
+        // --- 5. State tracking (prevents vibration) ---
+        let isFloatingVisible = false;
 
-            if (Number(quantity.textContent) > 0) {
-                return true;
+        // --- 6. MAIN LOGIC: Exactly what you described ---
+        function updateFloatingButton() {
+            const rect = originalBtn.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            const hasItems = hasSelectedItems();
+
+            // 
+            // 🔍 SCROLL POSITION CHECK:
+            // - If the original button is ON-SCREEN → floating button DISABLES (hides).
+            // - If the original button is OFF-SCREEN → floating button APPEARS (shows).
+            // 
+            // This works for BOTH scrolling DOWN (past the button) 
+            // AND scrolling BACK UP (past the button again)!
+            // 
+            const isOriginalOnScreen = rect.bottom > 30 && rect.top < viewportHeight - 30;
+            const shouldShow = !isOriginalOnScreen && hasItems;
+
+            // ⭐ ONLY change the button if the state actually flips (no vibration!)
+            if (shouldShow === isFloatingVisible) return;
+            isFloatingVisible = shouldShow;
+
+            if (shouldShow) {
+                // 📌 SCROLLED PAST its original place → POP UP!
+                floatingBtn.style.pointerEvents = 'auto';
+                floatingBtn.style.opacity = '1';
+                floatingBtn.style.transform = 'translateX(-50%) translateY(0) scale(1)';
+            } else {
+                // 📌 REACHED its original position → DISABLE (hide)!
+                floatingBtn.style.pointerEvents = 'none';
+                floatingBtn.style.opacity = '0';
+                floatingBtn.style.transform = 'translateX(-50%) translateY(20px) scale(0.9)';
             }
-
         }
 
-        return false;
-    }
+        // --- 7. Scroll listener (throttled to 50ms) ---
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            if (scrollTimeout) return;
+            scrollTimeout = setTimeout(function() {
+                updateFloatingButton();
+                scrollTimeout = null;
+            }, 50);
+        });
 
+        // --- 8. Resize listener ---
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            if (resizeTimeout) return;
+            resizeTimeout = setTimeout(function() {
+                updateFloatingButton();
+                resizeTimeout = null;
+            }, 100);
+        });
 
-    // =========================================
-    // START FLOATING
-    // =========================================
-
-    function startFloating() {
-
-        if (
-            floatingMealButton.classList.contains("floating-cart")
-        ) {
-            return;
-        }
-
-        // Put placeholder exactly where button was
-        originalParent.insertBefore(
-            mealButtonPlaceholder,
-            originalNextSibling
-        );
-
-        mealButtonPlaceholder.style.display = "block";
-        mealButtonPlaceholder.style.height =
-            floatingMealButton.offsetHeight + "px";
-
-        floatingMealButton.classList.add("floating-cart");
-    }
-
-
-    // =========================================
-    // STOP FLOATING
-    // =========================================
-
-    function stopFloating() {
-
-        if (
-            !floatingMealButton.classList.contains("floating-cart")
-        ) {
-            return;
-        }
-
-        floatingMealButton.classList.remove("floating-cart");
-
-        mealButtonPlaceholder.style.display = "none";
-
-        // Put button back in its exact original position
-        originalParent.insertBefore(
-            floatingMealButton,
-            originalNextSibling
-        );
-    }
-
-
-    // =========================================
-    // CHECK BUTTON'S ORIGINAL POSITION
-    // =========================================
-
-    function updateFloatingButton() {
-
-        // No food selected
-        if (!hasSelectedMeal()) {
-
-            stopFloating();
-
-            return;
-        }
-
-
-        /*
-         * Find the button's original location.
-         *
-         * The placeholder represents the button's
-         * original position while the real button
-         * is floating.
-         */
-
-        if (
-            mealButtonPlaceholder.style.display === "block"
-        ) {
-
-            const placeholderRect =
-                mealButtonPlaceholder.getBoundingClientRect();
-
-            /*
-             * The original button position has
-             * reached the viewport.
-             *
-             * We use the TOP of the original
-             * button position as the stopping point.
-             */
-
-            if (
-                placeholderRect.top <=
-                window.innerHeight
-            ) {
-
-                stopFloating();
-
+        // --- 9. Watch + and - clicks ---
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.quantity-plus, .quantity-minus')) {
+                setTimeout(updateFloatingButton, 50);
             }
+        });
 
-        } else {
+        // --- 10. Run on load ---
+        setTimeout(updateFloatingButton, 100);
+        setTimeout(updateFloatingButton, 300);
 
-            /*
-             * Button has not started floating yet.
-             *
-             * As soon as food is selected,
-             * make it float.
-             */
+    });
 
-            startFloating();
+})();
 
+// =========================================
+// CUSTOMER REVIEWS SYSTEM (WITH DELETE)
+// =========================================
+
+(function() {
+    'use strict';
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // --- 1. Star Rating Logic ---
+        const stars = document.querySelectorAll('.star');
+        let selectedRating = 0;
+        const ratingText = document.querySelector('.rating-text');
+
+        stars.forEach(function(star) {
+            star.addEventListener('click', function() {
+                selectedRating = parseInt(this.dataset.value);
+                updateStars(selectedRating);
+                
+                if (ratingText) {
+                    const messages = [
+                        '',
+                        '⭐ Poor - We\'ll do better!',
+                        '⭐⭐ Fair - Room for improvement!',
+                        '⭐⭐⭐ Good - Thank you!',
+                        '⭐⭐⭐⭐ Great - We appreciate you!',
+                        '⭐⭐⭐⭐⭐ Excellent - You made our day!'
+                    ];
+                    ratingText.textContent = messages[selectedRating] || 'Tap a star to rate';
+                    ratingText.style.color = '#FF6B35';
+                    ratingText.style.fontWeight = '600';
+                }
+            });
+
+            star.addEventListener('mouseenter', function() {
+                const value = parseInt(this.dataset.value);
+                updateStars(value);
+            });
+
+            star.addEventListener('mouseleave', function() {
+                updateStars(selectedRating);
+            });
+        });
+
+        function updateStars(rating) {
+            stars.forEach(function(star) {
+                const value = parseInt(star.dataset.value);
+                if (value <= rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
         }
 
-    }
+        // --- 2. Submit Review ---
+        const submitBtn = document.getElementById('submit-review');
+        if (!submitBtn) return;
 
+        submitBtn.addEventListener('click', function() {
+            const comment = document.getElementById('review-comment');
+            const nameInput = document.getElementById('review-name');
 
-    // =========================================
-    // WATCH FOOD QUANTITY BUTTONS
-    // =========================================
-
-    document.addEventListener(
-        "click",
-        function(event) {
-
-            const quantityButton =
-                event.target.closest(
-                    ".quantity-plus, .quantity-minus"
-                );
-
-            if (!quantityButton) {
+            if (selectedRating === 0) {
+                alert('Please select a star rating! ⭐');
                 return;
             }
 
-            // Let your existing quantity code
-            // update first.
+            if (!comment.value.trim()) {
+                alert('Please write your review! 📝');
+                return;
+            }
 
+            const review = {
+                rating: selectedRating,
+                comment: comment.value.trim(),
+                name: nameInput.value.trim() || 'Anonymous',
+                date: new Date().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }),
+                id: Date.now()
+            };
+
+            saveReview(review);
+            comment.value = '';
+            nameInput.value = '';
+            selectedRating = 0;
+            updateStars(0);
+            if (ratingText) {
+                ratingText.textContent = 'Tap a star to rate';
+                ratingText.style.color = '#888';
+                ratingText.style.fontWeight = '400';
+            }
+
+            displayReviews();
+
+            const btn = this;
+            const originalText = btn.textContent;
+            btn.textContent = '✅ Review Submitted!';
+            btn.style.background = '#28a745';
             setTimeout(function() {
+                btn.textContent = originalText;
+                btn.style.background = '#FF6B35';
+            }, 2000);
+        });
 
-                updateFloatingButton();
-
-            }, 50);
-
-        }
-    );
-
-
-    // =========================================
-    // WATCH SCROLL
-    // =========================================
-
-    window.addEventListener(
-        "scroll",
-        function() {
-
-            updateFloatingButton();
-
-        },
-        {
-            passive: true
-        }
-    );
-
-
-    // =========================================
-    // WATCH SCREEN SIZE
-    // =========================================
-
-    window.addEventListener(
-        "resize",
-        function() {
-
-            updateFloatingButton();
-
-        }
-    );
-
-
-    // =========================================
-    // INITIAL CHECK
-    // =========================================
-
-    updateFloatingButton();
-
-}
-
-// =========================================
-// SMART FLOATING "ADD TO CART" BUTTON
-// (Only shows when items are selected & cart auto-opens)
-// =========================================
-
-document.addEventListener('DOMContentLoaded', function () {
-    const originalBtn = document.getElementById('add-built-meal');
-    if (!originalBtn) return;
-
-    // --- 1. Create the Floating Button (hidden by default) ---
-    let floatingBtn = document.getElementById('floating-add-btn');
-    if (!floatingBtn) {
-        floatingBtn = document.createElement('button');
-        floatingBtn.id = 'floating-add-btn';
-        floatingBtn.className = 'btn';
-        floatingBtn.textContent = '🛒 Add Meal to Cart';
-        floatingBtn.style.display = 'none'; // Start hidden!
-        document.body.appendChild(floatingBtn);
-    }
-
-    // --- 2. Helper: Check if ANY meal has a quantity > 0 ---
-    function hasSelectedItems() {
-        const quantities = document.querySelectorAll('.quantity');
-        return Array.from(quantities).some(el => parseInt(el.textContent || '0') > 0);
-    }
-
-    // --- 3. Helper: Automatically open the Cart ---
-    function openCart() {
-        // Method 1: If your cart opens by clicking the cart icon (most common)
-        const cartIcon = document.querySelector('.cart-icon');
-        if (cartIcon) {
-            cartIcon.click();
-            return;
+        // --- 3. Save to localStorage ---
+        function saveReview(review) {
+            let reviews = JSON.parse(localStorage.getItem('betaFoodReviews') || '[]');
+            reviews.unshift(review);
+            localStorage.setItem('betaFoodReviews', JSON.stringify(reviews));
         }
 
-        // Method 2 (Fallback): If your cart uses a CSS class like '.active' or '.open'
-        const cartBox = document.querySelector('.cart-box');
-        if (cartBox) {
-            cartBox.classList.add('active'); // Change 'active' to your class if different
-            cartBox.style.display = 'block'; // Fallback if no class is used
-        }
-    }
-
-    // --- 4. Update Floating Button visibility ---
-    function updateFloatingButton() {
-        const rect = originalBtn.getBoundingClientRect();
-        const isOriginalVisible = rect.top < window.innerHeight && rect.bottom > 0;
-        const hasItems = hasSelectedItems();
-
-        // Show floating button ONLY if: items are selected AND original button is hidden
-        if (!isOriginalVisible && hasItems) {
-            floatingBtn.style.display = 'block';
-        } else {
-            floatingBtn.style.display = 'none';
-        }
-    }
-
-    // --- 5. Click Logic: Add to Cart + Auto-Open Cart ---
-    function handleAddToCart() {
-        // This runs when EITHER the original or floating button is clicked.
-        // Your existing cart logic (from the original script) runs first.
-        // Then we open the cart after a tiny delay so the cart updates.
-        setTimeout(openCart, 150);
-    }
-
-    // Attach our auto-open logic to the ORIGINAL button
-    originalBtn.addEventListener('click', handleAddToCart);
-
-    // Attach click to FLOATING button (triggers original, then auto-opens)
-    floatingBtn.addEventListener('click', function (e) {
-        originalBtn.click(); // Triggers your existing add-to-cart logic
-        // handleAddToCart will run from the original button's listener above.
-    });
-
-    // --- 6. Watch when the user scrolls past the original button ---
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach(() => {
-                updateFloatingButton();
+        // --- 4. 🗑️ DELETE a review ---
+        function deleteReview(id) {
+            if (!confirm('Delete this review? This cannot be undone.')) return;
+            
+            let reviews = JSON.parse(localStorage.getItem('betaFoodReviews') || '[]');
+            reviews = reviews.filter(function(review) {
+                return review.id !== id;
             });
-        },
-        { threshold: 0, rootMargin: '0px 0px 0px 0px' }
-    );
-    observer.observe(originalBtn);
-
-    // --- 7. Watch when the user clicks + or - to select/deselect items ---
-    document.addEventListener('click', function (e) {
-        const target = e.target.closest('.quantity-plus, .quantity-minus');
-        if (target) {
-            // Wait for the quantity number to update in the DOM
-            setTimeout(updateFloatingButton, 50);
+            localStorage.setItem('betaFoodReviews', JSON.stringify(reviews));
+            displayReviews();
         }
+
+        // --- 5. Display Reviews (with Delete Button) ---
+        function displayReviews() {
+            const container = document.getElementById('reviews-list');
+            if (!container) return;
+
+            const reviews = JSON.parse(localStorage.getItem('betaFoodReviews') || '[]');
+
+            if (reviews.length === 0) {
+                container.innerHTML = '<p class="no-reviews">Be the first to leave a review! 🌟</p>';
+                return;
+            }
+
+            let html = '';
+            reviews.forEach(function(review) {
+                const starsHTML = '⭐'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                html += `
+                    <div class="review-item">
+                        <div class="review-header">
+                            <span class="review-name">${escapeHTML(review.name)}</span>
+                            <div>
+                                <span class="review-stars">${starsHTML}</span>
+                                <button class="delete-review" data-id="${review.id}" title="Delete this review">🗑️</button>
+                            </div>
+                        </div>
+                        <p class="review-comment">${escapeHTML(review.comment)}</p>
+                        <span class="review-date">${review.date}</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // --- 6. 🗑️ Handle Delete Clicks (Event Delegation) ---
+        document.addEventListener('click', function(e) {
+            const deleteBtn = e.target.closest('.delete-review');
+            if (deleteBtn) {
+                const id = parseInt(deleteBtn.dataset.id);
+                deleteReview(id);
+            }
+        });
+
+        // --- 7. Simple escape function ---
+        function escapeHTML(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // --- 8. Load reviews on page load ---
+        displayReviews();
+
     });
 
-    // --- 8. Also run the check when the page loads, just in case ---
-    updateFloatingButton();
-});
+})();
