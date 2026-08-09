@@ -1565,3 +1565,54 @@ function generateReceipt() {
     });
 
 })();
+
+// =========================================
+// FIX: PLUS BUTTON GREEN IN DARK MODE
+// =========================================
+
+(function() {
+    'use strict';
+
+    function fixPlusButtons() {
+        const isDark = document.body.classList.contains('dark');
+        const plusButtons = document.querySelectorAll('.quantity-plus');
+        
+        plusButtons.forEach(function(btn) {
+            if (isDark) {
+                btn.style.backgroundColor = '#4CAF50';
+                btn.style.borderColor = '#4CAF50';
+                btn.style.color = '#ffffff';
+            } else {
+                // Reset to default (remove inline styles)
+                btn.style.backgroundColor = '';
+                btn.style.borderColor = '';
+                btn.style.color = '';
+            }
+        });
+    }
+
+    // Run on load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initial fix
+        setTimeout(fixPlusButtons, 100);
+        setTimeout(fixPlusButtons, 300);
+        
+        // Watch for dark mode toggle
+        const themeToggle = document.querySelector('#theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+                setTimeout(fixPlusButtons, 50);
+            });
+        }
+        
+        // Watch for DOM changes (in case buttons are added dynamically)
+        const observer = new MutationObserver(function() {
+            fixPlusButtons();
+        });
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    });
+
+})();

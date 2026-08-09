@@ -545,11 +545,11 @@ target="_blank">
 </section>
 
 <!-- ========================================= -->
-<!-- CUSTOMER REVIEWS SECTION -->
+<!-- CUSTOMER REVIEWS SECTION - FIXED -->
 <!-- ========================================= -->
 <section class="customer-reviews" data-aos="fade-up" id="reviews">
-    <h2>📝 Customer Reviews</h2>
-    <p class="review-intro">Share your experience with Beta Food!</p>
+    <h2 id="reviews-heading" style="transition: color 0.3s ease;">📝 Customer Reviews</h2>
+    <p class="review-intro" style="transition: color 0.3s ease;">Share your experience with Beta Food!</p>
 
     <!-- Review Form -->
     <div class="review-form">
@@ -566,12 +566,14 @@ target="_blank">
             id="review-comment" 
             placeholder="Write your review here..." 
             rows="3"
+            style="transition: all 0.3s ease;"
         ></textarea>
 
         <input 
             type="text" 
             id="review-name" 
             placeholder="Your name (optional)"
+            style="transition: all 0.3s ease;"
         >
 
         <button id="submit-review" class="btn">Submit Review</button>
@@ -579,10 +581,10 @@ target="_blank">
 
     <!-- Reviews List -->
     <div id="reviews-container">
-        <h3>What our customers are saying</h3>
+        <h3 id="reviews-list-heading" style="transition: color 0.3s ease;">What our customers are saying</h3>
         <div id="reviews-list">
             <!-- Reviews will be displayed here -->
-            <p class="no-reviews">Be the first to leave a review! 🌟</p>
+            <p class="no-reviews" style="transition: color 0.3s ease;">Be the first to leave a review! 🌟</p>
         </div>
     </div>
 </section>
@@ -803,6 +805,237 @@ loading="lazy">
 
 
 </div>
+
+<!-- DARK MODE FIX - INLINE STYLES -->
+<style>
+    /* Force dark mode styles for reviews */
+    .dark .customer-reviews h2,
+    .dark #reviews-container h3,
+    .dark .customer-reviews .review-intro {
+        color: #ffffff !important;
+    }
+
+    .dark .review-form {
+        background: #2d2d2d !important;
+    }
+
+    .dark .review-form textarea,
+    .dark .review-form input {
+        background: #3d3d3d !important;
+        color: #ffffff !important;
+        border-color: #555 !important;
+    }
+
+    .dark .review-form textarea::placeholder,
+    .dark .review-form input::placeholder {
+        color: #888 !important;
+    }
+
+    .dark .review-item {
+        background: #2d2d2d !important;
+        border-left-color: #FF6B35 !important;
+    }
+
+    .dark .review-item .review-name {
+        color: #ffffff !important;
+    }
+
+    .dark .review-item .review-comment {
+        color: #d0d0d0 !important;
+    }
+
+    .dark .review-item .review-date {
+        color: #888 !important;
+    }
+
+    .dark .no-reviews {
+        color: #888 !important;
+    }
+
+    .dark .star-rating .star {
+        color: #666 !important;
+    }
+
+    .dark .star-rating .star.active {
+        color: #FFB800 !important;
+    }
+
+    .dark .delete-review {
+        color: #888 !important;
+    }
+
+    .dark .delete-review:hover {
+        background: #3d2d2d !important;
+        color: #ff6b6b !important;
+    }
+
+    /* Fix for meal cards in dark mode */
+    .dark .meal-option {
+        background: #2d2d2d !important;
+    }
+
+    .dark .meal-option h4 {
+        color: #f0f0f0 !important;
+    }
+
+    .dark .meal-option p {
+        color: #FF6B35 !important;
+    }
+
+    .dark .quantity-control {
+        background: #3d3d3d !important;
+    }
+
+    .dark .quantity-control button {
+        background: #4d4d4d !important;
+        border-color: #555 !important;
+        color: #f0f0f0 !important;
+    }
+
+    .dark .quantity-control .quantity {
+        color: #f0f0f0 !important;
+    }
+
+    /* Fix for images in dark mode */
+    .dark .meal-option img {
+        border: 3px solid #555 !important;
+        box-shadow: 0 0 30px rgba(255, 107, 53, 0.15) !important;
+        filter: brightness(1.1) contrast(1.05) !important;
+    }
+
+    /* Fix for gallery */
+    .dark .gallery-container img {
+        border: 3px solid #444 !important;
+        filter: brightness(1.05) !important;
+    }
+
+    /* Fix for meal categories */
+    .dark .meal-category h3 {
+        color: #f0f0f0 !important;
+    }
+
+    /* Fix for add meal button */
+    .dark #add-built-meal {
+        background: #FF6B35 !important;
+        color: #fff !important;
+    }
+
+    /* Fix for floating button */
+    .dark #floating-add-btn {
+        background: #FF6B35 !important;
+        color: #fff !important;
+    }
+
+    /* Fix for hero section */
+    .dark .hero h1 {
+        color: #f0f0f0 !important;
+    }
+
+    .dark .hero p {
+        color: #aaa !important;
+    }
+
+    /* Fix for about section */
+    .dark .about h2 {
+        color: #f0f0f0 !important;
+    }
+
+    .dark .about p {
+        color: #aaa !important;
+    }
+
+    /* Fix for testimonials */
+    .dark .testimonials h2 {
+        color: #f0f0f0 !important;
+    }
+
+    .dark .testimonial {
+        background: #2d2d2d !important;
+    }
+
+    .dark .testimonial p {
+        color: #d0d0d0 !important;
+    }
+
+    .dark .testimonial h4 {
+        color: #f0f0f0 !important;
+    }
+
+    /* Fix for contact */
+    .dark .contact h2 {
+        color: #f0f0f0 !important;
+    }
+
+    .dark .contact p {
+        color: #aaa !important;
+    }
+
+    /* Fix for hours */
+    .dark .hours h2 {
+        color: #f0f0f0 !important;
+    }
+
+    .dark .hours p {
+        color: #aaa !important;
+    }
+
+    /* Fix for footer */
+    .dark footer h3 {
+        color: #f0f0f0 !important;
+    }
+
+    .dark footer p {
+        color: #888 !important;
+    }
+
+    .dark footer a {
+        color: #FF6B35 !important;
+    }
+
+    /* Fix for meal preview */
+    .dark #meal-preview {
+        background: #2d2d2d !important;
+        color: #f0f0f0 !important;
+    }
+
+    .dark #meal-preview h3,
+    .dark #meal-preview h4 {
+        color: #f0f0f0 !important;
+    }
+
+    /* Fix for cart */
+    .dark .cart-box {
+        background: #2d2d2d !important;
+        color: #f0f0f0 !important;
+    }
+
+    .dark .cart-box h3,
+    .dark .cart-box h4 {
+        color: #f0f0f0 !important;
+    }
+
+    .dark #cart-items {
+        color: #d0d0d0 !important;
+    }
+
+    /* Fix for payment popup */
+    .dark .payment-popup {
+        background: #2d2d2d !important;
+        color: #f0f0f0 !important;
+    }
+
+    .dark .payment-popup h2 {
+        color: #f0f0f0 !important;
+    }
+
+    .dark .payment-popup p {
+        color: #d0d0d0 !important;
+    }
+
+    .dark .payment-popup hr {
+        border-color: #444 !important;
+    }
+</style>
 
 </body>
 </html>

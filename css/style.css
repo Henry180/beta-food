@@ -2730,3 +2730,743 @@ body.dark #receipt {
         padding: 0 4px;
     }
 }
+
+/* ========================================= */
+/* DARK MODE FIXES - Reviews & Quantity */
+/* ========================================= */
+
+/* Dark mode for review items */
+.dark-mode .review-item {
+    background: #2d2d2d;
+    border-left-color: #FF6B35;
+}
+
+.dark-mode .review-item .review-name {
+    color: #f0f0f0;
+}
+
+.dark-mode .review-item .review-comment {
+    color: #d0d0d0;
+}
+
+.dark-mode .review-item .review-date {
+    color: #999;
+}
+
+.dark-mode .review-form {
+    background: #2d2d2d;
+}
+
+.dark-mode .review-form textarea,
+.dark-mode .review-form input {
+    background: #3d3d3d;
+    border-color: #555;
+    color: #f0f0f0;
+}
+
+.dark-mode .review-form textarea::placeholder,
+.dark-mode .review-form input::placeholder {
+    color: #888;
+}
+
+.dark-mode .review-form textarea:focus,
+.dark-mode .review-form input:focus {
+    border-color: #FF6B35;
+    outline: none;
+}
+
+.dark-mode .customer-reviews {
+    background: #1a1a1a;
+}
+
+.dark-mode .customer-reviews h2 {
+    color: #f0f0f0;
+}
+
+.dark-mode .review-intro {
+    color: #aaa;
+}
+
+.dark-mode .no-reviews {
+    color: #888;
+}
+
+.dark-mode .rating-text {
+    color: #aaa;
+}
+
+/* Dark mode for quantity controls */
+.dark-mode .meal-option {
+    background: #2d2d2d;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.dark-mode .meal-option h4 {
+    color: #f0f0f0;
+}
+
+.dark-mode .meal-option p {
+    color: #FF6B35;
+}
+
+.dark-mode .quantity-control button {
+    background: #3d3d3d;
+    border-color: #555;
+    color: #f0f0f0;
+}
+
+.dark-mode .quantity-control button:hover {
+    background: #4d4d4d;
+}
+
+.dark-mode .quantity-control button:active {
+    background: #555;
+}
+
+.dark-mode .quantity-control .quantity {
+    color: #f0f0f0;
+}
+
+/* Dark mode for meal category titles */
+.dark-mode .meal-category h3 {
+    color: #f0f0f0;
+}
+
+/* Dark mode for "Add Meal to Cart" button in dark mode */
+.dark-mode #add-built-meal {
+    background: #FF6B35;
+    color: #fff;
+}
+
+.dark-mode #add-built-meal:hover {
+    background: #e55a2b;
+}
+
+/* Dark mode delete review button */
+.dark-mode .delete-review {
+    color: #aaa;
+}
+
+.dark-mode .delete-review:hover {
+    background: #3d2d2d;
+    color: #ff6b6b;
+}
+
+/* Dark mode star rating */
+.dark-mode .star-rating .star {
+    color: #888;
+}
+
+.dark-mode .star-rating .star.active {
+    color: #FFB800;
+}
+
+/* ========================================= */
+/* DARK MODE FIXES - Reviews & Quantity */
+/* ========================================= */
+
+/* Dark mode for review items */
+.dark-mode .review-item {
+    background: #2d2d2d;
+    border-left-color: #FF6B35;
+}
+
+.dark-mode .review-item .review-name {
+    color: black;
+}
+
+.dark-mode .review-item .review-comment {
+    color: black;
+}
+
+.dark-mode .review-item .review-date {
+    color: black;
+}
+
+.dark-mode .review-form {
+    background: #2d2d2d;
+}
+
+.dark-mode .review-form textarea,
+.dark-mode .review-form input {
+    background: #3d3d3d;
+    border-color: #555;
+    color: #f0f0f0;
+}
+
+.dark-mode .review-form textarea::placeholder,
+.dark-mode .review-form input::placeholder {
+    color: #888;
+}
+
+.dark-mode .review-form textarea:focus,
+.dark-mode .review-form input:focus {
+    border-color: #FF6B35;
+    outline: none;
+}
+
+.dark-mode .customer-reviews {
+    background: #1a1a1a;
+}
+
+.dark-mode .customer-reviews h2 {
+    color: #f0f0f0;
+}
+
+.dark-mode .review-intro {
+    color: #aaa;
+}
+
+.dark-mode .no-reviews {
+    color: #888;
+}
+
+.dark-mode .rating-text {
+    color: #aaa;
+}
+
+/* Dark mode for quantity controls */
+.dark-mode .meal-option {
+    background: #2d2d2d;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.dark-mode .meal-option h4 {
+    color: #f0f0f0;
+}
+
+.dark-mode .meal-option p {
+    color: #FF6B35;
+}
+
+.dark-mode .quantity-control button {
+    background: #3d3d3d;
+    border-color: #555;
+    color: #f0f0f0;
+}
+
+.dark-mode .quantity-control button:hover {
+    background: #4d4d4d;
+}
+
+.dark-mode .quantity-control button:active {
+    background: #555;
+}
+
+.dark-mode .quantity-control .quantity {
+    color: #f0f0f0;
+}
+
+/* Dark mode for meal category titles */
+.dark-mode .meal-category h3 {
+    color: #f0f0f0;
+}
+
+/* Dark mode for "Add Meal to Cart" button in dark mode */
+.dark-mode #add-built-meal {
+    background: #FF6B35;
+    color: #fff;
+}
+
+.dark-mode #add-built-meal:hover {
+    background: #e55a2b;
+}
+
+/* Dark mode delete review button */
+.dark-mode .delete-review {
+    color: #aaa;
+}
+
+.dark-mode .delete-review:hover {
+    background: #3d2d2d;
+    color: #ff6b6b;
+}
+
+/* Dark mode star rating */
+.dark-mode .star-rating .star {
+    color: #888;
+}
+
+.dark-mode .star-rating .star.active {
+    color: #FFB800;
+}
+
+/* ========================================= */
+/* COMPLETE DARK MODE FIX - USING .dark CLASS */
+/* ========================================= */
+
+/* --- 1. Dark Mode Backgrounds --- */
+.dark {
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+}
+
+.dark .customer-reviews {
+    background: #1a1a1a;
+}
+
+.dark .review-form {
+    background: #2d2d2d;
+}
+
+.dark .review-item {
+    background: #2d2d2d;
+    border-left-color: #FF6B35;
+}
+
+/* --- 2. REVIEW HEADINGS (FIX FOR WHITE TEXT ON WHITE BG) --- */
+.dark .customer-reviews h2 {
+    color: #f0f0f0 !important;
+}
+
+.dark #reviews-container h3 {
+    color: #f0f0f0 !important;
+}
+
+.dark .review-intro {
+    color: #aaa !important;
+}
+
+.dark .rating-text {
+    color: #aaa !important;
+}
+
+/* --- 3. REVIEW TEXT --- */
+.dark .review-item .review-name {
+    color: #f0f0f0 !important;
+}
+
+.dark .review-item .review-comment {
+    color: #d0d0d0 !important;
+}
+
+.dark .review-item .review-date {
+    color: #888 !important;
+}
+
+.dark .no-reviews {
+    color: #888 !important;
+}
+
+/* --- 4. REVIEW FORM --- */
+.dark .review-form textarea,
+.dark .review-form input {
+    background: #3d3d3d !important;
+    border-color: #555 !important;
+    color: #f0f0f0 !important;
+}
+
+.dark .review-form textarea::placeholder,
+.dark .review-form input::placeholder {
+    color: #888 !important;
+}
+
+.dark .review-form textarea:focus,
+.dark .review-form input:focus {
+    border-color: #FF6B35 !important;
+    outline: none !important;
+}
+
+/* --- 5. STAR RATING IN DARK MODE --- */
+.dark .star-rating .star {
+    color: #666 !important;
+}
+
+.dark .star-rating .star.active {
+    color: #FFB800 !important;
+}
+
+/* --- 6. DELETE BUTTON --- */
+.dark .delete-review {
+    color: #888 !important;
+}
+
+.dark .delete-review:hover {
+    background: #3d2d2d !important;
+    color: #ff6b6b !important;
+}
+
+/* --- 7. MEAL CARDS IN DARK MODE --- */
+.dark .meal-option {
+    background: #2d2d2d !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
+}
+
+.dark .meal-option h4 {
+    color: #f0f0f0 !important;
+}
+
+.dark .meal-option p {
+    color: #FF6B35 !important;
+}
+
+/* --- 8. QUANTITY CONTROLS IN DARK MODE --- */
+.dark .quantity-control {
+    background: #3d3d3d !important;
+}
+
+.dark .quantity-control button {
+    background: #4d4d4d !important;
+    border-color: #555 !important;
+    color: #f0f0f0 !important;
+}
+
+.dark .quantity-control button:active {
+    background: #FF6B35 !important;
+    color: white !important;
+}
+
+.dark .quantity-control .quantity {
+    color: #f0f0f0 !important;
+}
+
+/* --- 9. IMAGES IN DARK MODE --- */
+.dark .meal-option img {
+    border: 3px solid #555 !important;
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.15) !important;
+    filter: brightness(1.1) contrast(1.05) !important;
+}
+
+.dark .meal-option img:hover {
+    border-color: #FF6B35 !important;
+    box-shadow: 0 0 50px rgba(255, 107, 53, 0.3) !important;
+}
+
+/* --- 10. GALLERY IN DARK MODE --- */
+.dark .gallery-container img {
+    border: 3px solid #444 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+    filter: brightness(1.05) !important;
+}
+
+.dark .gallery-container img:hover {
+    border-color: #FF6B35 !important;
+    box-shadow: 0 4px 40px rgba(255, 107, 53, 0.2) !important;
+}
+
+/* --- 11. MEAL CATEGORY TITLES --- */
+.dark .meal-category h3 {
+    color: #f0f0f0 !important;
+}
+
+/* --- 12. ADD MEAL BUTTON --- */
+.dark #add-built-meal {
+    background: #FF6B35 !important;
+    color: #fff !important;
+}
+
+.dark #add-built-meal:hover {
+    background: #e55a2b !important;
+}
+
+/* --- 13. FLOATING BUTTON IN DARK MODE --- */
+.dark #floating-add-btn {
+    background: #FF6B35 !important;
+    color: #fff !important;
+    box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3) !important;
+}
+
+/* --- 14. WATER OPTION --- */
+.dark .water-note {
+    color: #aaa !important;
+}
+
+/* --- 15. HERO SECTION --- */
+.dark .hero {
+    background: #1a1a1a !important;
+}
+
+.dark .hero h1 {
+    color: #f0f0f0 !important;
+}
+
+.dark .hero p {
+    color: #aaa !important;
+}
+
+/* --- 16. ABOUT SECTION --- */
+.dark .about {
+    background: #1a1a1a !important;
+}
+
+.dark .about h2 {
+    color: #f0f0f0 !important;
+}
+
+.dark .about p {
+    color: #aaa !important;
+}
+
+/* --- 17. TESTIMONIALS --- */
+.dark .testimonials {
+    background: #1a1a1a !important;
+}
+
+.dark .testimonials h2 {
+    color: #f0f0f0 !important;
+}
+
+.dark .testimonial {
+    background: #2d2d2d !important;
+}
+
+.dark .testimonial p {
+    color: #d0d0d0 !important;
+}
+
+.dark .testimonial h4 {
+    color: #f0f0f0 !important;
+}
+
+/* --- 18. CONTACT SECTION --- */
+.dark .contact {
+    background: #1a1a1a !important;
+}
+
+.dark .contact h2 {
+    color: #f0f0f0 !important;
+}
+
+.dark .contact p {
+    color: #aaa !important;
+}
+
+/* --- 19. HOURS SECTION --- */
+.dark .hours {
+    background: #1a1a1a !important;
+}
+
+.dark .hours h2 {
+    color: #f0f0f0 !important;
+}
+
+.dark .hours p {
+    color: #aaa !important;
+}
+
+/* --- 20. FOOTER --- */
+.dark footer {
+    background: #0d0d0d !important;
+}
+
+.dark footer h3 {
+    color: #f0f0f0 !important;
+}
+
+.dark footer p {
+    color: #888 !important;
+}
+
+.dark footer a {
+    color: #FF6B35 !important;
+}
+
+.dark footer a:hover {
+    color: #e55a2b !important;
+}
+
+/* --- 21. MEAL PREVIEW --- */
+.dark #meal-preview {
+    background: #2d2d2d !important;
+    color: #f0f0f0 !important;
+}
+
+.dark #meal-preview h3,
+.dark #meal-preview h4 {
+    color: #f0f0f0 !important;
+}
+
+.dark #meal-preview-items {
+    color: #d0d0d0 !important;
+}
+
+/* --- 22. CART --- */
+.dark .cart-box {
+    background: #2d2d2d !important;
+    color: #f0f0f0 !important;
+}
+
+.dark .cart-box h3,
+.dark .cart-box h4 {
+    color: #f0f0f0 !important;
+}
+
+.dark #cart-items {
+    color: #d0d0d0 !important;
+}
+
+.dark .cart-item {
+    border-bottom-color: #444 !important;
+}
+
+/* --- 23. PAYMENT POPUP --- */
+.dark .payment-popup {
+    background: #2d2d2d !important;
+    color: #f0f0f0 !important;
+}
+
+.dark .payment-popup h2 {
+    color: #f0f0f0 !important;
+}
+
+.dark .payment-popup p {
+    color: #d0d0d0 !important;
+}
+
+.dark .payment-popup hr {
+    border-color: #444 !important;
+}
+
+/* ========================================= */
+/* DARK MODE - GREEN ADD/REMOVE BUTTONS */
+/* ========================================= */
+
+.dark .quantity-control button {
+    background: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    color: #ffffff !important;
+}
+
+.dark .quantity-control button:hover {
+    background: #45a049 !important;
+    border-color: #45a049 !important;
+}
+
+.dark .quantity-control button:active {
+    background: #3d8b40 !important;
+    border-color: #3d8b40 !important;
+    transform: scale(0.9) !important;
+}
+
+/* If you want the minus button a different color (optional) */
+.dark .quantity-control .quantity-minus {
+    background: #e74c3c !important;
+    border-color: #e74c3c !important;
+}
+
+.dark .quantity-control .quantity-minus:hover {
+    background: #c0392b !important;
+    border-color: #c0392b !important;
+}
+
+.dark .quantity-control .quantity-minus:active {
+    background: #a93226 !important;
+    border-color: #a93226 !important;
+}
+
+/* ========================================= */
+/* PLUS BUTTON - ALWAYS GREEN */
+/* ========================================= */
+
+.quantity-plus {
+    background: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    color: #ffffff !important;
+}
+
+.quantity-plus:hover {
+    background: #45a049 !important;
+    border-color: #45a049 !important;
+}
+
+.quantity-plus:active {
+    background: #3d8b40 !important;
+    border-color: #3d8b40 !important;
+    transform: scale(0.9) !important;
+}
+
+/* Optional: Keep minus red in dark mode only */
+.dark .quantity-minus {
+    background: #e74c3c !important;
+    border-color: #e74c3c !important;
+    color: #ffffff !important;
+}
+
+.dark .quantity-minus:hover {
+    background: #c0392b !important;
+    border-color: #c0392b !important;
+}
+
+.dark .quantity-minus:active {
+    background: #a93226 !important;
+    border-color: #a93226 !important;
+    transform: scale(0.9) !important;
+}
+
+/* ========================================= */
+/* PLUS BUTTON - ALWAYS GREEN (NO HOVER EFFECT) */
+/* ========================================= */
+
+.quantity-plus,
+.quantity-plus:hover,
+.quantity-plus:active,
+.quantity-plus:focus,
+.dark .quantity-plus,
+.dark .quantity-plus:hover,
+.dark .quantity-plus:active,
+.dark .quantity-plus:focus {
+    background: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    color: #ffffff !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Minus button - keep as is or style separately */
+.quantity-minus,
+.dark .quantity-minus {
+    background: #e74c3c !important;
+    border-color: #e74c3c !important;
+    color: #ffffff !important;
+}
+
+.quantity-minus:hover,
+.dark .quantity-minus:hover {
+    background: #c0392b !important;
+    border-color: #c0392b !important;
+}
+
+/* ========================================= */
+/* DARK MODE - PLUS GREEN, MINUS RED */
+/* ========================================= */
+
+/* Plus button - GREEN in dark mode */
+.dark .quantity-plus,
+.dark .quantity-plus:hover,
+.dark .quantity-plus:active,
+.dark .quantity-plus:focus {
+    background: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    color: #ffffff !important;
+    transform: none !important;
+}
+
+/* Minus button - RED in dark mode */
+.dark .quantity-minus,
+.dark .quantity-minus:hover,
+.dark .quantity-minus:active,
+.dark .quantity-minus:focus {
+    background: #e74c3c !important;
+    border-color: #e74c3c !important;
+    color: #ffffff !important;
+    transform: none !important;
+}
+
+/* ========================================= */
+/* PLUS BUTTON - GREEN IN DARK MODE (FALLBACK) */
+/* ========================================= */
+
+.dark .quantity-plus {
+    background: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    color: #ffffff !important;
+}
+
+.dark .quantity-plus:hover,
+.dark .quantity-plus:active,
+.dark .quantity-plus:focus {
+    background: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    color: #ffffff !important;
+    transform: none !important;
+}
