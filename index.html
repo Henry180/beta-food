@@ -598,57 +598,166 @@ loading="lazy">
 
     <div id="receipt">
 
-        <div class="receipt-header">
-            <img src="images/logo.png" alt="Beta Food Logo">
+```
+<div class="receipt-header">
+    <img src="images/logo.png" alt="Beta Food Logo">
 
-            <h2>BETA FOOD</h2>
-            <p>Better Food For Better People</p>
-            <span>ORDER RECEIPT</span>
-        </div>
+    <h2>BETA FOOD</h2>
+    <p>Better Food For Better People</p>
 
-        <div class="receipt-divider"></div>
+    <span>ORDER RECEIPT</span>
+</div>
 
-        <div class="receipt-info">
-            <p><strong>Order No:</strong> <span id="receipt-order-number"></span></p>
-            <p><strong>Date:</strong> <span id="receipt-date"></span></p>
-        </div>
 
-        <div class="receipt-customer">
-            <p><strong>Customer:</strong> <span id="receipt-customer-name"></span></p>
-            <p><strong>Phone:</strong> <span id="receipt-customer-phone"></span></p>
-            <p><strong>Address:</strong> <span id="receipt-customer-address"></span></p>
-        </div>
+<div class="receipt-divider"></div>
 
-        <div class="receipt-divider"></div>
 
-        <h3>YOUR ORDER</h3>
+<!-- ORDER INFORMATION -->
 
-        <div id="receipt-items"></div>
+<div class="receipt-info">
 
-        <div class="receipt-divider"></div>
+    <p>
+        <strong>Order No:</strong>
+        <span id="receipt-order-number"></span>
+    </p>
 
-        <div class="receipt-total">
-            <span>TOTAL</span>
-            <strong>₦<span id="receipt-total"></span></strong>
-        </div>
+    <p>
+        <strong>Date:</strong>
+        <span id="receipt-date"></span>
+    </p>
 
-        <div class="receipt-payment">
-            <p>Payment Status</p>
-            <strong>✓ PAYMENT CONFIRMED</strong>
-        </div>
+</div>
 
-        <div class="receipt-footer">
-            <p>Thank you for ordering from Beta Food ❤️</p>
-            <p>Better Food For Better People</p>
-            <small>Please keep this receipt for your records.</small>
-        </div>
 
-    </div>
+<!-- CUSTOMER INFORMATION -->
 
-    <button id="download-receipt">
-        <i class="fa-solid fa-download"></i>
-        Save Receipt
-    </button>
+<div class="receipt-customer">
+
+    <h3>CUSTOMER DETAILS</h3>
+
+    <p>
+        <strong>Name:</strong>
+        <span id="receipt-customer-name"></span>
+    </p>
+
+    <p>
+        <strong>Phone:</strong>
+        <span id="receipt-customer-phone"></span>
+    </p>
+
+    <p>
+        <strong>Address:</strong>
+        <span id="receipt-customer-address"></span>
+    </p>
+
+</div>
+
+
+<div class="receipt-divider"></div>
+
+
+<!-- ORDER ITEMS -->
+
+<h3>YOUR ORDER</h3>
+
+<div id="receipt-items"></div>
+
+
+<div class="receipt-divider"></div>
+
+
+<!-- TOTAL -->
+
+<div class="receipt-total">
+
+    <span>TOTAL</span>
+
+    <strong>
+        ₦<span id="receipt-total"></span>
+    </strong>
+
+</div>
+
+
+<!-- PAYMENT INFORMATION -->
+
+<div class="receipt-payment">
+
+    <h3>PAYMENT DETAILS</h3>
+
+    <p>
+        <strong>Payment Method:</strong>
+        Bank Transfer
+    </p>
+
+    <p>
+        <strong>Bank:</strong>
+        Opay
+    </p>
+
+    <p>
+        <strong>Account Name:</strong>
+        Tochukwu Beta Food
+    </p>
+
+    <p>
+        <strong>Account Number:</strong>
+        9169452392
+    </p>
+
+    <p>
+        <strong>Payment Status:</strong>
+        <span class="payment-confirmed">
+            ✓ PAYMENT CONFIRMED
+        </span>
+    </p>
+
+</div>
+
+
+<div class="receipt-footer">
+
+    <p>
+        Thank you for ordering from Beta Food ❤️
+    </p>
+
+    <p>
+        Better Food For Better People
+    </p>
+
+    <small>
+        Please keep this receipt for your records.
+    </small>
+
+</div>
+```
+
+</div>
+
+<!-- RECEIPT ACTIONS -->
+
+<div id="receipt-actions">
+
+```
+<button id="download-receipt">
+
+    <i class="fa-solid fa-download"></i>
+
+    Save Receipt
+
+</button>
+
+<button id="send-receipt-whatsapp">
+
+    <i class="fa-brands fa-whatsapp"></i>
+
+    Send Receipt to WhatsApp
+
+</button>
+```
+
+</div>
+
 
 </div>
 

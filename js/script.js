@@ -793,7 +793,7 @@ let orderMessage = "";
 // RECEIPT ELEMENTS
 // =========================
 
-const receiptContainer = document.querySelector("#receipt-container");
+const receiptContainer = document.querySelector("#receipt");
 const receiptOrderNumber = document.querySelector("#receipt-order-number");
 const receiptDate = document.querySelector("#receipt-date");
 const receiptCustomerName = document.querySelector("#receipt-customer-name");
@@ -1241,3 +1241,324 @@ function generateReceipt() {
 
 }
 
+// =========================================
+// FLOATING ADD MEAL TO CART BUTTON
+// =========================================
+
+const floatingMealButton = document.querySelector("#add-built-meal");
+
+if (floatingMealButton) {
+
+    // Save the button's original position
+    const originalParent = floatingMealButton.parentNode;
+    const originalNextSibling = floatingMealButton.nextSibling;
+
+    // Create a placeholder so the page does not jump
+    const mealButtonPlaceholder = document.createElement("div");
+
+    mealButtonPlaceholder.className = "add-meal-placeholder";
+
+    // Initially keep placeholder hidden
+    mealButtonPlaceholder.style.display = "none";
+
+    // =========================================
+    // CHECK IF FOOD HAS BEEN SELECTED
+    // =========================================
+
+    function hasSelectedMeal() {
+
+        const quantities = document.querySelectorAll(
+            ".meal-option .quantity"
+        );
+
+        for (const quantity of quantities) {
+
+            if (Number(quantity.textContent) > 0) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+
+    // =========================================
+    // START FLOATING
+    // =========================================
+
+    function startFloating() {
+
+        if (
+            floatingMealButton.classList.contains("floating-cart")
+        ) {
+            return;
+        }
+
+        // Put placeholder exactly where button was
+        originalParent.insertBefore(
+            mealButtonPlaceholder,
+            originalNextSibling
+        );
+
+        mealButtonPlaceholder.style.display = "block";
+        mealButtonPlaceholder.style.height =
+            floatingMealButton.offsetHeight + "px";
+
+        floatingMealButton.classList.add("floating-cart");
+    }
+
+
+    // =========================================
+    // STOP FLOATING
+    // =========================================
+
+    function stopFloating() {
+
+        if (
+            !floatingMealButton.classList.contains("floating-cart")
+        ) {
+            return;
+        }
+
+        floatingMealButton.classList.remove("floating-cart");
+
+        mealButtonPlaceholder.style.display = "none";
+
+        // Put button back in its exact original position
+        originalParent.insertBefore(
+            floatingMealButton,
+            originalNextSibling
+        );
+    }
+
+
+    // =========================================
+    // CHECK BUTTON'S ORIGINAL POSITION
+    // =========================================
+
+    function updateFloatingButton() {
+
+        // No food selected
+        if (!hasSelectedMeal()) {
+
+            stopFloating();
+
+            return;
+        }
+
+
+        /*
+         * Find the button's original location.
+         *
+         * The placeholder represents the button's
+         * original position while the real button
+         * is floating.
+         */
+
+        if (
+            mealButtonPlaceholder.style.display === "block"
+        ) {
+
+            const placeholderRect =
+                mealButtonPlaceholder.getBoundingClientRect();
+
+            /*
+             * The original button position has
+             * reached the viewport.
+             *
+             * We use the TOP of the original
+             * button position as the stopping point.
+             */
+
+            if (
+                placeholderRect.top <=
+                window.innerHeight
+            ) {
+
+                stopFloating();
+
+            }
+
+        } else {
+
+            /*
+             * Button has not started floating yet.
+             *
+             * As soon as food is selected,
+             * make it float.
+             */
+
+            startFloating();
+
+        }
+
+    }
+
+
+    // =========================================
+    // WATCH FOOD QUANTITY BUTTONS
+    // =========================================
+
+    document.addEventListener(
+        "click",
+        function(event) {
+
+            const quantityButton =
+                event.target.closest(
+                    ".quantity-plus, .quantity-minus"
+                );
+
+            if (!quantityButton) {
+                return;
+            }
+
+            // Let your existing quantity code
+            // update first.
+
+            setTimeout(function() {
+
+                updateFloatingButton();
+
+            }, 50);
+
+        }
+    );
+
+
+    // =========================================
+    // WATCH SCROLL
+    // =========================================
+
+    window.addEventListener(
+        "scroll",
+        function() {
+
+            updateFloatingButton();
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    // =========================================
+    // WATCH SCREEN SIZE
+    // =========================================
+
+    window.addEventListener(
+        "resize",
+        function() {
+
+            updateFloatingButton();
+
+        }
+    );
+
+
+    // =========================================
+    // INITIAL CHECK
+    // =========================================
+
+    updateFloatingButton();
+
+}
+
+// =========================================
+// SMART FLOATING "ADD TO CART" BUTTON
+// (Only shows when items are selected & cart auto-opens)
+// =========================================
+
+document.addEventListener('DOMContentLoaded', function () {
+    const originalBtn = document.getElementById('add-built-meal');
+    if (!originalBtn) return;
+
+    // --- 1. Create the Floating Button (hidden by default) ---
+    let floatingBtn = document.getElementById('floating-add-btn');
+    if (!floatingBtn) {
+        floatingBtn = document.createElement('button');
+        floatingBtn.id = 'floating-add-btn';
+        floatingBtn.className = 'btn';
+        floatingBtn.textContent = '🛒 Add Meal to Cart';
+        floatingBtn.style.display = 'none'; // Start hidden!
+        document.body.appendChild(floatingBtn);
+    }
+
+    // --- 2. Helper: Check if ANY meal has a quantity > 0 ---
+    function hasSelectedItems() {
+        const quantities = document.querySelectorAll('.quantity');
+        return Array.from(quantities).some(el => parseInt(el.textContent || '0') > 0);
+    }
+
+    // --- 3. Helper: Automatically open the Cart ---
+    function openCart() {
+        // Method 1: If your cart opens by clicking the cart icon (most common)
+        const cartIcon = document.querySelector('.cart-icon');
+        if (cartIcon) {
+            cartIcon.click();
+            return;
+        }
+
+        // Method 2 (Fallback): If your cart uses a CSS class like '.active' or '.open'
+        const cartBox = document.querySelector('.cart-box');
+        if (cartBox) {
+            cartBox.classList.add('active'); // Change 'active' to your class if different
+            cartBox.style.display = 'block'; // Fallback if no class is used
+        }
+    }
+
+    // --- 4. Update Floating Button visibility ---
+    function updateFloatingButton() {
+        const rect = originalBtn.getBoundingClientRect();
+        const isOriginalVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        const hasItems = hasSelectedItems();
+
+        // Show floating button ONLY if: items are selected AND original button is hidden
+        if (!isOriginalVisible && hasItems) {
+            floatingBtn.style.display = 'block';
+        } else {
+            floatingBtn.style.display = 'none';
+        }
+    }
+
+    // --- 5. Click Logic: Add to Cart + Auto-Open Cart ---
+    function handleAddToCart() {
+        // This runs when EITHER the original or floating button is clicked.
+        // Your existing cart logic (from the original script) runs first.
+        // Then we open the cart after a tiny delay so the cart updates.
+        setTimeout(openCart, 150);
+    }
+
+    // Attach our auto-open logic to the ORIGINAL button
+    originalBtn.addEventListener('click', handleAddToCart);
+
+    // Attach click to FLOATING button (triggers original, then auto-opens)
+    floatingBtn.addEventListener('click', function (e) {
+        originalBtn.click(); // Triggers your existing add-to-cart logic
+        // handleAddToCart will run from the original button's listener above.
+    });
+
+    // --- 6. Watch when the user scrolls past the original button ---
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(() => {
+                updateFloatingButton();
+            });
+        },
+        { threshold: 0, rootMargin: '0px 0px 0px 0px' }
+    );
+    observer.observe(originalBtn);
+
+    // --- 7. Watch when the user clicks + or - to select/deselect items ---
+    document.addEventListener('click', function (e) {
+        const target = e.target.closest('.quantity-plus, .quantity-minus');
+        if (target) {
+            // Wait for the quantity number to update in the DOM
+            setTimeout(updateFloatingButton, 50);
+        }
+    });
+
+    // --- 8. Also run the check when the page loads, just in case ---
+    updateFloatingButton();
+});
