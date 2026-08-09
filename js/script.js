@@ -59,170 +59,829 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // =========================
-    // SHOPPING CART
-    // =========================
+// =========================
+// BUILD YOUR MEAL
+// =========================
 
-    let cart = {};
-    let total = 0;
+const mealOptions = document.querySelectorAll(".meal-option");
 
-    const addToCartButtons = document.querySelectorAll(".add-to-cart");
-    const cartCount = document.querySelector("#cart-count");
-    const cartItems = document.querySelector("#cart-items");
-    const cartTotal = document.querySelector("#cart-total");
+mealOptions.forEach(function(option) {
 
-    addToCartButtons.forEach(function(button){
-        button.addEventListener("click", function(){
-            const card = button.closest(".food-card");
-            const foodName = card.querySelector("h3").textContent;
-            const foodPrice = Number(button.dataset.price);
+    const minusButton = option.querySelector(".quantity-minus");
+    const plusButton = option.querySelector(".quantity-plus");
+    const quantityDisplay = option.querySelector(".quantity");
 
-            if(cart[foodName]){
-                cart[foodName].quantity++;
-            }else{
-                cart[foodName] = {
-                    price: foodPrice,
-                    quantity: 1
-                };
-            }
+    plusButton.addEventListener("click", function() {
 
-            total += foodPrice;
-            updateCart();
-        });
+        const category = option.closest(".meal-category");
+
+        // Get the CURRENT quantity from the screen
+        let quantity = Number(quantityDisplay.textContent);
+
+        // Proteins can be selected multiple times
+        const isProtein =
+            category.querySelector("h3").textContent.includes("Proteins");
+
+        // Main meals, extras and water can only be selected once
+        if (!isProtein && quantity >= 1) {
+            return;
+        }
+
+        quantity++;
+
+        quantityDisplay.textContent = quantity;
+
     });
 
-    function updateCart(){
-        if (!cartItems) return;
 
-        cartItems.innerHTML = "";
-        let itemCount = 0;
+    minusButton.addEventListener("click", function() {
 
-        for(const food in cart){
-            const item = cart[food];
+        // Get the CURRENT quantity from the screen
+        let quantity = Number(quantityDisplay.textContent);
+
+        if (quantity > 0) {
+
+            quantity--;
+
+            quantityDisplay.textContent = quantity;
+
+        }
+
+    });
+
+});
+
+// =========================
+// MEAL PREVIEW
+// =========================
+
+const addMealButton = document.querySelector("#add-built-meal");
+
+if(addMealButton) {
+
+    const mealPreview = document.createElement("div");
+
+    mealPreview.id = "meal-preview";
+
+mealPreview.innerHTML = `
+    <h3>Your Meal</h3>
+
+    <div id="meal-preview-images"></div>
+
+    <div id="meal-preview-items">
+        Select a main meal to preview your order.
+    </div>
+
+    <h4>
+        Meal Total: ₦<span id="meal-preview-total">0</span>
+    </h4>
+`;
+    addMealButton.parentNode.insertBefore(
+        mealPreview,
+        addMealButton
+    );
+
+
+    function updateMealPreview() {
+
+        let mainMeal = null;
+        let previewItems = [];
+        let previewTotal = 0;
+
+
+        mealOptions.forEach(function(option) {
+
+            const quantity = Number(
+                option.querySelector(".quantity").textContent
+            );
+
+            if(quantity > 0) {
+
+                const category =
+                    option.closest(".meal-category");
+
+                const categoryName =
+                    category.querySelector("h3").textContent.trim();
+
+                const itemName =
+                    option.querySelector("h4").textContent.trim();
+
+              const priceText = option
+    .querySelector("p")
+    .textContent;
+
+const priceMatch = priceText.match(/[\d,]+/);
+
+const price = priceMatch
+    ? Number(priceMatch[0].replace(/,/g, ""))
+    : 0;
+
+
+                previewItems.push({
+                    name: itemName,
+                    quantity: quantity,
+                    price: price
+                });
+
+
+                previewTotal += price * quantity;
+
+
+                if(categoryName.includes("Main Meals")) {
+
+                    mainMeal = option;
+
+                }
+
+            }
+
+        });
+
+
+       const previewImagesContainer =
+    document.querySelector("#meal-preview-images");
+
+const previewItemsContainer =
+    document.querySelector("#meal-preview-items");
+
+const previewTotalElement =
+    document.querySelector("#meal-preview-total");
+
+
+        previewImagesContainer.innerHTML = "";
+
+mealOptions.forEach(function(option) {
+
+    const quantity = Number(
+        option.querySelector(".quantity").textContent
+    );
+
+    if(quantity > 0) {
+
+        const image =
+            option.querySelector("img");
+
+        if(image) {
+
+            const previewImage =
+                document.createElement("img");
+
+            previewImage.src = image.src;
+            previewImage.alt =
+                option.querySelector("h4").textContent.trim();
+
+            previewImagesContainer.appendChild(
+                previewImage
+            );
+
+        }
+
+    }
+
+});
+
+        if(previewItems.length === 0) {
+
+            previewItemsContainer.innerHTML =
+                "Select a main meal to preview your order.";
+
+        } else {
+
+            previewItemsContainer.innerHTML = "";
+
+            previewItems.forEach(function(item) {
+
+                const row =
+                    document.createElement("p");
+
+                row.textContent =
+                    `${item.name} ×${item.quantity}`;
+
+                previewItemsContainer.appendChild(row);
+
+            });
+
+        }
+
+
+        previewTotalElement.textContent =
+            previewTotal.toLocaleString();
+
+    }
+
+
+    mealOptions.forEach(function(option) {
+
+        const plus =
+            option.querySelector(".quantity-plus");
+
+        const minus =
+            option.querySelector(".quantity-minus");
+
+
+        plus.addEventListener(
+            "click",
+            updateMealPreview
+        );
+
+        minus.addEventListener(
+            "click",
+            updateMealPreview
+        );
+
+    });
+
+
+    updateMealPreview();
+
+}
+
+   // =========================
+// SHOPPING CART
+// =========================
+
+let cart = [];
+let total = 0;
+
+const addToCartButtons = document.querySelectorAll(".add-to-cart");
+const cartCount = document.querySelector("#cart-count");
+const cartItems = document.querySelector("#cart-items");
+const cartTotal = document.querySelector("#cart-total");
+const addBuiltMealButton = document.querySelector("#add-built-meal");
+const cartIcon = document.querySelector(".cart-icon");
+const cartBox = document.querySelector(".cart-box");
+
+
+// =========================
+// ADD OLD FOOD CARDS TO CART
+// =========================
+
+
+addToCartButtons.forEach(function(button){
+
+   button.addEventListener("click", function(e){
+
+    e.stopPropagation();
+
+    const card = button.closest(".food-card");
+
+        const foodName = card.querySelector("h3").textContent;
+        const foodPrice = Number(button.dataset.price);
+
+        cart.push({
+            name: foodName,
+            price: foodPrice,
+            quantity: 1
+        });
+
+        total += foodPrice;
+
+updateCart();
+
+// Automatically open cart
+if (cartBox) {
+    cartBox.style.display = "block";
+}
+
+    });
+
+});
+
+
+// =========================
+// ADD BUILT MEAL TO CART
+// =========================
+
+if (addBuiltMealButton) {
+
+    addBuiltMealButton.addEventListener("click", function(e){
+
+        e.stopPropagation();
+        
+        let selectedItems = [];
+        let mealTotal = 0;
+
+        mealOptions.forEach(function(option){
+
+            const quantity = Number(
+                option.querySelector(".quantity").textContent
+            );
+
+            if(quantity > 0){
+
+                const itemName =
+                    option.querySelector("h4").textContent.trim();
+
+                const priceText =
+                    option.querySelector("p").textContent;
+
+                let itemPrice = 0;
+
+                if(itemName === "Can of Water"){
+
+                    itemPrice = 0;
+
+                }else{
+
+                    itemPrice = Number(
+                        priceText.replace(/[₦,]/g, "").trim()
+                    );
+
+                }
+
+                selectedItems.push({
+                    name: itemName,
+                    price: itemPrice,
+                    quantity: quantity
+                });
+
+                mealTotal += itemPrice * quantity;
+
+            }
+
+        });
+
+
+       // =========================
+// MAIN MEAL IS REQUIRED
+// =========================
+
+let hasMainMeal = false;
+
+mealOptions.forEach(function(option) {
+
+    const quantity = Number(
+        option.querySelector(".quantity").textContent
+    );
+
+    if(quantity > 0) {
+
+        const category = option.closest(".meal-category");
+
+        if(category) {
+
+            const categoryName =
+                category.querySelector("h3").textContent.trim();
+
+            if(categoryName.includes("Main Meals")) {
+                hasMainMeal = true;
+            }
+
+        }
+
+    }
+
+});
+
+
+if(!hasMainMeal) {
+
+    alert(
+        "Please select at least one Main Meal before adding to cart."
+    );
+
+    return;
+
+}
+
+
+        // Add the complete meal
+
+        cart.push({
+
+            type: "meal",
+
+            items: selectedItems,
+
+            price: mealTotal
+
+        });
+
+
+        total += mealTotal;
+
+
+        // Reset meal builder
+
+        mealOptions.forEach(function(option){
+
+            option.querySelector(".quantity").textContent = "0";
+
+        });
+
+
+        updateCart();
+
+// Automatically open the cart
+if(cartBox) {
+    cartBox.style.display = "block";
+}
+
+alert("Your meal has been added to the cart! 🛒");
+
+    });
+
+}
+
+
+// =========================
+// UPDATE CART
+// =========================
+
+function updateCart(){
+
+    if(!cartItems) return;
+
+    cartItems.innerHTML = "";
+
+    let itemCount = 0;
+
+
+    cart.forEach(function(item, index){
+
+        const div = document.createElement("div");
+
+        div.classList.add("cart-item");
+
+
+        // BUILT MEAL
+
+        if(item.type === "meal"){
+
+            item.items.forEach(function(food){
+
+                itemCount += food.quantity;
+
+            });
+
+
+            let mealHTML = `
+                <div class="cart-meal">
+
+                    <div class="cart-meal-header">
+
+                        <strong>🍛 Meal ${index + 1}</strong>
+
+                        <button
+                            class="remove-meal"
+                            data-index="${index}">
+                            ❌
+                        </button>
+
+                    </div>
+            `;
+
+
+            item.items.forEach(function(food){
+
+                mealHTML += `
+                    <div class="cart-meal-item">
+
+                        <span>
+                            ${food.name} ×${food.quantity}
+                        </span>
+
+                        <span>
+                            ₦${(food.price * food.quantity).toLocaleString()}
+                        </span>
+
+                    </div>
+                `;
+
+            });
+
+
+            mealHTML += `
+
+                    <div class="cart-meal-total">
+
+                        <strong>
+                            Meal Total:
+                            ₦${item.price.toLocaleString()}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            div.innerHTML = mealHTML;
+
+
+        }else{
+
+            // OLD FOOD CARD ITEM
+
             itemCount += item.quantity;
 
-            const div = document.createElement("div");
-            div.classList.add("cart-item");
 
             div.innerHTML = `
-<div class="cart-item-row">
-    <span class="food-name">${food}</span>
-    <span class="food-qty">×${item.quantity}</span>
-    <button class="remove-btn" data-food="${food}">❌</button>
-</div>
-`;
-            cartItems.appendChild(div);
+
+                <div class="cart-item-row">
+
+                    <span class="food-name">
+                        ${item.name}
+                    </span>
+
+                    <span class="food-qty">
+                        ×${item.quantity}
+                    </span>
+
+                    <span>
+                        ₦${(item.price * item.quantity).toLocaleString()}
+                    </span>
+
+                    <button
+                        class="remove-btn"
+                        data-index="${index}">
+                        ❌
+                    </button>
+
+                </div>
+
+            `;
+
         }
 
-        if(itemCount === 0){
-            cartItems.innerHTML = "Your cart is empty";
+
+        cartItems.appendChild(div);
+
+    });
+
+
+    // EMPTY CART
+
+    if(cart.length === 0){
+
+        cartItems.innerHTML = "Your cart is empty";
+
+    }
+
+
+    // UPDATE CART NUMBER
+
+    if(cartCount){
+
+        cartCount.textContent = itemCount;
+
+    }
+
+
+    // UPDATE TOTAL
+
+    if(cartTotal){
+
+        cartTotal.textContent =
+            total.toLocaleString();
+
+    }
+
+
+    // =========================
+    // REMOVE COMPLETE MEAL
+    // =========================
+
+    const removeMeals =
+        document.querySelectorAll(".remove-meal");
+
+
+    removeMeals.forEach(function(button){
+
+        button.addEventListener("click", function(){
+
+            const index =
+                Number(button.dataset.index);
+
+            if(cart[index]){
+
+                total -= cart[index].price;
+
+                cart.splice(index, 1);
+
+                updateCart();
+
+            }
+
+        });
+
+    });
+
+
+    // =========================
+    // REMOVE OLD CART ITEM
+    // =========================
+
+    const removeButtons =
+        document.querySelectorAll(".remove-btn");
+
+
+    removeButtons.forEach(function(button){
+
+        button.addEventListener("click", function(){
+
+            const index =
+                Number(button.dataset.index);
+
+
+            if(cart[index]){
+
+                total -=
+                    cart[index].price *
+                    cart[index].quantity;
+
+
+                cart.splice(index, 1);
+
+                updateCart();
+
+            }
+
+        });
+
+    });
+
+}
+
+    // =========================
+// CART TOGGLE
+// =========================
+
+if (cartIcon && cartBox) {
+
+    cartIcon.addEventListener("click", function(e) {
+
+        e.stopPropagation();
+
+        if (cartBox.style.display === "block") {
+            cartBox.style.display = "none";
+        } else {
+            cartBox.style.display = "block";
         }
 
-        if (cartCount) cartCount.textContent = itemCount;
-        if (cartTotal) cartTotal.textContent = total.toLocaleString();
+    });
 
-        // REMOVE ITEMS
-        const removeButtons = document.querySelectorAll(".remove-btn");
-        removeButtons.forEach(function(button){
-            button.addEventListener("click", function(){
-                const food = button.dataset.food;
-                if(cart[food]){
-                    cart[food].quantity--;
-                    total -= cart[food].price;
-                    if(cart[food].quantity <= 0){
-                        delete cart[food];
-                    }
-                    updateCart();
-                }
-            });
+
+    // Clicking inside the cart should NOT close it
+    cartBox.addEventListener("click", function(e) {
+        e.stopPropagation();
+    });
+
+
+    // Clicking anywhere outside the cart closes it
+    document.addEventListener("click", function(e) {
+
+        if (
+            cartBox.style.display === "block" &&
+            !cartBox.contains(e.target) &&
+            !cartIcon.contains(e.target)
+        ) {
+
+            cartBox.style.display = "none";
+
+        }
+
+    });
+
+}
+
+    // =========================
+// CHECKOUT
+// =========================
+
+const checkoutBtn = document.querySelector("#checkout-btn");
+const checkoutForm = document.querySelector("#checkout-form");
+
+if (checkoutBtn && checkoutForm) {
+
+    checkoutBtn.addEventListener("click", function(e) {
+
+        e.stopPropagation();
+
+        // Cart is empty
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+
+        // Open checkout form
+        if (checkoutForm.style.display === "block") {
+            checkoutForm.style.display = "none";
+        } else {
+            checkoutForm.style.display = "block";
+        }
+
+    });
+
+}
+
+// =========================
+// PAYMENT VARIABLES
+// =========================
+
+const placeOrder = document.querySelector("#place-order");
+const paymentPopup = document.querySelector("#payment-popup");
+const paymentCheck = document.querySelector("#payment-check");
+const paymentDone = document.querySelector("#payment-done");
+const copyAccount = document.querySelector("#copy-account");
+const accountNumber = document.querySelector("#account-number");
+
+let orderMessage = "";
+
+// =========================
+// RECEIPT ELEMENTS
+// =========================
+
+const receiptContainer = document.querySelector("#receipt-container");
+const receiptOrderNumber = document.querySelector("#receipt-order-number");
+const receiptDate = document.querySelector("#receipt-date");
+const receiptCustomerName = document.querySelector("#receipt-customer-name");
+const receiptCustomerPhone = document.querySelector("#receipt-customer-phone");
+const receiptCustomerAddress = document.querySelector("#receipt-customer-address");
+const receiptItems = document.querySelector("#receipt-items");
+const receiptTotal = document.querySelector("#receipt-total");
+const downloadReceipt = document.querySelector("#download-receipt");
+
+// =========================
+// PROCEED TO PAYMENT
+// =========================
+
+if (placeOrder) {
+
+    placeOrder.addEventListener("click", function(e) {
+
+        e.preventDefault();
+
+        const name =
+            document.querySelector("#customer-name").value.trim();
+
+        const phone =
+            document.querySelector("#customer-phone").value.trim();
+
+        const address =
+            document.querySelector("#customer-address").value.trim();
+
+
+        // Make sure cart isn't empty
+
+        if (cart.length === 0) {
+
+            alert("Your cart is empty!");
+
+            return;
+
+        }
+
+
+        // Make sure customer details are filled
+
+        if (name === "" || phone === "" || address === "") {
+
+            alert("Please fill in all your details.");
+
+            return;
+
+        }
+
+
+        // Build WhatsApp order message
+
+        let items = "";
+
+        cart.forEach(function(item, index) {
+
+            if (item.type === "meal") {
+
+                items += `\n🍛 MEAL ${index + 1}\n`;
+
+                item.items.forEach(function(food) {
+
+                    const foodTotal =
+                        food.price * food.quantity;
+
+                    items +=
+                        `• ${food.name} ×${food.quantity} — ₦${foodTotal.toLocaleString()}\n`;
+
+                });
+
+                items +=
+                    `Meal Total: ₦${item.price.toLocaleString()}\n`;
+
+            } else {
+
+                const itemTotal =
+                    item.price * item.quantity;
+
+                items +=
+                    `• ${item.name} ×${item.quantity} — ₦${itemTotal.toLocaleString()}\n`;
+
+            }
+
         });
-    }
-
-    // =========================
-    // CART TOGGLE
-    // =========================
-
-    const cartIcon = document.querySelector(".cart-icon");
-    const cartBox = document.querySelector(".cart-box");
-
-    if (cartIcon && cartBox) {
-        cartIcon.addEventListener("click", function(){
-            if(cartBox.style.display === "block"){
-                cartBox.style.display = "none";
-            }else{
-                cartBox.style.display = "block";
-            }
-        });
-    }
 
 
-
-    // =========================
-    // CHECKOUT
-    // =========================
-
-    const checkoutBtn = document.querySelector("#checkout-btn");
-    const checkoutForm = document.querySelector("#checkout-form");
-
-    if (checkoutBtn && checkoutForm) {
-        checkoutBtn.addEventListener("click", function(){
-            if(Object.keys(cart).length === 0){
-                alert("Your cart is empty!");
-                return;
-            }
-            if(checkoutForm.style.display === "block"){
-                checkoutForm.style.display = "none";
-            }else{
-                checkoutForm.style.display = "block";
-            }
-        });
-    }
-
-
-
-    // =========================
-    // PLACE ORDER → SHOW PAYMENT POPUP
-    // =========================
-
-    const placeOrder = document.querySelector("#place-order");
-    const paymentPopup = document.querySelector("#payment-popup");
-    const paymentCheck = document.querySelector("#payment-check");
-    const paymentDone = document.querySelector("#payment-done");
-    const copyAccount = document.querySelector("#copy-account");
-    const accountNumber = document.querySelector("#account-number");
-
-    let orderMessage = "";
-
-    // Disable payment button initially
-    if (paymentDone) {
-        paymentDone.disabled = true;
-        paymentDone.style.opacity = "0.5";
-        paymentDone.style.pointerEvents = "none";
-    }
-
-    if (placeOrder) {
-        placeOrder.addEventListener("click", function(){
-            const name = document.querySelector("#customer-name").value.trim();
-            const phone = document.querySelector("#customer-phone").value.trim();
-            const address = document.querySelector("#customer-address").value.trim();
-
-            if(Object.keys(cart).length === 0){
-                alert("Your cart is empty!");
-                return;
-            }
-
-            if(name === "" || phone === "" || address === ""){
-                alert("Please fill in all your details.");
-                return;
-            }
-
-            let items = "";
-            for(const food in cart){
-                items += `• ${food} ×${cart[food].quantity}\n`;
-            }
-
-            orderMessage = 
-`Hello Beta Food! 🍛
+        orderMessage = `Hello Beta Food! 🍛
 
 *NEW ORDER*
 
@@ -233,27 +892,47 @@ document.addEventListener("DOMContentLoaded", function () {
 📍 Address:
 ${address}
 
-🛒 Order:
+🛒 ORDER:
 ${items}
 
-💰 Total: ₦${total.toLocaleString()}
+💰 TOTAL: ₦${total.toLocaleString()}
 `;
 
-            // Hide checkout form, show payment popup
-            checkoutForm.style.display = "none";
+
+        // Hide checkout form
+
+        checkoutForm.style.display = "none";
+
+
+        // Show payment popup
+
+        if (paymentPopup) {
+
             paymentPopup.style.display = "block";
 
-            // Reset checkbox and button
+        }
+
+
+        // Reset payment confirmation
+
+        if (paymentCheck) {
+
             paymentCheck.checked = false;
+
+        }
+
+
+        if (paymentDone) {
+
             paymentDone.disabled = true;
             paymentDone.style.opacity = "0.5";
             paymentDone.style.pointerEvents = "none";
 
-            console.log("Payment popup should be visible now.");
-        });
-    }
+        }
 
+    });
 
+}
 
     // =========================
     // COPY ACCOUNT NUMBER
@@ -296,6 +975,7 @@ ${items}
     }
 
 
+    
 
     // =========================
     // SEND TO WHATSAPP
@@ -317,10 +997,11 @@ ${items}
                 "\n\n✅ I have completed payment.\n\nI am about to attach my payment receipt."
             );
 
+            
         window.open(whatsappURL, "_blank");
 
         // Reset everything
-        cart = {};
+        cart = [];
         total = 0;
         updateCart();
 
@@ -406,3 +1087,157 @@ window.addEventListener("load",function(){
 document.getElementById("loader").classList.add("hide");
 
 });
+
+// =========================
+// GENERATE RESTAURANT RECEIPT
+// =========================
+
+function generateReceipt() {
+
+    if (!receiptContainer) return;
+
+    // Order number
+    const orderNumber =
+        "BF-" + Date.now().toString().slice(-6);
+
+    // Date and time
+    const now = new Date();
+
+    const date =
+        now.toLocaleDateString("en-NG", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+
+    const time =
+        now.toLocaleTimeString("en-NG", {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+    // Customer details
+    const customerName =
+        document.querySelector("#customer-name").value.trim();
+
+    const customerPhone =
+        document.querySelector("#customer-phone").value.trim();
+
+    const customerAddress =
+        document.querySelector("#customer-address").value.trim();
+
+
+    // Put information into receipt
+
+    receiptOrderNumber.textContent = orderNumber;
+
+    receiptDate.textContent =
+        date + " • " + time;
+
+    receiptCustomerName.textContent =
+        customerName;
+
+    receiptCustomerPhone.textContent =
+        customerPhone;
+
+    receiptCustomerAddress.textContent =
+        customerAddress;
+
+
+    // Clear old receipt items
+
+    receiptItems.innerHTML = "";
+
+
+    // Add cart items
+
+    cart.forEach(function(item) {
+
+        if (item.type === "meal") {
+
+            // Meal heading
+
+            const mealHeading =
+                document.createElement("div");
+
+            mealHeading.style.fontWeight = "600";
+            mealHeading.style.marginTop = "12px";
+            mealHeading.textContent =
+                "🍛 Meal";
+
+            receiptItems.appendChild(mealHeading);
+
+
+            // Items inside meal
+
+            item.items.forEach(function(food) {
+
+                const row =
+                    document.createElement("div");
+
+                row.className =
+                    "receipt-item";
+
+                row.innerHTML = `
+
+                    <span class="receipt-item-name">
+                        ${food.name} ×${food.quantity}
+                    </span>
+
+                    <span class="receipt-item-price">
+                        ₦${(
+                            food.price *
+                            food.quantity
+                        ).toLocaleString()}
+                    </span>
+
+                `;
+
+                receiptItems.appendChild(row);
+
+            });
+
+
+        } else {
+
+            const row =
+                document.createElement("div");
+
+            row.className =
+                "receipt-item";
+
+            row.innerHTML = `
+
+                <span class="receipt-item-name">
+                    ${item.name} ×${item.quantity}
+                </span>
+
+                <span class="receipt-item-price">
+                    ₦${(
+                        item.price *
+                        item.quantity
+                    ).toLocaleString()}
+                </span>
+
+            `;
+
+            receiptItems.appendChild(row);
+
+        }
+
+    });
+
+
+    // Total
+
+    receiptTotal.textContent =
+        total.toLocaleString();
+
+
+    // Show receipt
+
+    receiptContainer.style.display =
+        "block";
+
+}
+
