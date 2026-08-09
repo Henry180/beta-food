@@ -3303,6 +3303,73 @@ body.dark #submit-review:hover {
         padding: 12px;
         max-height: 78vh;
     }
+/* =========================================================
+   FORCE CART TO THE RIGHT SIDE (Mobile Fix)
+   ========================================================= */
+
+/* 1. Make sure the nav is the ONLY positioned parent */
+nav {
+    position: sticky !important;
+    top: 0;
+    z-index: 1000;
+}
+
+/* 2. Remove 'position: relative' from any child that might steal the cart */
+nav .nav-links,
+nav .cart-icon,
+nav .menu-toggle,
+nav .cart-container {
+    position: static !important;
+}
+
+/* 3. Explicitly tell the cart to align to the RIGHT of the nav */
+.cart-box {
+    position: absolute !important;
+    right: 20px !important;
+    left: auto !important;          /* CRITICAL: overrides any inherited 'left' */
+    top: calc(100% + 10px) !important;
+    width: min(420px, 92vw);
+    max-height: 85vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: none;
+    color: #333;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+/* 4. Double-check the mobile media queries keep it on the right */
+@media (max-width: 768px) {
+    .cart-box {
+        right: 3vw !important;
+        left: auto !important;
+        width: 94vw;
+        top: calc(100% + 12px) !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .cart-box {
+        right: 2vw !important;
+        left: auto !important;
+        width: 96vw;
+        top: calc(100% + 10px) !important;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 400px) {
+    .cart-box {
+        right: 1vw !important;
+        left: auto !important;
+        width: 98vw;
+        padding: 12px;
+    }
+}
 
     .cart-item span {
         font-size: 13px;
@@ -3508,6 +3575,127 @@ body.dark #submit-review:hover {
     .meal-option img {
         height: 130px !important; /* Slightly shorter to fit, but still full-width */
         border-radius: 10px !important;
+    }
+
+    .meal-option h4 {
+        font-size: 14px !important;
+    }
+
+    .meal-option p {
+        font-size: 13px !important;
+    }
+
+    .quantity-control button {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 17px !important;
+    }
+
+    .quantity-control .quantity {
+        font-size: 16px !important;
+        min-width: 24px !important;
+    }
+}
+
+/* ========================================= */
+/* MOBILE MEAL CARDS - FIXED CROPPING       */
+/* ========================================= */
+
+@media (max-width: 480px) {
+    .meal-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .meal-option {
+        padding: 15px 12px !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center;
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .meal-option:active {
+        transform: scale(0.97);
+    }
+
+    /* ✅ FIXED: No more chopped-off bottles/items */
+    .meal-option img {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 160px !important;
+        object-fit: contain !important;  /* Shows the WHOLE image */
+        object-position: center !important;
+        border-radius: 12px !important;
+        margin-bottom: 10px !important;
+        background: #f8f8f8 !important;  /* Cleans up the empty space */
+        padding: 4px !important;
+    }
+
+    .meal-option h4 {
+        font-size: 16px !important;
+        font-weight: 600;
+        margin: 4px 0 2px !important;
+        color: #222;
+        line-height: 1.3;
+    }
+
+    .meal-option p {
+        font-size: 15px !important;
+        font-weight: 600;
+        color: #2e8b57;
+        margin: 2px 0 !important;
+    }
+
+    .quantity-control {
+        margin-top: 10px !important;
+        gap: 12px;
+    }
+
+    .quantity-control button {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 20px !important;
+        border-radius: 50% !important;
+        background: #2e8b57;
+        color: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .quantity-control button:active {
+        background: #1e6b3a;
+        transform: scale(0.92);
+    }
+
+    .quantity-control .quantity {
+        font-size: 18px !important;
+        min-width: 28px !important;
+        font-weight: 700;
+        color: #222;
+    }
+}
+
+/* Very tiny phones */
+@media (max-width: 360px) {
+    .meal-options {
+        gap: 10px;
+    }
+
+    .meal-option {
+        padding: 10px 8px !important;
+    }
+
+    .meal-option img {
+        height: 120px !important;
+        object-fit: contain !important;
+        background: #f8f8f8 !important;
+        padding: 3px !important;
     }
 
     .meal-option h4 {
