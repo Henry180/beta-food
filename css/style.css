@@ -3717,3 +3717,49 @@ nav .cart-container {
         min-width: 24px !important;
     }
 }
+
+/* =========================================================
+   FIX: CART ALWAYS STAYS ON THE RIGHT (Mobile)
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .cart-box {
+        position: fixed !important;      /* Locks it to the viewport, not the menu */
+        top: 120px !important;            /* Adjust based on your nav height (padding + logo) */
+        right: 10px !important;
+        left: auto !important;            /* Kills any inherited left alignment */
+        width: 92vw !important;
+        max-width: 420px !important;
+        max-height: 80vh !important;
+        z-index: 99999 !important;        /* Keep it above everything */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+        border-radius: 12px !important;
+        padding: 20px !important;
+        background: white !important;
+        overflow-y: auto !important;
+    }
+
+    /* If the menu is open, the cart still stays on the right */
+    .nav-links.active ~ .cart-box {
+        display: none !important;         /* (Optional) Hides cart when menu is open to avoid clutter */
+    }
+}
+
+@media (max-width: 600px) {
+    .cart-box {
+        top: 115px !important;            /* Slightly lower on smaller phones */
+        right: 8px !important;
+        width: 94vw !important;
+        padding: 15px !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .cart-box {
+        top: 110px !important;
+        right: 5px !important;
+        width: 96vw !important;
+        padding: 12px !important;
+        max-height: 75vh !important;
+    }
+}
