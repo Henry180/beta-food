@@ -1,7 +1,6 @@
-css
 /* =========================================================
    BETA FOOD FOR BETTER PEOPLE
-   MAIN STYLESHEET
+   MAIN STYLESHEET - CLEAN & COMPLETE
    ========================================================= */
 
 /* =========================================================
@@ -24,7 +23,6 @@ body {
     color: #222;
 }
 
-
 /* =========================================================
    2. NAVIGATION
    ========================================================= */
@@ -32,11 +30,9 @@ body {
 nav {
     background-color: #2e8b57;
     padding: 20px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -78,37 +74,24 @@ nav a.active {
     cursor: pointer;
 }
 
-
 /* =========================================================
    3. HERO SECTION
    ========================================================= */
 
 .hero {
     min-height: 100vh;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     text-align: center;
     padding: 150px 20px;
-
     color: white;
-
     position: relative;
     overflow: hidden;
-
-    background-image:
-        linear-gradient(
-            rgba(0, 0, 0, 0.55),
-            rgba(0, 0, 0, 0.55)
-        ),
-        url("../images/hero.jpg");
-
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("../images/hero.jpg");
     background-size: cover;
     background-position: center;
-
     animation: heroBackground 20s infinite;
 }
 
@@ -122,89 +105,35 @@ nav a.active {
 .hero p {
     max-width: 800px;
     font-size: 18px;
-
     animation: fadeInDown 1s ease;
     animation-delay: 0.5s;
     animation-fill-mode: forwards;
-
     opacity: 0;
 }
 
-
-/* =========================================================
-   4. HERO SLIDESHOW
-   ========================================================= */
-
 @keyframes heroBackground {
-
-    0% {
-        background-image:
-            linear-gradient(
-                rgba(0, 0, 0, 0.55),
-                rgba(0, 0, 0, 0.55)
-            ),
-            url("../images/hero.jpg");
-    }
-
-    25% {
-        background-image:
-            linear-gradient(
-                rgba(0, 0, 0, 0.55),
-                rgba(0, 0, 0, 0.55)
-            ),
-            url("../images/hero1.jpg");
-    }
-
-    50% {
-        background-image:
-            linear-gradient(
-                rgba(0, 0, 0, 0.55),
-                rgba(0, 0, 0, 0.55)
-            ),
-            url("../images/Jollof Rice.jpg");
-    }
-
-    75% {
-        background-image:
-            linear-gradient(
-                rgba(0, 0, 0, 0.55),
-                rgba(0, 0, 0, 0.55)
-            ),
-            url("../images/hero3.jpg");
-    }
-
-    100% {
-        background-image:
-            linear-gradient(
-                rgba(0, 0, 0, 0.55),
-                rgba(0, 0, 0, 0.55)
-            ),
-            url("../images/fried rice.jpg");
-    }
+    0% { background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("../images/hero.jpg"); }
+    25% { background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("../images/hero1.jpg"); }
+    50% { background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("../images/Jollof Rice.jpg"); }
+    75% { background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("../images/hero3.jpg"); }
+    100% { background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("../images/fried rice.jpg"); }
 }
 
-
 /* =========================================================
-   5. BUTTONS
+   4. BUTTONS
    ========================================================= */
 
 .btn {
     display: inline-block;
-
     margin-top: 25px;
-
     background-color: #2e8b57;
     color: white;
-
     padding: 15px 30px;
-
     text-decoration: none;
     border: none;
     border-radius: 8px;
-
     font-weight: bold;
     cursor: pointer;
-
     transition: all 0.3s ease;
 }
 
@@ -214,9 +143,8 @@ nav a.active {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-
 /* =========================================================
-   6. MENU SECTION
+   5. MENU SECTION
    ========================================================= */
 
 .menu {
@@ -236,23 +164,18 @@ nav a.active {
     flex-wrap: wrap;
 }
 
-
 /* =========================================================
-   7. SEARCH & FILTER
+   6. SEARCH & FILTER
    ========================================================= */
 
 #search {
     width: 60%;
     max-width: 400px;
-
     padding: 15px;
     margin: 20px auto 40px;
-
     display: block;
-
     border: 2px solid #2e8b57;
     border-radius: 8px;
-
     font-size: 16px;
     outline: none;
 }
@@ -268,14 +191,10 @@ nav a.active {
 .filter-btn {
     padding: 10px 20px;
     margin: 5px;
-
     border: none;
     border-radius: 8px;
-
     cursor: pointer;
-
     background: #ddd;
-
     transition: 0.3s ease;
 }
 
@@ -285,50 +204,35 @@ nav a.active {
     color: white;
 }
 
-
 /* =========================================================
-   8. FOOD CARDS
+   7. FOOD CARDS
    ========================================================= */
 
 .food-card {
     background-color: white;
-
     padding: 25px;
-
     width: 250px;
-
     border-radius: 10px;
-
     box-shadow: 0 3px 10px rgba(12, 4, 4, 0.2);
-
     cursor: pointer;
-
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .food-card:hover {
     transform: translateY(-10px);
-
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
 .food-card img {
     width: 100%;
     height: 280px;
-
     object-fit: cover;
-
     border-radius: 10px;
-
     margin-bottom: 15px;
 }
 
-
 /* =========================================================
-   9. ABOUT
+   8. ABOUT
    ========================================================= */
 
 .about {
@@ -338,32 +242,24 @@ nav a.active {
 
 .about h2 {
     color: #2e8b57;
-
     margin-bottom: 20px;
-
     font-size: 35px;
 }
 
 .about p {
     max-width: 700px;
-
     margin: auto;
-
     line-height: 1.8;
-
     font-size: 18px;
 }
 
-
 /* =========================================================
-   10. OPENING HOURS
+   9. OPENING HOURS
    ========================================================= */
 
 .hours {
     background-color: #f4f4f4;
-
     text-align: center;
-
     padding: 60px 20px;
 }
 
@@ -373,9 +269,7 @@ nav a.active {
 
 .hours p {
     margin: 10px 0;
-
     font-size: 18px;
-
     color: #2e8b57;
 }
 
@@ -383,9 +277,8 @@ nav a.active {
     font-style: italic;
 }
 
-
 /* =========================================================
-   11. GALLERY
+   10. GALLERY
    ========================================================= */
 
 .gallery {
@@ -395,35 +288,24 @@ nav a.active {
 
 .gallery h2 {
     color: #2e8b57;
-
     font-size: 35px;
-
     margin-bottom: 40px;
 }
 
 .gallery-container {
     display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(280px, 1fr));
-
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
-
     width: 100%;
-
     margin-top: 30px;
 }
 
 .gallery-container img {
     width: 100%;
     height: 300px;
-
     object-fit: cover;
-
     border-radius: 18px;
-
     display: block;
-
     transition: transform 0.3s ease;
 }
 
@@ -431,53 +313,39 @@ nav a.active {
     transform: scale(1.03);
 }
 
-
 /* =========================================================
-   12. TESTIMONIALS
+   11. TESTIMONIALS
    ========================================================= */
 
 .testimonials {
     padding: 80px 20px;
-
     background-color: #f8f8f8;
-
     text-align: center;
 }
 
 .testimonials h2 {
     color: #2e8b57;
-
     font-size: 35px;
-
     margin-bottom: 40px;
 }
 
 .testimonial-container {
     display: flex;
-
     justify-content: center;
-
     gap: 20px;
-
     flex-wrap: wrap;
 }
 
 .testimonial {
     background: white;
-
     padding: 25px;
-
     width: 300px;
-
     border-radius: 12px;
-
-    box-shadow:
-        0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .testimonial p {
     font-style: italic;
-
     margin-bottom: 15px;
 }
 
@@ -485,78 +353,55 @@ nav a.active {
     color: #2e8b57;
 }
 
-
 /* =========================================================
-   13. CONTACT
+   12. CONTACT
    ========================================================= */
 
 .contact {
     padding: 80px 20px;
-
     background-color: white;
-
     text-align: center;
 }
 
 .contact h2 {
     color: #2e8b57;
-
     font-size: 35px;
-
     margin-bottom: 25px;
 }
 
 .contact p {
     margin: 15px 0;
-
     font-size: 18px;
 }
 
 .contact i {
     color: #2e8b57;
-
     margin-right: 10px;
 }
-
-
-/* =========================================================
-   14. GOOGLE MAP
-   ========================================================= */
 
 .map-container {
     width: 90%;
     max-width: 900px;
-
     margin: 30px auto;
-
     border-radius: 15px;
-
     overflow: hidden;
-
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .map-container iframe {
     display: block;
-
     width: 100%;
 }
 
-
 /* =========================================================
-   15. FOOTER
+   13. FOOTER
    ========================================================= */
 
 footer {
     background-color: #2e8b57;
-
     color: white;
-
     text-align: center;
-
     padding: 40px 20px;
-
     margin-top: 50px;
 }
 
@@ -568,40 +413,26 @@ footer p {
     margin: 10px 0;
 }
 
-
 /* =========================================================
-   16. WHATSAPP BUTTON
+   14. WHATSAPP BUTTON
    ========================================================= */
 
 .whatsapp {
     position: fixed;
-
     bottom: 20px;
     right: 20px;
-
     background-color: #25D366;
-
     color: white;
-
     width: 60px;
     height: 60px;
-
     border-radius: 50%;
-
     text-decoration: none;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     font-size: 30px;
-
-    box-shadow:
-        0 4px 10px rgba(0, 0, 0, 0.3);
-
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transition: 0.3s;
-
     z-index: 9990;
 }
 
@@ -609,167 +440,107 @@ footer p {
     transform: scale(1.1);
 }
 
-
 /* =========================================================
-   17. BACK TO TOP
+   15. BACK TO TOP
    ========================================================= */
 
 .back-to-top {
     position: fixed;
-
     bottom: 95px;
     right: 20px;
-
     width: 55px;
     height: 55px;
-
     background-color: #2e8b57;
     color: white;
-
     border-radius: 50%;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     text-decoration: none;
-
     font-size: 24px;
-
-    box-shadow:
-        0 4px 10px rgba(0, 0, 0, 0.3);
-
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transition: 0.3s;
-
     opacity: 0;
-
     pointer-events: none;
-
     z-index: 9990;
 }
 
 .back-to-top:hover {
     transform: scale(1.1);
-
     background-color: #256d46;
 }
 
 .back-to-top.show {
     opacity: 1;
-
     pointer-events: auto;
 }
 
-
 /* =========================================================
-   18. SCROLL DOWN
+   16. SCROLL DOWN
    ========================================================= */
 
 .scroll-down {
     margin-top: 40px;
-
     font-size: 30px;
-
     color: white;
-
     animation: bounce 1.5s infinite;
 }
 
 @keyframes bounce {
-
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-        transform: translateY(0);
-    }
-
-    40% {
-        transform: translateY(10px);
-    }
-
-    60% {
-        transform: translateY(5px);
-    }
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(10px); }
+    60% { transform: translateY(5px); }
 }
 
-
 /* =========================================================
-   19. SHOPPING CART ICON
+   17. SHOPPING CART ICON
    ========================================================= */
 
 .cart-icon {
     position: relative;
-
     font-size: 24px;
-
     color: white;
-
     cursor: pointer;
 }
 
 #cart-count {
     position: absolute;
-
     top: -10px;
     right: -10px;
-
     background: red;
-
     color: white;
-
     width: 20px;
     height: 20px;
-
     border-radius: 50%;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     font-size: 12px;
 }
 
-
 /* =========================================================
-   20. CART BOX
+   18. CART BOX
    ========================================================= */
 
 .cart-box {
     position: absolute;
-
     right: 20px;
     top: 80px;
-
     width: min(420px, 92vw);
-
     max-height: 85vh;
-
     overflow-y: auto;
     overflow-x: hidden;
-
     padding: 20px;
-
     background: white;
-
     border-radius: 12px;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.2);
-
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     display: none;
-
     color: #333;
-
     z-index: 1000;
 }
 
 .cart-box h3 {
     color: #2e8b57;
-
     margin-bottom: 15px;
 }
 
@@ -777,9 +548,8 @@ footer p {
     margin-top: 20px;
 }
 
-
 /* =========================================================
-   21. NORMAL CART ITEMS
+   19. NORMAL CART ITEMS
    ========================================================= */
 
 #cart-items {
@@ -788,43 +558,28 @@ footer p {
 
 .cart-item {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     gap: 10px;
-
     padding: 10px 0;
-
     border-bottom: 1px solid #ddd;
-
     background: none;
-
     width: 100%;
 }
 
 .cart-item span {
     font-size: 16px;
-
     font-weight: 500;
-
     flex: 1;
 }
 
 .remove-btn {
     border: none;
-
     background: none;
-
     color: red;
-
     font-size: 18px;
-
     cursor: pointer;
-
     flex-shrink: 0;
-
     transition: 0.3s;
 }
 
@@ -834,19 +589,16 @@ footer p {
 
 .food-name {
     flex: 1;
-
     font-weight: 600;
 }
 
 .food-qty {
     font-weight: bold;
-
     color: #28a745;
 }
 
-
 /* =========================================================
-   22. CART BUTTONS
+   20. CART BUTTONS
    ========================================================= */
 
 .checkout-btn,
@@ -854,25 +606,17 @@ footer p {
 #copy-account,
 #payment-done {
     width: 100%;
-
     font-weight: 600;
-
     border: none;
-
     border-radius: 8px;
-
     cursor: pointer;
-
     transition: 0.3s;
 }
 
 .checkout-btn {
     margin-top: 15px;
-
     padding: 12px;
-
     background: #2e8b57;
-
     color: white;
 }
 
@@ -882,178 +626,124 @@ footer p {
     transform: translateY(-2px);
 }
 
-
 /* =========================================================
-   23. CHECKOUT FORM
+   21. CHECKOUT FORM
    ========================================================= */
 
 .checkout-form {
     display: none;
-
     position: relative;
-
     width: 100%;
-
     background: white;
-
     padding: 20px;
-
     border-radius: 10px;
-
-    box-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 .checkout-form input,
 .checkout-form textarea {
     width: 100%;
-
     padding: 10px;
-
     margin: 10px 0;
-
     font-size: 16px;
-
     border: 1px solid #ddd;
-
     border-radius: 8px;
-
     outline: none;
 }
 
 .checkout-form input:focus,
 .checkout-form textarea:focus {
     border-color: #2e8b57;
-
-    box-shadow:
-        0 0 8px rgba(46, 139, 87, 0.25);
+    box-shadow: 0 0 8px rgba(46, 139, 87, 0.25);
 }
 
 #place-order {
     padding: 12px;
-
     background: #2e8b57;
-
     color: white;
 }
 
-
 /* =========================================================
-   24. PAYMENT CHECKBOX
+   22. PAYMENT CHECKBOX
    ========================================================= */
 
 .payment-check {
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     gap: 10px;
-
     margin: 25px 0;
-
     font-weight: bold;
 }
 
 .payment-check input {
     width: 20px;
     height: 20px;
-
     margin: 0;
 }
 
-
 /* =========================================================
-   25. PAYMENT DONE BUTTON
+   23. PAYMENT DONE BUTTON
    ========================================================= */
 
 #payment-done {
     width: 100%;
-
     margin-top: 20px;
-
     padding: 14px;
-
     background: #bfbfbf;
-
     color: white;
-
     font-size: 16px;
-
     cursor: not-allowed;
-
     opacity: 0.7;
 }
 
 #payment-done:disabled {
     background: #bfbfbf !important;
-
     cursor: not-allowed !important;
-
     opacity: 0.7 !important;
 }
 
 #payment-done:not(:disabled),
 #payment-done.active {
     background: #28a745 !important;
-
     cursor: pointer !important;
-
     opacity: 1 !important;
 }
 
 #payment-done:hover:not(:disabled) {
     background: #218838 !important;
-
     transform: translateY(-2px);
 }
 
-
 /* =========================================================
-   26. PAYMENT POPUP
+   24. PAYMENT POPUP
    ========================================================= */
 
 .payment-popup {
     display: none;
-
     position: fixed;
-
     top: 50%;
     left: 50%;
-
     transform: translate(-50%, -50%);
-
     width: 90%;
     max-width: 420px;
-
     max-height: 90vh;
-
     overflow-y: auto;
-
     background: white;
-
     padding: 30px;
-
     border-radius: 15px;
-
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.3);
-
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
     z-index: 99999;
-
     text-align: center;
 }
 
 .payment-popup h2 {
     color: #2e8b57;
-
     margin-bottom: 15px;
 }
 
 .payment-popup p {
     margin: 12px 0;
-
     line-height: 1.6;
 }
 
@@ -1063,112 +753,69 @@ footer p {
 
 #copy-account {
     width: 100%;
-
     padding: 14px;
-
     background: #2e8b57;
-
     color: white;
-
     margin-top: 15px;
 }
 
-
 /* =========================================================
-   27. POPUP OVERLAY
+   25. POPUP OVERLAY
    ========================================================= */
 
 .popup-overlay {
     display: none;
-
     position: fixed;
-
     top: 0;
     left: 0;
-
     width: 100%;
     height: 100%;
-
     background: rgba(0, 0, 0, 0.6);
-
     z-index: 9998;
 }
 
-
 /* =========================================================
-   28. BUILD YOUR MEAL
+   26. BUILD YOUR MEAL
    ========================================================= */
 
 .meal-options {
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 25px;
-
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
     width: 100%;
-
-    justify-content: flex-start;
 }
 
 .meal-option {
-    width: 300px;
-
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     text-align: center;
-
     padding: 15px;
-
     border-radius: 15px;
-
     background: white;
-
-    box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.12);
-
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .meal-option:hover {
     transform: translateY(-8px);
-
-    box-shadow:
-        0 12px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
 }
 
 .meal-option img {
-    width: 300px;
-    max-width: 100%;
-
-    height: 300px;
-
-    object-fit: contain;
-
-    object-position: center;
-
-    border-radius: 15px;
-
-    margin-bottom: 15px;
-
+    width: 100%;
+    max-width: 200px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 12px;
     display: block;
-
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .meal-option:hover img {
     transform: scale(1.03);
-
-    box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
 .water-option .meal-option img {
@@ -1177,257 +824,190 @@ footer p {
 
 .meal-category h3 {
     font-size: 28px;
-
     font-weight: 700;
-
     color: #2e8b57;
-
     margin: 35px 0 20px;
-
     padding-bottom: 10px;
-
     border-bottom: 3px solid #2e8b57;
-
     text-align: left;
-
     letter-spacing: 0.5px;
 }
 
+.meal-option h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 4px 0;
+    color: #333;
+}
+
+.meal-option p {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2e8b57;
+    margin: 2px 0;
+}
 
 /* =========================================================
-   29. QUANTITY CONTROLS
+   27. QUANTITY CONTROLS
    ========================================================= */
 
 .quantity-control {
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     gap: 12px;
-
     margin-top: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #f5f5f5;
 }
 
 .quantity-control button {
-    width: 38px;
-    height: 38px;
-
+    width: 34px;
+    height: 34px;
     border: none;
-
     border-radius: 50%;
-
     background: #2e8b57;
-
     color: white;
-
-    font-size: 22px;
-
-    font-weight: 600;
-
+    font-size: 18px;
+    font-weight: 700;
     cursor: pointer;
-
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .quantity-control button:hover {
     background: #256d46;
+    transform: scale(1.05);
+}
 
-    transform: scale(1.1);
+.quantity-control button:active {
+    transform: scale(0.9);
 }
 
 .quantity-control .quantity {
     min-width: 30px;
-
-    font-size: 20px;
-
+    font-size: 18px;
     font-weight: 700;
+    color: #333;
+    text-align: center;
 }
 
-
 /* =========================================================
-   30. ADD BUILT MEAL BUTTON
+   28. ADD BUILT MEAL BUTTON
    ========================================================= */
 
 #add-built-meal {
     display: block;
-
     margin: 30px auto;
-
     padding: 15px 35px;
-
     font-size: 18px;
-
     font-weight: 700;
-
     border: none;
-
     border-radius: 30px;
-
     background: #2e8b57;
-
     color: white;
-
     cursor: pointer;
-
-    box-shadow:
-        0 6px 15px rgba(0, 0, 0, 0.15);
-
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
 }
 
 #add-built-meal:hover {
     background: #256d46;
-
     transform: translateY(-4px);
-
-    box-shadow:
-        0 10px 22px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
 }
-
-#add-built-meal:active {
-    transform: translateY(0);
-}
-
 
 /* =========================================================
-   32. MEAL PREVIEW
+   29. MEAL PREVIEW
    ========================================================= */
 
 #meal-preview {
     width: 100%;
-
     max-width: 900px;
-
     margin: 30px auto;
-
     padding: 25px;
-
     background: white;
-
     border-radius: 20px;
-
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.15);
-
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     text-align: center;
-
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #meal-preview:hover {
     transform: translateY(-5px);
-
-    box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
 #meal-preview h3 {
     font-size: 26px;
-
     margin: 10px 0 20px;
-
     color: #2e8b57;
 }
 
 #meal-preview-images {
     display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(150px, 1fr));
-
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
-
     margin: 20px 0;
 }
 
 #meal-preview-images img {
     width: 100%;
-
     height: 150px;
-
     object-fit: contain;
-
     object-position: center;
-
     border-radius: 15px;
-
     display: block;
-
     background: #f8f8f8;
-
     padding: 8px;
 }
 
 #meal-preview-items {
     display: flex;
-
     flex-wrap: wrap;
-
     justify-content: center;
-
     gap: 12px;
-
     margin: 20px 0;
 }
 
 #meal-preview-items p {
     margin: 0;
-
     padding: 10px 15px;
-
     background: #f1f8f4;
-
     border-radius: 10px;
-
     font-weight: 600;
 }
 
 #meal-preview-total {
     font-size: 25px;
-
     color: #2e8b57;
-
     font-weight: 700;
 }
 
-
 /* =========================================================
-   33. BUILT MEAL CART
+   30. BUILT MEAL CART
    ========================================================= */
 
 .cart-meal {
     display: block;
-
     width: 100%;
-
     box-sizing: border-box;
-
     background: #f8f8f8;
-
     border-radius: 12px;
-
     padding: 16px;
-
     margin-bottom: 18px;
-
     border: 1px solid #ddd;
 }
 
 .cart-meal-header {
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
     gap: 12px;
-
     margin-bottom: 12px;
-
     font-size: 17px;
 }
 
@@ -1437,17 +1017,11 @@ footer p {
 
 .remove-meal {
     border: none;
-
     background: transparent;
-
     cursor: pointer;
-
     font-size: 15px;
-
     color: #333;
-
     flex-shrink: 0;
-
     transition: 0.3s;
 }
 
@@ -1457,44 +1031,28 @@ footer p {
 
 .cart-meal-item {
     display: grid !important;
-
-    grid-template-columns:
-        minmax(0, 1fr) auto !important;
-
+    grid-template-columns: minmax(0, 1fr) auto !important;
     align-items: center !important;
-
     column-gap: 20px !important;
-
     width: 100% !important;
-
     box-sizing: border-box !important;
-
     padding: 10px 0 !important;
-
     border-bottom: 1px solid #ddd !important;
 }
 
 .cart-meal-item span:first-child {
     display: block !important;
-
     min-width: 0 !important;
-
     text-align: left !important;
-
     white-space: normal !important;
-
     overflow-wrap: break-word !important;
-
     word-break: normal !important;
 }
 
 .cart-meal-item span:last-child {
     display: block !important;
-
     white-space: nowrap !important;
-
     text-align: right !important;
-
     font-weight: 600 !important;
 }
 
@@ -1504,58 +1062,36 @@ footer p {
 
 .cart-meal-total {
     margin-top: 12px;
-
     padding-top: 12px;
-
     border-top: 1px solid rgba(128, 128, 128, 0.3);
-
     text-align: right;
 }
 
-
 /* =========================================================
-   34. RECEIPT
+   31. RECEIPT
    ========================================================= */
 
 #receipt-container {
     display: none;
-
     position: fixed;
-
     inset: 0;
-
     background: rgba(0, 0, 0, 0.75);
-
     z-index: 99999;
-
     overflow-y: auto;
-
     padding: 30px 15px;
 }
 
 #receipt {
     width: 100%;
-
     max-width: 420px;
-
     margin: 0 auto;
-
     background: #ffffff;
-
     color: #222;
-
     padding: 30px 25px;
-
     border-radius: 14px;
-
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.3);
-
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     font-family: "Poppins", sans-serif;
 }
-
-
-/* Receipt header */
 
 .receipt-header {
     text-align: center;
@@ -1564,68 +1100,44 @@ footer p {
 .receipt-header img {
     width: 75px;
     height: 75px;
-
     object-fit: contain;
-
     margin-bottom: 8px;
 }
 
 .receipt-header h2 {
     margin: 0;
-
     font-size: 24px;
-
     letter-spacing: 1px;
 }
 
 .receipt-header p {
     margin: 3px 0 12px;
-
     font-size: 12px;
-
     color: #777;
 }
 
 .receipt-header span {
     display: inline-block;
-
     padding: 6px 14px;
-
     background: #2e8b57;
-
     color: white;
-
     border-radius: 20px;
-
     font-size: 11px;
-
     font-weight: 600;
-
     letter-spacing: 1px;
 }
 
-
-/* Receipt divider */
-
 .receipt-divider {
     border-top: 1px dashed #ccc;
-
     margin: 20px 0;
 }
-
-
-/* Customer information */
 
 .receipt-info p,
 .receipt-customer p {
     display: flex;
-
     justify-content: space-between;
-
     gap: 15px;
-
     margin: 7px 0;
-
     font-size: 12px;
 }
 
@@ -1634,28 +1146,18 @@ footer p {
     color: #555;
 }
 
-
-/* Receipt order */
-
 #receipt h3 {
     text-align: center;
-
     font-size: 14px;
-
     letter-spacing: 1px;
-
     margin-bottom: 15px;
 }
 
 .receipt-item {
     display: flex;
-
     justify-content: space-between;
-
     gap: 15px;
-
     margin: 10px 0;
-
     font-size: 13px;
 }
 
@@ -1665,711 +1167,120 @@ footer p {
 
 .receipt-item-price {
     font-weight: 600;
-
     white-space: nowrap;
 }
 
-
-/* Receipt total */
-
 .receipt-total {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     font-size: 17px;
 }
 
 .receipt-total strong {
     font-size: 21px;
-
     color: #2e8b57;
 }
 
-
-/* Receipt payment */
-
 .receipt-payment {
     text-align: center;
-
     margin-top: 25px;
-
     padding: 15px;
-
     background: #f0faf4;
-
     border-radius: 10px;
 }
 
 .receipt-payment p {
     margin: 0 0 5px;
-
     font-size: 11px;
-
     color: #777;
 }
 
 .receipt-payment strong {
     color: #2e8b57;
-
     font-size: 13px;
 }
 
-
-/* Receipt footer */
-
 .receipt-footer {
     text-align: center;
-
     margin-top: 25px;
 }
 
 .receipt-footer p {
     margin: 4px 0;
-
     font-size: 12px;
 }
 
 .receipt-footer small {
     display: block;
-
     margin-top: 10px;
-
     color: #999;
-
     font-size: 10px;
 }
 
-
-/* Download receipt */
-
 #download-receipt {
     display: block;
-
     margin: 20px auto 0;
-
     padding: 12px 22px;
-
     border: none;
-
     border-radius: 8px;
-
     background: #2e8b57;
-
     color: white;
-
     font-family: "Poppins", sans-serif;
-
     font-size: 14px;
-
     font-weight: 600;
-
     cursor: pointer;
-
     transition: 0.3s;
 }
 
 #download-receipt:hover {
     background: #256d46;
-
     transform: translateY(-2px);
 }
 
-
 /* =========================================================
-   35. LOADING SCREEN
+   32. LOADING SCREEN
    ========================================================= */
 
 #loader {
     position: fixed;
-
     top: 0;
     left: 0;
-
     width: 100%;
     height: 100vh;
-
     background: #fff;
-
     display: flex;
-
     justify-content: center;
-
     align-items: center;
-
     z-index: 999999;
-
     transition: 0.5s;
 }
 
 #loader img {
     width: 120px;
-
-    animation:
-        spin 2s linear infinite;
+    animation: spin 2s linear infinite;
 }
 
 #loader.hide {
     opacity: 0;
-
     visibility: hidden;
 }
 
 @keyframes spin {
-
-    100% {
-        transform: rotate(360deg);
-    }
+    100% { transform: rotate(360deg); }
 }
-
 
 /* =========================================================
-   36. DARK MODE
+   33. FLOATING BUTTON
    ========================================================= */
-
-body.dark {
-    background: #121212;
-
-    color: #ffffff;
-}
-
-
-/* Navbar */
-
-body.dark nav {
-    background: #1b1b1b;
-}
-
-
-/* General text */
-
-body.dark h1,
-body.dark h2,
-body.dark h3,
-body.dark h4,
-body.dark h5,
-body.dark h6,
-body.dark p,
-body.dark span,
-body.dark label,
-body.dark strong {
-    color: #ffffff;
-}
-
-
-/* Links */
-
-body.dark a {
-    color: #ffffff;
-}
-
-body.dark .nav-links a {
-    color: #ffffff;
-}
-
-body.dark .nav-links a.active {
-    color: #ffd700;
-}
-
-
-/* Sections */
-
-body.dark .menu,
-body.dark .about,
-body.dark .gallery,
-body.dark .hours,
-body.dark .testimonials,
-body.dark .contact,
-body.dark footer {
-    background: #121212;
-
-    color: #ffffff;
-}
-
-
-/* Hero */
-
-body.dark .hero {
-    color: #ffffff;
-}
-
-body.dark .hero h1,
-body.dark .hero p {
-    color: #ffffff;
-}
-
-
-/* Cards */
-
-body.dark .food-card,
-body.dark .meal-option,
-body.dark .testimonial {
-    background: #222;
-
-    color: #ffffff;
-
-    box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.4);
-}
-
-body.dark .meal-option h4,
-body.dark .meal-option p {
-    color: #ffffff !important;
-}
-
-body.dark .water-note {
-    color: #ffffff !important;
-}
-
-body.dark .meal-category h3 {
-    color: #4caf78 !important;
-
-    border-color: #4caf78;
-}
-
-body.dark .quantity-control .quantity {
-    color: #ffffff !important;
-}
-
-
-/* Hours */
-
-body.dark .hours {
-    background: #181818;
-}
-
-body.dark .hours p {
-    color: #4caf78;
-}
-
-
-/* Inputs */
-
-body.dark input,
-body.dark textarea {
-    background: #333;
-
-    color: #ffffff;
-
-    border: 1px solid #555;
-}
-
-body.dark input::placeholder,
-body.dark textarea::placeholder {
-    color: #ccc;
-}
-
-
-/* Search */
-
-body.dark #search {
-    background: #333;
-
-    color: #ffffff;
-}
-
-
-/* Filter buttons */
-
-body.dark .filter-btn {
-    background: #333;
-
-    color: #ffffff;
-}
-
-body.dark .filter-btn:hover,
-body.dark .filter-btn.active {
-    background: #2e8b57;
-
-    color: white;
-}
-
-
-/* Cart */
-
-body.dark .cart-box {
-    background: #222 !important;
-
-    color: #ffffff !important;
-}
-
-body.dark .cart-box h3,
-body.dark .cart-box h4,
-body.dark .cart-box p,
-body.dark .cart-box span,
-body.dark .cart-box strong {
-    color: #ffffff !important;
-}
-
-body.dark .cart-item {
-    border-color: #444;
-}
-
-body.dark .food-name {
-    color: #ffffff !important;
-}
-
-body.dark .food-qty {
-    color: #4caf78 !important;
-}
-
-
-/* Built meal cart */
-
-body.dark .cart-meal {
-    background: #222 !important;
-
-    color: #ffffff !important;
-
-    border-color: #444 !important;
-}
-
-body.dark .cart-meal-item {
-    color: #ffffff !important;
-
-    border-color: #444 !important;
-}
-
-body.dark .cart-meal-item span {
-    color: #ffffff !important;
-}
-
-body.dark .cart-meal-total {
-    color: #ffffff !important;
-}
-
-body.dark .cart-meal-header strong {
-    color: #4caf78 !important;
-}
-
-body.dark .remove-meal {
-    color: #ffffff;
-}
-
-
-/* Meal preview */
-
-body.dark #meal-preview {
-    background: #222 !important;
-
-    color: #ffffff !important;
-}
-
-body.dark #meal-preview-items p {
-    background: #333 !important;
-
-    color: #ffffff !important;
-}
-
-body.dark #meal-preview-total {
-    color: #4caf78 !important;
-}
-
-
-/* Checkout */
-
-body.dark .checkout-form {
-    background: #222;
-
-    color: #ffffff;
-}
-
-
-/* Payment popup */
-
-body.dark .payment-popup {
-    background: #222;
-
-    color: #ffffff;
-}
-
-
-/* Theme button */
-
-body.dark .theme-toggle {
-    background: #333;
-
-    color: #ffd700;
-}
-
-
-/* Receipt stays white for printing/readability */
-
-body.dark #receipt {
-    background: #ffffff;
-
-    color: #222;
-}
-
-
-/* =========================================================
-   37. RESPONSIVE NAVIGATION
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-    nav {
-        flex-wrap: wrap;
-    }
-
-    .menu-toggle {
-        display: block;
-    }
-
-    .nav-links {
-        display: none;
-
-        flex-direction: column;
-
-        align-items: flex-start;
-
-        width: 100%;
-
-        margin-top: 20px;
-
-        gap: 15px;
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    nav img {
-        width: 170px;
-
-        height: auto;
-    }
-}
-
-
-/* =========================================================
-   38. RESPONSIVE MEAL OPTIONS
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-    .meal-options {
-        justify-content: center;
-    }
-
-    .meal-option {
-        width: 100%;
-
-        max-width: 350px;
-    }
-
-    .meal-option img {
-        width: 100%;
-
-        max-width: 300px;
-    }
-}
-
-
-/* =========================================================
-   39. RESPONSIVE CART
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    .cart-box {
-        width: 94vw;
-
-        right: 3vw;
-
-        max-height: 85vh;
-
-        padding: 15px;
-    }
-
-    .cart-meal {
-        padding: 14px;
-    }
-
-    .cart-meal-item {
-        column-gap: 12px !important;
-
-        font-size: 14px;
-    }
-
-    .cart-item {
-        gap: 8px;
-    }
-}
-
-
-/* =========================================================
-   40. RESPONSIVE SEARCH
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    #search {
-        width: 90%;
-    }
-}
-
-
-/* =========================================================
-   41. RESPONSIVE HERO
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    .hero {
-        min-height: 90vh;
-
-        padding: 100px 20px;
-    }
-
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-
-    .hero p {
-        font-size: 16px;
-    }
-}
-
-
-/* =========================================================
-   42. RESPONSIVE FLOATING BUTTON
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    #add-built-meal.floating-cart {
-        width: 90% !important;
-
-        bottom: 20px !important;
-
-        font-size: 16px;
-
-        padding: 14px 20px;
-    }
-}
-
-
-/* =========================================================
-   43. RESPONSIVE PAYMENT POPUP
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    .payment-popup {
-        width: 95%;
-
-        max-width: 380px;
-
-        padding: 20px;
-    }
-}
-
-
-/* =========================================================
-   44. RESPONSIVE RECEIPT
-   ========================================================= */
-
-@media (max-width: 480px) {
-
-    #receipt-container {
-        padding: 20px 10px;
-    }
-
-    #receipt {
-        padding: 25px 18px;
-    }
-
-    .receipt-header h2 {
-        font-size: 21px;
-    }
-
-    .payment-popup h2 {
-        font-size: 22px;
-    }
-
-    .payment-popup p {
-        font-size: 15px;
-    }
-
-    .checkout-btn,
-    #payment-done,
-    #place-order,
-    #copy-account {
-        font-size: 15px;
-    }
-}
-
-
-/* =========================================================
-   45. ANIMATIONS
-   ========================================================= */
-
-@keyframes fadeInDown {
-
-    from {
-        opacity: 0;
-
-        transform: translateY(-50px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform: translateY(0);
-    }
-}
-
-
-/* =========================================================
-   ADD MEAL TO CART BUTTON
-   ========================================================= */
-
-#add-built-meal {
-    display: block;
-
-    margin: 30px auto;
-
-    padding: 15px 35px;
-
-    font-size: 18px;
-    font-weight: 700;
-
-    border: none;
-    border-radius: 30px;
-
-    background: #2e8b57;
-    color: white;
-
-    cursor: pointer;
-
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-
-    transition:
-        background 0.3s ease,
-        transform 0.3s ease,
-        box-shadow 0.3s ease,
-        opacity 0.25s ease;
-}
-
-#add-built-meal:hover {
-    background: #256d46;
-
-    transform: translateY(-4px);
-
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
-}
-
 
 #floating-add-btn {
     transition: opacity 0.3s ease, transform 0.3s ease !important;
 }
 
-/* ========================================= */
-/* CUSTOMER REVIEWS SECTION */
-/* ========================================= */
+/* =========================================================
+   34. CUSTOMER REVIEWS SECTION
+   ========================================================= */
 
 .customer-reviews {
     padding: 60px 20px;
@@ -2393,7 +1304,6 @@ body.dark #receipt {
     margin-bottom: 30px;
 }
 
-/* Star Rating */
 .star-rating {
     display: flex;
     justify-content: center;
@@ -2407,11 +1317,13 @@ body.dark #receipt {
     transition: all 0.2s ease;
     opacity: 0.3;
     user-select: none;
+    color: #666;
 }
 
 .star-rating .star.active {
     opacity: 1;
     transform: scale(1.1);
+    color: #FFB800;
 }
 
 .star-rating .star:hover {
@@ -2425,7 +1337,6 @@ body.dark #receipt {
     margin-bottom: 20px;
 }
 
-/* Review Form */
 .review-form {
     background: white;
     padding: 30px;
@@ -2444,6 +1355,7 @@ body.dark #receipt {
     resize: vertical;
     margin-bottom: 15px;
     transition: border-color 0.3s ease;
+    box-sizing: border-box;
 }
 
 .review-form textarea:focus {
@@ -2460,6 +1372,7 @@ body.dark #receipt {
     font-family: inherit;
     margin-bottom: 15px;
     transition: border-color 0.3s ease;
+    box-sizing: border-box;
 }
 
 .review-form input:focus {
@@ -2484,7 +1397,6 @@ body.dark #receipt {
     background: #e55a2b;
 }
 
-/* Reviews List */
 #reviews-container h3 {
     font-size: 1.3rem;
     margin-bottom: 20px;
@@ -2503,6 +1415,8 @@ body.dark #receipt {
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     border-left: 4px solid #FF6B35;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .review-item .review-header {
@@ -2511,6 +1425,7 @@ body.dark #receipt {
     align-items: center;
     margin-bottom: 8px;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 .review-item .review-name {
@@ -2544,160 +1459,6 @@ body.dark #receipt {
     font-size: 16px;
 }
 
-/* Mobile Responsive */
-@media (max-width: 600px) {
-    .customer-reviews {
-        padding: 30px 15px;
-        margin: 0 10px 30px 10px;
-    }
-
-    .review-form {
-        padding: 20px;
-    }
-
-    .star-rating .star {
-        font-size: 32px;
-    }
-
-    .review-item .review-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-}
-
-/* ========================================= */
-/* MOBILE GRID FIX: 2-3 Meals Per Row */
-/* ========================================= */
-
-.meal-options {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 on desktop */
-    gap: 15px;
-}
-
-/* Tablet: 2 per row */
-@media (max-width: 768px) {
-    .meal-options {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-}
-
-/* Mobile: 2 per row */
-@media (max-width: 768px) {
-    .meal-options {
-        grid-template-columns: repeat(2, 1fr); /* 2 per row */
-        gap: 12px;
-    }
-}
-
-/* Mobile phones (480px and below) - still 2 per row */
-@media (max-width: 480px) {
-    .meal-options {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-
-    /* Compact cards for mobile */
-    .meal-option {
-        padding: 12px 8px !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        text-align: center;
-        border-radius: 10px;
-    }
-
-    .meal-option img {
-        width: 60px !important;
-        height: 60px !important;
-        object-fit: cover;
-        border-radius: 50%;
-        margin-bottom: 6px;
-    }
-
-    .meal-option h4 {
-        font-size: 13px !important;
-        margin: 4px 0 !important;
-        line-height: 1.2;
-    }
-
-    .meal-option p {
-        font-size: 12px !important;
-        margin: 2px 0 !important;
-        font-weight: 600;
-    }
-
-    /* Quantity controls */
-    .quantity-control {
-        margin-top: 6px !important;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .quantity-control button {
-        width: 26px !important;
-        height: 26px !important;
-        font-size: 16px !important;
-        border-radius: 50% !important;
-        padding: 0 !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f0f0f0;
-        border: 1px solid #ddd;
-        cursor: pointer;
-        transition: background 0.2s;
-    }
-
-    .quantity-control button:active {
-        background: #ddd;
-    }
-
-    .quantity-control .quantity {
-        font-size: 14px !important;
-        min-width: 24px !important;
-        font-weight: 600;
-        text-align: center;
-    }
-}
-
-/* Very small phones (below 360px) - still 2 per row */
-@media (max-width: 360px) {
-    .meal-options {
-        gap: 8px;
-    }
-
-    .meal-option {
-        padding: 8px 4px !important;
-    }
-
-    .meal-option img {
-        width: 50px !important;
-        height: 50px !important;
-    }
-
-    .meal-option h4 {
-        font-size: 11px !important;
-    }
-
-    .meal-option p {
-        font-size: 10px !important;
-    }
-
-    .quantity-control button {
-        width: 22px !important;
-        height: 22px !important;
-        font-size: 13px !important;
-    }
-
-    .quantity-control .quantity {
-        font-size: 12px !important;
-        min-width: 20px !important;
-    }
-}
-/* Delete review button */
 .delete-review {
     background: none;
     border: none;
@@ -2716,464 +1477,21 @@ body.dark #receipt {
     transform: scale(1.1);
 }
 
-/* Review header on mobile */
-@media (max-width: 480px) {
-    .review-item .review-header {
-        flex-direction: row !important;
-        align-items: center !important;
-        flex-wrap: wrap;
-        gap: 4px;
-    }
+/* =========================================================
+   35. DARK MODE (Using .dark class)
+   ========================================================= */
 
-    .delete-review {
-        font-size: 14px;
-        padding: 0 4px;
-    }
-}
-
-/* ========================================= */
-/* DARK MODE FIXES - Reviews & Quantity */
-/* ========================================= */
-
-/* Dark mode for review items */
-.dark-mode .review-item {
-    background: #2d2d2d;
-    border-left-color: #FF6B35;
-}
-
-.dark-mode .review-item .review-name {
-    color: #f0f0f0;
-}
-
-.dark-mode .review-item .review-comment {
-    color: #d0d0d0;
-}
-
-.dark-mode .review-item .review-date {
-    color: #999;
-}
-
-.dark-mode .review-form {
-    background: #2d2d2d;
-}
-
-.dark-mode .review-form textarea,
-.dark-mode .review-form input {
-    background: #3d3d3d;
-    border-color: #555;
-    color: #f0f0f0;
-}
-
-.dark-mode .review-form textarea::placeholder,
-.dark-mode .review-form input::placeholder {
-    color: #888;
-}
-
-.dark-mode .review-form textarea:focus,
-.dark-mode .review-form input:focus {
-    border-color: #FF6B35;
-    outline: none;
-}
-
-.dark-mode .customer-reviews {
-    background: #1a1a1a;
-}
-
-.dark-mode .customer-reviews h2 {
-    color: #f0f0f0;
-}
-
-.dark-mode .review-intro {
-    color: #aaa;
-}
-
-.dark-mode .no-reviews {
-    color: #888;
-}
-
-.dark-mode .rating-text {
-    color: #aaa;
-}
-
-/* Dark mode for quantity controls */
-.dark-mode .meal-option {
-    background: #2d2d2d;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-
-.dark-mode .meal-option h4 {
-    color: #f0f0f0;
-}
-
-.dark-mode .meal-option p {
-    color: #FF6B35;
-}
-
-.dark-mode .quantity-control button {
-    background: #3d3d3d;
-    border-color: #555;
-    color: #f0f0f0;
-}
-
-.dark-mode .quantity-control button:hover {
-    background: #4d4d4d;
-}
-
-.dark-mode .quantity-control button:active {
-    background: #555;
-}
-
-.dark-mode .quantity-control .quantity {
-    color: #f0f0f0;
-}
-
-/* Dark mode for meal category titles */
-.dark-mode .meal-category h3 {
-    color: #f0f0f0;
-}
-
-/* Dark mode for "Add Meal to Cart" button in dark mode */
-.dark-mode #add-built-meal {
-    background: #FF6B35;
-    color: #fff;
-}
-
-.dark-mode #add-built-meal:hover {
-    background: #e55a2b;
-}
-
-/* Dark mode delete review button */
-.dark-mode .delete-review {
-    color: #aaa;
-}
-
-.dark-mode .delete-review:hover {
-    background: #3d2d2d;
-    color: #ff6b6b;
-}
-
-/* Dark mode star rating */
-.dark-mode .star-rating .star {
-    color: #888;
-}
-
-.dark-mode .star-rating .star.active {
-    color: #FFB800;
-}
-
-/* ========================================= */
-/* DARK MODE FIXES - Reviews & Quantity */
-/* ========================================= */
-
-/* Dark mode for review items */
-.dark-mode .review-item {
-    background: #2d2d2d;
-    border-left-color: #FF6B35;
-}
-
-.dark-mode .review-item .review-name {
-    color: black;
-}
-
-.dark-mode .review-item .review-comment {
-    color: black;
-}
-
-.dark-mode .review-item .review-date {
-    color: black;
-}
-
-.dark-mode .review-form {
-    background: #2d2d2d;
-}
-
-.dark-mode .review-form textarea,
-.dark-mode .review-form input {
-    background: #3d3d3d;
-    border-color: #555;
-    color: #f0f0f0;
-}
-
-.dark-mode .review-form textarea::placeholder,
-.dark-mode .review-form input::placeholder {
-    color: #888;
-}
-
-.dark-mode .review-form textarea:focus,
-.dark-mode .review-form input:focus {
-    border-color: #FF6B35;
-    outline: none;
-}
-
-.dark-mode .customer-reviews {
-    background: #1a1a1a;
-}
-
-.dark-mode .customer-reviews h2 {
-    color: #f0f0f0;
-}
-
-.dark-mode .review-intro {
-    color: #aaa;
-}
-
-.dark-mode .no-reviews {
-    color: #888;
-}
-
-.dark-mode .rating-text {
-    color: #aaa;
-}
-
-/* Dark mode for quantity controls */
-.dark-mode .meal-option {
-    background: #2d2d2d;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-
-.dark-mode .meal-option h4 {
-    color: #f0f0f0;
-}
-
-.dark-mode .meal-option p {
-    color: #FF6B35;
-}
-
-.dark-mode .quantity-control button {
-    background: #3d3d3d;
-    border-color: #555;
-    color: #f0f0f0;
-}
-
-.dark-mode .quantity-control button:hover {
-    background: #4d4d4d;
-}
-
-.dark-mode .quantity-control button:active {
-    background: #555;
-}
-
-.dark-mode .quantity-control .quantity {
-    color: #f0f0f0;
-}
-
-/* Dark mode for meal category titles */
-.dark-mode .meal-category h3 {
-    color: #f0f0f0;
-}
-
-/* Dark mode for "Add Meal to Cart" button in dark mode */
-.dark-mode #add-built-meal {
-    background: #FF6B35;
-    color: #fff;
-}
-
-.dark-mode #add-built-meal:hover {
-    background: #e55a2b;
-}
-
-/* Dark mode delete review button */
-.dark-mode .delete-review {
-    color: #aaa;
-}
-
-.dark-mode .delete-review:hover {
-    background: #3d2d2d;
-    color: #ff6b6b;
-}
-
-/* Dark mode star rating */
-.dark-mode .star-rating .star {
-    color: #888;
-}
-
-.dark-mode .star-rating .star.active {
-    color: #FFB800;
-}
-
-/* ========================================= */
-/* COMPLETE DARK MODE FIX - USING .dark CLASS */
-/* ========================================= */
-
-/* --- 1. Dark Mode Backgrounds --- */
 .dark {
     background-color: #1a1a1a;
     color: #f0f0f0;
 }
 
-.dark .customer-reviews {
-    background: #1a1a1a;
+.dark nav {
+    background: #1b1b1b;
 }
 
-.dark .review-form {
-    background: #2d2d2d;
-}
-
-.dark .review-item {
-    background: #2d2d2d;
-    border-left-color: #FF6B35;
-}
-
-/* --- 2. REVIEW HEADINGS (FIX FOR WHITE TEXT ON WHITE BG) --- */
-.dark .customer-reviews h2 {
-    color: #f0f0f0 !important;
-}
-
-.dark #reviews-container h3 {
-    color: #f0f0f0 !important;
-}
-
-.dark .review-intro {
-    color: #aaa !important;
-}
-
-.dark .rating-text {
-    color: #aaa !important;
-}
-
-/* --- 3. REVIEW TEXT --- */
-.dark .review-item .review-name {
-    color: #f0f0f0 !important;
-}
-
-.dark .review-item .review-comment {
-    color: #d0d0d0 !important;
-}
-
-.dark .review-item .review-date {
-    color: #888 !important;
-}
-
-.dark .no-reviews {
-    color: #888 !important;
-}
-
-/* --- 4. REVIEW FORM --- */
-.dark .review-form textarea,
-.dark .review-form input {
-    background: #3d3d3d !important;
-    border-color: #555 !important;
-    color: #f0f0f0 !important;
-}
-
-.dark .review-form textarea::placeholder,
-.dark .review-form input::placeholder {
-    color: #888 !important;
-}
-
-.dark .review-form textarea:focus,
-.dark .review-form input:focus {
-    border-color: #FF6B35 !important;
-    outline: none !important;
-}
-
-/* --- 5. STAR RATING IN DARK MODE --- */
-.dark .star-rating .star {
-    color: #666 !important;
-}
-
-.dark .star-rating .star.active {
-    color: #FFB800 !important;
-}
-
-/* --- 6. DELETE BUTTON --- */
-.dark .delete-review {
-    color: #888 !important;
-}
-
-.dark .delete-review:hover {
-    background: #3d2d2d !important;
-    color: #ff6b6b !important;
-}
-
-/* --- 7. MEAL CARDS IN DARK MODE --- */
-.dark .meal-option {
-    background: #2d2d2d !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
-}
-
-.dark .meal-option h4 {
-    color: #f0f0f0 !important;
-}
-
-.dark .meal-option p {
-    color: #FF6B35 !important;
-}
-
-/* --- 8. QUANTITY CONTROLS IN DARK MODE --- */
-.dark .quantity-control {
-    background: #3d3d3d !important;
-}
-
-.dark .quantity-control button {
-    background: #4d4d4d !important;
-    border-color: #555 !important;
-    color: #f0f0f0 !important;
-}
-
-.dark .quantity-control button:active {
-    background: #FF6B35 !important;
-    color: white !important;
-}
-
-.dark .quantity-control .quantity {
-    color: #f0f0f0 !important;
-}
-
-/* --- 9. IMAGES IN DARK MODE --- */
-.dark .meal-option img {
-    border: 3px solid #555 !important;
-    box-shadow: 0 0 30px rgba(255, 107, 53, 0.15) !important;
-    filter: brightness(1.1) contrast(1.05) !important;
-}
-
-.dark .meal-option img:hover {
-    border-color: #FF6B35 !important;
-    box-shadow: 0 0 50px rgba(255, 107, 53, 0.3) !important;
-}
-
-/* --- 10. GALLERY IN DARK MODE --- */
-.dark .gallery-container img {
-    border: 3px solid #444 !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
-    filter: brightness(1.05) !important;
-}
-
-.dark .gallery-container img:hover {
-    border-color: #FF6B35 !important;
-    box-shadow: 0 4px 40px rgba(255, 107, 53, 0.2) !important;
-}
-
-/* --- 11. MEAL CATEGORY TITLES --- */
-.dark .meal-category h3 {
-    color: #f0f0f0 !important;
-}
-
-/* --- 12. ADD MEAL BUTTON --- */
-.dark #add-built-meal {
-    background: #FF6B35 !important;
-    color: #fff !important;
-}
-
-.dark #add-built-meal:hover {
-    background: #e55a2b !important;
-}
-
-/* --- 13. FLOATING BUTTON IN DARK MODE --- */
-.dark #floating-add-btn {
-    background: #FF6B35 !important;
-    color: #fff !important;
-    box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3) !important;
-}
-
-/* --- 14. WATER OPTION --- */
-.dark .water-note {
-    color: #aaa !important;
-}
-
-/* --- 15. HERO SECTION --- */
 .dark .hero {
-    background: #1a1a1a !important;
+    background: #1a1a1a;
 }
 
 .dark .hero h1 {
@@ -3184,56 +1502,29 @@ body.dark #receipt {
     color: #aaa !important;
 }
 
-/* --- 16. ABOUT SECTION --- */
-.dark .about {
-    background: #1a1a1a !important;
-}
-
-.dark .about h2 {
-    color: #f0f0f0 !important;
-}
-
-.dark .about p {
-    color: #aaa !important;
-}
-
-/* --- 17. TESTIMONIALS --- */
-.dark .testimonials {
-    background: #1a1a1a !important;
-}
-
-.dark .testimonials h2 {
-    color: #f0f0f0 !important;
-}
-
-.dark .testimonial {
-    background: #2d2d2d !important;
-}
-
-.dark .testimonial p {
-    color: #d0d0d0 !important;
-}
-
-.dark .testimonial h4 {
-    color: #f0f0f0 !important;
-}
-
-/* --- 18. CONTACT SECTION --- */
+.dark .menu,
+.dark .about,
+.dark .gallery,
+.dark .testimonials,
 .dark .contact {
-    background: #1a1a1a !important;
+    background: #1a1a1a;
+    color: #f0f0f0;
 }
 
+.dark .about h2,
+.dark .gallery h2,
+.dark .testimonials h2,
 .dark .contact h2 {
-    color: #f0f0f0 !important;
+    color: #4caf78 !important;
 }
 
+.dark .about p,
 .dark .contact p {
     color: #aaa !important;
 }
 
-/* --- 19. HOURS SECTION --- */
 .dark .hours {
-    background: #1a1a1a !important;
+    background: #181818;
 }
 
 .dark .hours h2 {
@@ -3241,10 +1532,24 @@ body.dark #receipt {
 }
 
 .dark .hours p {
-    color: #aaa !important;
+    color: #4caf78 !important;
 }
 
-/* --- 20. FOOTER --- */
+.dark .food-card,
+.dark .testimonial {
+    background: #2d2d2d;
+    color: #f0f0f0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.dark .testimonial h4 {
+    color: #4caf78 !important;
+}
+
+.dark .testimonial p {
+    color: #d0d0d0 !important;
+}
+
 .dark footer {
     background: #0d0d0d !important;
 }
@@ -3265,7 +1570,167 @@ body.dark #receipt {
     color: #e55a2b !important;
 }
 
-/* --- 21. MEAL PREVIEW --- */
+/* --- Dark Mode: Review Section --- */
+
+.dark .customer-reviews {
+    background: #1a1a1a !important;
+}
+
+.dark .customer-reviews h2 {
+    color: #ffffff !important;
+}
+
+.dark .review-intro {
+    color: #aaaaaa !important;
+}
+
+.dark .rating-text {
+    color: #aaaaaa !important;
+}
+
+.dark .review-form {
+    background: #2d2d2d !important;
+}
+
+.dark .review-form textarea,
+.dark .review-form input {
+    background: #3d3d3d !important;
+    border-color: #555 !important;
+    color: #ffffff !important;
+}
+
+.dark .review-form textarea::placeholder,
+.dark .review-form input::placeholder {
+    color: #888 !important;
+}
+
+.dark .review-item {
+    background: #2d2d2d !important;
+    border-left-color: #FF6B35 !important;
+}
+
+.dark .review-item .review-name {
+    color: #ffffff !important;
+}
+
+.dark .review-item .review-comment {
+    color: #d0d0d0 !important;
+}
+
+.dark .review-item .review-date {
+    color: #888 !important;
+}
+
+.dark .no-reviews {
+    color: #888 !important;
+}
+
+.dark .star-rating .star {
+    color: #666 !important;
+}
+
+.dark .star-rating .star.active {
+    color: #FFB800 !important;
+}
+
+.dark .delete-review {
+    color: #888 !important;
+}
+
+.dark .delete-review:hover {
+    background: #3d2d2d !important;
+    color: #ff6b6b !important;
+}
+
+.dark #reviews-container h3 {
+    color: #ffffff !important;
+}
+
+/* --- Dark Mode: Meal Cards --- */
+
+.dark .meal-option {
+    background: #2d2d2d !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
+}
+
+.dark .meal-option h4 {
+    color: #f0f0f0 !important;
+}
+
+.dark .meal-option p {
+    color: #FF6B35 !important;
+}
+
+.dark .meal-category h3 {
+    color: #4caf78 !important;
+    border-color: #4caf78 !important;
+}
+
+/* --- Dark Mode: Quantity Controls --- */
+
+.dark .quantity-control {
+    background: #3d3d3d !important;
+}
+
+.dark .quantity-control .quantity {
+    color: #f0f0f0 !important;
+}
+
+/* PLUS button - ALWAYS GREEN in dark mode */
+.dark .quantity-plus,
+.dark .quantity-plus:hover,
+.dark .quantity-plus:active,
+.dark .quantity-plus:focus {
+    background: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    color: #ffffff !important;
+    transform: none !important;
+}
+
+/* MINUS button - RED in dark mode */
+.dark .quantity-minus,
+.dark .quantity-minus:hover,
+.dark .quantity-minus:active,
+.dark .quantity-minus:focus {
+    background: #e74c3c !important;
+    border-color: #e74c3c !important;
+    color: #ffffff !important;
+    transform: none !important;
+}
+
+/* --- Dark Mode: Images --- */
+
+.dark .meal-option img {
+    border: 3px solid #555 !important;
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.15) !important;
+    filter: brightness(1.1) contrast(1.05) !important;
+}
+
+.dark .gallery-container img {
+    border: 3px solid #444 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+    filter: brightness(1.05) !important;
+}
+
+/* --- Dark Mode: Buttons --- */
+
+.dark #add-built-meal {
+    background: #FF6B35 !important;
+    color: #fff !important;
+}
+
+.dark #add-built-meal:hover {
+    background: #e55a2b !important;
+}
+
+.dark #floating-add-btn {
+    background: #FF6B35 !important;
+    color: #fff !important;
+    box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3) !important;
+}
+
+/* --- Dark Mode: Meal Preview --- */
+
 .dark #meal-preview {
     background: #2d2d2d !important;
     color: #f0f0f0 !important;
@@ -3276,11 +1741,17 @@ body.dark #receipt {
     color: #f0f0f0 !important;
 }
 
-.dark #meal-preview-items {
-    color: #d0d0d0 !important;
+.dark #meal-preview-items p {
+    background: #3d3d3d !important;
+    color: #f0f0f0 !important;
 }
 
-/* --- 22. CART --- */
+.dark #meal-preview-total {
+    color: #4caf78 !important;
+}
+
+/* --- Dark Mode: Cart --- */
+
 .dark .cart-box {
     background: #2d2d2d !important;
     color: #f0f0f0 !important;
@@ -3299,7 +1770,31 @@ body.dark #receipt {
     border-bottom-color: #444 !important;
 }
 
-/* --- 23. PAYMENT POPUP --- */
+.dark .cart-meal {
+    background: #222 !important;
+    border-color: #444 !important;
+    color: #f0f0f0 !important;
+}
+
+.dark .cart-meal-header strong {
+    color: #4caf78 !important;
+}
+
+.dark .cart-meal-item {
+    border-color: #444 !important;
+    color: #f0f0f0 !important;
+}
+
+.dark .cart-meal-item span {
+    color: #f0f0f0 !important;
+}
+
+.dark .remove-meal {
+    color: #f0f0f0 !important;
+}
+
+/* --- Dark Mode: Payment --- */
+
 .dark .payment-popup {
     background: #2d2d2d !important;
     color: #f0f0f0 !important;
@@ -3317,156 +1812,455 @@ body.dark #receipt {
     border-color: #444 !important;
 }
 
-/* ========================================= */
-/* DARK MODE - GREEN ADD/REMOVE BUTTONS */
-/* ========================================= */
-
-.dark .quantity-control button {
-    background: #4CAF50 !important;
-    border-color: #4CAF50 !important;
-    color: #ffffff !important;
+.dark .checkout-form {
+    background: #2d2d2d !important;
+    color: #f0f0f0 !important;
 }
 
-.dark .quantity-control button:hover {
-    background: #45a049 !important;
-    border-color: #45a049 !important;
+.dark .checkout-form input,
+.dark .checkout-form textarea {
+    background: #3d3d3d !important;
+    color: #f0f0f0 !important;
+    border-color: #555 !important;
 }
 
-.dark .quantity-control button:active {
-    background: #3d8b40 !important;
-    border-color: #3d8b40 !important;
-    transform: scale(0.9) !important;
+/* --- Dark Mode: Search & Filters --- */
+
+.dark #search {
+    background: #333 !important;
+    color: #f0f0f0 !important;
+    border-color: #555 !important;
 }
 
-/* If you want the minus button a different color (optional) */
-.dark .quantity-control .quantity-minus {
-    background: #e74c3c !important;
-    border-color: #e74c3c !important;
+.dark #search::placeholder {
+    color: #888 !important;
 }
 
-.dark .quantity-control .quantity-minus:hover {
-    background: #c0392b !important;
-    border-color: #c0392b !important;
+.dark .filter-btn {
+    background: #333 !important;
+    color: #f0f0f0 !important;
 }
 
-.dark .quantity-control .quantity-minus:active {
-    background: #a93226 !important;
-    border-color: #a93226 !important;
+.dark .filter-btn:hover,
+.dark .filter-btn.active {
+    background: #2e8b57 !important;
+    color: white !important;
 }
 
-/* ========================================= */
-/* PLUS BUTTON - ALWAYS GREEN */
-/* ========================================= */
+/* =========================================================
+   36. RESPONSIVE - TABLET
+   ========================================================= */
 
-.quantity-plus {
-    background: #4CAF50 !important;
-    border-color: #4CAF50 !important;
-    color: #ffffff !important;
+@media (max-width: 768px) {
+    nav {
+        flex-wrap: wrap;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-top: 20px;
+        gap: 15px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    nav img {
+        width: 170px;
+        height: auto;
+    }
+
+    .meal-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .meal-option {
+        padding: 15px 10px;
+    }
+
+    .meal-option img {
+        max-width: 150px;
+        height: 120px;
+    }
 }
 
-.quantity-plus:hover {
-    background: #45a049 !important;
-    border-color: #45a049 !important;
+/* =========================================================
+   37. RESPONSIVE - MOBILE (2 PER ROW - BIGGER & CLEARER)
+   ========================================================= */
+
+@media (max-width: 480px) {
+    .meal-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px !important;
+    }
+
+    .meal-option {
+        padding: 18px 12px !important;
+        border-radius: 14px !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important;
+    }
+
+    .meal-option img {
+        width: 90px !important;
+        height: 90px !important;
+        max-width: 90px !important;
+        border-width: 3px !important;
+        margin-bottom: 10px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+
+    .meal-option h4 {
+        font-size: 16px !important;
+        margin: 6px 0 !important;
+    }
+
+    .meal-option p {
+        font-size: 15px !important;
+        margin: 4px 0 !important;
+    }
+
+    .quantity-control {
+        margin-top: 10px !important;
+        padding: 6px 12px !important;
+        gap: 10px !important;
+        border-radius: 25px !important;
+    }
+
+    .quantity-control button {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 20px !important;
+        border-width: 2px !important;
+    }
+
+    .quantity-control .quantity {
+        font-size: 18px !important;
+        min-width: 30px !important;
+    }
+
+    .meal-category h3 {
+        font-size: 20px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .menu h2 {
+        font-size: 24px !important;
+    }
+
+    .menu-intro {
+        font-size: 14px !important;
+    }
+
+    /* --- Review Section Mobile --- */
+    .customer-reviews {
+        padding: 25px 15px !important;
+        margin: 0 5px 20px 5px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .customer-reviews h2 {
+        font-size: 22px !important;
+    }
+
+    .review-intro {
+        font-size: 14px !important;
+    }
+
+    .review-form {
+        padding: 15px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .review-form textarea {
+        font-size: 15px !important;
+        padding: 12px 14px !important;
+        min-height: 80px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .review-form input {
+        font-size: 15px !important;
+        padding: 12px 14px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    #submit-review {
+        font-size: 16px !important;
+        padding: 14px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .star-rating .star {
+        font-size: 32px !important;
+    }
+
+    .rating-text {
+        font-size: 13px !important;
+    }
+
+    .review-item {
+        padding: 15px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .review-item .review-name {
+        font-size: 14px !important;
+    }
+
+    .review-item .review-stars {
+        font-size: 14px !important;
+    }
+
+    .review-item .review-comment {
+        font-size: 14px !important;
+    }
+
+    .review-item .review-date {
+        font-size: 11px !important;
+    }
+
+    .review-item .review-header {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 5px !important;
+    }
+
+    #reviews-container h3 {
+        font-size: 18px !important;
+    }
+
+    .no-reviews {
+        font-size: 14px !important;
+        padding: 20px 0 !important;
+        text-align: center !important;
+    }
+
+    .delete-review {
+        font-size: 14px !important;
+        padding: 2px 6px !important;
+    }
+
+    #reviews-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    #reviews-list {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .star-rating {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+    }
+
+    /* --- Cart Mobile --- */
+    .cart-box {
+        width: 94vw;
+        right: 3vw;
+        max-height: 85vh;
+        padding: 15px;
+    }
+
+    .cart-meal {
+        padding: 14px;
+    }
+
+    .cart-meal-item {
+        column-gap: 12px !important;
+        font-size: 14px;
+    }
+
+    .cart-item {
+        gap: 8px;
+    }
+
+    /* --- Search Mobile --- */
+    #search {
+        width: 90%;
+    }
+
+    /* --- Hero Mobile --- */
+    .hero {
+        min-height: 90vh;
+        padding: 100px 20px;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    /* --- Payment Popup Mobile --- */
+    .payment-popup {
+        width: 95%;
+        max-width: 380px;
+        padding: 20px;
+    }
+
+    /* --- Receipt Mobile --- */
+    #receipt-container {
+        padding: 20px 10px;
+    }
+
+    #receipt {
+        padding: 25px 18px;
+    }
+
+    .receipt-header h2 {
+        font-size: 21px;
+    }
+
+    .payment-popup h2 {
+        font-size: 22px;
+    }
+
+    .payment-popup p {
+        font-size: 15px;
+    }
+
+    .checkout-btn,
+    #payment-done,
+    #place-order,
+    #copy-account {
+        font-size: 15px;
+    }
+
+    /* --- Floating Button Mobile --- */
+    #add-built-meal.floating-cart {
+        width: 90% !important;
+        bottom: 20px !important;
+        font-size: 16px;
+        padding: 14px 20px;
+    }
 }
 
-.quantity-plus:active {
-    background: #3d8b40 !important;
-    border-color: #3d8b40 !important;
-    transform: scale(0.9) !important;
+/* =========================================================
+   38. RESPONSIVE - VERY SMALL PHONES (≤360px)
+   ========================================================= */
+
+@media (max-width: 360px) {
+    .meal-options {
+        gap: 10px !important;
+    }
+
+    .meal-option {
+        padding: 14px 8px !important;
+    }
+
+    .meal-option img {
+        width: 75px !important;
+        height: 75px !important;
+        max-width: 75px !important;
+    }
+
+    .meal-option h4 {
+        font-size: 14px !important;
+    }
+
+    .meal-option p {
+        font-size: 13px !important;
+    }
+
+    .quantity-control button {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 17px !important;
+    }
+
+    .quantity-control .quantity {
+        font-size: 16px !important;
+        min-width: 26px !important;
+    }
+
+    .customer-reviews {
+        padding: 20px 10px !important;
+    }
+
+    .customer-reviews h2 {
+        font-size: 18px !important;
+    }
+
+    .star-rating .star {
+        font-size: 26px !important;
+    }
+
+    .review-form {
+        padding: 12px !important;
+    }
+
+    .review-form textarea,
+    .review-form input {
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+    }
+
+    .review-item {
+        padding: 12px !important;
+    }
 }
 
-/* Optional: Keep minus red in dark mode only */
-.dark .quantity-minus {
-    background: #e74c3c !important;
-    border-color: #e74c3c !important;
-    color: #ffffff !important;
+/* =========================================================
+   39. ANIMATIONS
+   ========================================================= */
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.dark .quantity-minus:hover {
-    background: #c0392b !important;
-    border-color: #c0392b !important;
+/* =========================================================
+   40. THEME TOGGLE
+   ========================================================= */
+
+.theme-toggle {
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 5px 10px;
 }
 
-.dark .quantity-minus:active {
-    background: #a93226 !important;
-    border-color: #a93226 !important;
-    transform: scale(0.9) !important;
+.theme-toggle:hover {
+    transform: scale(1.1);
 }
 
-/* ========================================= */
-/* PLUS BUTTON - ALWAYS GREEN (NO HOVER EFFECT) */
-/* ========================================= */
-
-.quantity-plus,
-.quantity-plus:hover,
-.quantity-plus:active,
-.quantity-plus:focus,
-.dark .quantity-plus,
-.dark .quantity-plus:hover,
-.dark .quantity-plus:active,
-.dark .quantity-plus:focus {
-    background: #4CAF50 !important;
-    border-color: #4CAF50 !important;
-    color: #ffffff !important;
-    transform: none !important;
-    box-shadow: none !important;
-}
-
-/* Minus button - keep as is or style separately */
-.quantity-minus,
-.dark .quantity-minus {
-    background: #e74c3c !important;
-    border-color: #e74c3c !important;
-    color: #ffffff !important;
-}
-
-.quantity-minus:hover,
-.dark .quantity-minus:hover {
-    background: #c0392b !important;
-    border-color: #c0392b !important;
-}
-
-/* ========================================= */
-/* DARK MODE - PLUS GREEN, MINUS RED */
-/* ========================================= */
-
-/* Plus button - GREEN in dark mode */
-.dark .quantity-plus,
-.dark .quantity-plus:hover,
-.dark .quantity-plus:active,
-.dark .quantity-plus:focus {
-    background: #4CAF50 !important;
-    border-color: #4CAF50 !important;
-    color: #ffffff !important;
-    transform: none !important;
-}
-
-/* Minus button - RED in dark mode */
-.dark .quantity-minus,
-.dark .quantity-minus:hover,
-.dark .quantity-minus:active,
-.dark .quantity-minus:focus {
-    background: #e74c3c !important;
-    border-color: #e74c3c !important;
-    color: #ffffff !important;
-    transform: none !important;
-}
-
-/* ========================================= */
-/* PLUS BUTTON - GREEN IN DARK MODE (FALLBACK) */
-/* ========================================= */
-
-.dark .quantity-plus {
-    background: #4CAF50 !important;
-    border-color: #4CAF50 !important;
-    color: #ffffff !important;
-}
-
-.dark .quantity-plus:hover,
-.dark .quantity-plus:active,
-.dark .quantity-plus:focus {
-    background: #4CAF50 !important;
-    border-color: #4CAF50 !important;
-    color: #ffffff !important;
-    transform: none !important;
+.dark .theme-toggle {
+    color: #ffd700;
 }
