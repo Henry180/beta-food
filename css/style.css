@@ -3826,3 +3826,11 @@ nav .cart-container {
 .nav-links.active ~ .cart-box {
     display: none !important;
 }
+
+html {
+    scroll-behavior: smooth;
+}
+
+#menu {
+    scroll-margin-top: 100px;
+}

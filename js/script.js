@@ -71,19 +71,69 @@ mealOptions.forEach(function(option) {
     const plusButton = option.querySelector(".quantity-plus");
     const quantityDisplay = option.querySelector(".quantity");
 
+    if (!plusButton || !minusButton || !quantityDisplay) {
+        return;
+    }
+
     plusButton.addEventListener("click", function() {
 
         const category = option.closest(".meal-category");
 
-        // Get the CURRENT quantity from the screen
-        let quantity = Number(quantityDisplay.textContent);
+        if (!category) {
+            return;
+        }
 
-        // Proteins can be selected multiple times
-        const isProtein =
-            category.querySelector("h3").textContent.includes("Proteins");
+        const categoryName =
+            category.querySelector("h3").textContent.trim();
 
-        // Main meals, extras and water can only be selected once
-        if (!isProtein && quantity >= 1) {
+        let quantity =
+            Number(quantityDisplay.textContent);
+
+        // =========================================
+        // MAIN MEALS
+        // =========================================
+        // Main meals can now be selected multiple
+        // times, including the same meal.
+        //
+        // Example:
+        // Jollof Rice ×3
+        // Fried Rice ×2
+        // Spaghetti ×4
+        // =========================================
+
+        if (categoryName.includes("Main Meals")) {
+
+            quantity++;
+
+            quantityDisplay.textContent = quantity;
+
+            return;
+        }
+
+
+        // =========================================
+        // PROTEINS
+        // =========================================
+        // Proteins can also be selected multiple times.
+        // =========================================
+
+        if (categoryName.includes("Proteins")) {
+
+            quantity++;
+
+            quantityDisplay.textContent = quantity;
+
+            return;
+        }
+
+
+        // =========================================
+        // EXTRAS / WATER
+        // =========================================
+        // Other categories remain limited to one.
+        // =========================================
+
+        if (quantity >= 1) {
             return;
         }
 
@@ -94,10 +144,14 @@ mealOptions.forEach(function(option) {
     });
 
 
+    // =========================
+    // MINUS BUTTON
+    // =========================
+
     minusButton.addEventListener("click", function() {
 
-        // Get the CURRENT quantity from the screen
-        let quantity = Number(quantityDisplay.textContent);
+        let quantity =
+            Number(quantityDisplay.textContent);
 
         if (quantity > 0) {
 
