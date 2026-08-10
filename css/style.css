@@ -3763,3 +3763,66 @@ nav .cart-container {
         max-height: 75vh !important;
     }
 }
+
+/* =========================================================
+   NUCLEAR CART FIX - FORCES RIGHT SIDE ON MOBILE
+   ========================================================= */
+
+/* 1. Kill any weird positioning on the menu that traps the cart */
+.nav-links,
+.nav-links *,
+.menu-toggle {
+    position: static !important;
+    transform: none !important;
+    will-change: auto !important;
+}
+
+/* 2. The actual cart box - forced to viewport right */
+.cart-box {
+    position: fixed !important;
+    top: 120px !important;
+    right: 15px !important;
+    left: auto !important;
+    width: min(420px, 92vw) !important;
+    max-height: 80vh !important;
+    z-index: 999999 !important; /* Above everything */
+    background: white !important;
+    padding: 20px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
+    overflow-y: auto !important;
+}
+
+/* 3. Tablet & Mobile tweaks */
+@media (max-width: 768px) {
+    .cart-box {
+        top: 115px !important;
+        right: 10px !important;
+        width: 94vw !important;
+        max-width: 400px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .cart-box {
+        top: 110px !important;
+        right: 8px !important;
+        width: 96vw !important;
+        padding: 15px !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .cart-box {
+        top: 105px !important;
+        right: 5px !important;
+        width: 98vw !important;
+        padding: 12px !important;
+        max-height: 75vh !important;
+    }
+}
+
+/* 4. Optional: Hide the cart if the mobile menu is open (prevents clutter) */
+.nav-links.active ~ .cart-box {
+    display: none !important;
+}

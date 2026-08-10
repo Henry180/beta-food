@@ -704,47 +704,89 @@ function updateCart(){
 
 }
 
-    // =========================
-// CART TOGGLE
+// =========================
+// FORCE CART TO RIGHT SIDE (MOBILE FIX)
+// =========================
+
+function forceOpenCart() {
+    if (!cartBox) return;
+
+    // Show the cart
+    cartBox.style.display = "block";
+
+    // 🟢 CHECK IF MOBILE (768px and below)
+    if (window.innerWidth <= 768) {
+        // Override ALL positioning to glue it to the viewport's right side
+        cartBox.style.position = "fixed";
+        cartBox.style.top = "120px";          // Adjust if your nav is taller/shorter
+        cartBox.style.right = "10px";
+        cartBox.style.left = "auto";
+        cartBox.style.width = "92vw";
+        cartBox.style.maxWidth = "420px";
+        cartBox.style.maxHeight = "80vh";
+        cartBox.style.zIndex = "999999";
+        cartBox.style.background = "#ffffff";
+        cartBox.style.padding = "20px";
+        cartBox.style.borderRadius = "12px";
+        cartBox.style.boxShadow = "0 15px 40px rgba(0,0,0,0.3)";
+        cartBox.style.overflowY = "auto";
+        cartBox.style.boxSizing = "border-box";
+    } else {
+        // Desktop: remove inline styles so CSS takes over
+        cartBox.style.position = "";
+        cartBox.style.top = "";
+        cartBox.style.right = "";
+        cartBox.style.left = "";
+        cartBox.style.width = "";
+        cartBox.style.maxWidth = "";
+        cartBox.style.maxHeight = "";
+        cartBox.style.zIndex = "";
+        cartBox.style.background = "";
+        cartBox.style.padding = "";
+        cartBox.style.borderRadius = "";
+        cartBox.style.boxShadow = "";
+        cartBox.style.overflowY = "";
+    }
+}
+
+function closeCart() {
+    if (cartBox) {
+        cartBox.style.display = "none";
+    }
+}
+
+// =========================
+// CART TOGGLE (UPDATED)
 // =========================
 
 if (cartIcon && cartBox) {
 
     cartIcon.addEventListener("click", function(e) {
-
         e.stopPropagation();
 
         if (cartBox.style.display === "block") {
-            cartBox.style.display = "none";
+            closeCart();
         } else {
-            cartBox.style.display = "block";
+            forceOpenCart();  // Uses the mobile-aware function
         }
-
     });
-
 
     // Clicking inside the cart should NOT close it
     cartBox.addEventListener("click", function(e) {
         e.stopPropagation();
     });
 
-
     // Clicking anywhere outside the cart closes it
     document.addEventListener("click", function(e) {
-
-        if (
-            cartBox.style.display === "block" &&
+        if (cartBox.style.display === "block" &&
             !cartBox.contains(e.target) &&
-            !cartIcon.contains(e.target)
-        ) {
-
-            cartBox.style.display = "none";
-
+            !cartIcon.contains(e.target)) {
+            closeCart();
         }
-
     });
 
 }
+
 
     // =========================
 // CHECKOUT
