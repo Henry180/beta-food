@@ -53,15 +53,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         search.addEventListener("input", function () {
 
-            const searchValue = search.value.toLowerCase().trim();
+            const searchValue =
+                search.value.toLowerCase().trim();
 
             foodCards.forEach(function (card) {
 
-                const heading = card.querySelector("h3");
+                const heading =
+                    card.querySelector("h3");
 
                 if (!heading) return;
 
-                const foodName = heading.textContent.toLowerCase();
+                const foodName =
+                    heading.textContent.toLowerCase();
 
                 if (foodName.includes(searchValue)) {
                     card.style.display = "block";
@@ -80,15 +83,225 @@ document.addEventListener("DOMContentLoaded", function () {
     // BUILD YOUR MEAL
     // =========================================================
 
-    const mealOptions = document.querySelectorAll(".meal-option");
+    const mealOptions =
+        document.querySelectorAll(".meal-option");
+
+
+    // =========================================================
+    // GET MAIN MEAL OPTIONS
+    // =========================================================
+
+    function getMainMealOptions() {
+
+        const mainMealCategory =
+            document.querySelector(
+                ".meal-category:not(.water-option)"
+            );
+
+        if (!mainMealCategory) {
+            return [];
+        }
+
+        /*
+         * The first .meal-category in your HTML is Main Meals.
+         * We identify it using its heading instead of relying
+         * only on position.
+         */
+
+        const categories =
+            document.querySelectorAll(".meal-category");
+
+        let mainCategory = null;
+
+        categories.forEach(function (category) {
+
+            const heading =
+                category.querySelector("h3");
+
+            if (!heading) return;
+
+            const text =
+                heading.textContent.toLowerCase();
+
+            if (
+                text.includes("main meal")
+            ) {
+                mainCategory = category;
+            }
+
+        });
+
+        if (!mainCategory) {
+            return [];
+        }
+
+        return Array.from(
+            mainCategory.querySelectorAll(".meal-option")
+        );
+
+    }
+
+
+    // =========================================================
+    // CHECK WHETHER MAIN MEAL HAS BEEN SELECTED
+    // =========================================================
+
+    function hasMainMealSelected() {
+
+        const mainMeals =
+            getMainMealOptions();
+
+        return mainMeals.some(function (meal) {
+
+            const quantityElement =
+                meal.querySelector(".quantity");
+
+            if (!quantityElement) {
+                return false;
+            }
+
+            return (
+                Number(
+                    quantityElement.textContent
+                ) > 0
+            );
+
+        });
+
+    }
+
+
+    // =========================================================
+    // CHECK WHETHER OPTION IS WATER
+    // =========================================================
+
+    function isWaterOption(option) {
+
+        if (!option) {
+            return false;
+        }
+
+        const category =
+            option.closest(".meal-category");
+
+        if (
+            category &&
+            category.classList.contains(
+                "water-option"
+            )
+        ) {
+            return true;
+        }
+
+        const heading =
+            option.querySelector("h4");
+
+        if (!heading) {
+            return false;
+        }
+
+        return (
+            heading.textContent
+                .trim()
+                .toLowerCase() ===
+            "can of water"
+        );
+
+    }
+
+
+    // =========================================================
+    // GET WATER OPTION
+    // =========================================================
+
+    function getWaterOption() {
+
+        let waterOption = null;
+
+        mealOptions.forEach(function (option) {
+
+            if (isWaterOption(option)) {
+                waterOption = option;
+            }
+
+        });
+
+        return waterOption;
+
+    }
+
+
+    // =========================================================
+    // REMOVE FREE WATER IF MAIN MEAL IS REMOVED
+    // =========================================================
+
+    function validateFreeWater() {
+
+        const waterOption =
+            getWaterOption();
+
+        if (!waterOption) {
+            return;
+        }
+
+        const quantityElement =
+            waterOption.querySelector(".quantity");
+
+        if (!quantityElement) {
+            return;
+        }
+
+        const waterQuantity =
+            Number(
+                quantityElement.textContent
+            );
+
+        /*
+         * If there is no main meal, water is no longer valid.
+         */
+
+        if (
+            waterQuantity > 0 &&
+            !hasMainMealSelected()
+        ) {
+
+            quantityElement.textContent = "0";
+
+            alert(
+                "Your free water was removed because a main meal is required for the free water offer. 💧🍛"
+            );
+
+        }
+
+    }
+
+
+    // =========================================================
+    // QUANTITY CONTROLS
+    // =========================================================
 
     mealOptions.forEach(function (option) {
 
-        const minusButton = option.querySelector(".quantity-minus");
-        const plusButton = option.querySelector(".quantity-plus");
-        const quantityDisplay = option.querySelector(".quantity");
+        const minusButton =
+            option.querySelector(
+                ".quantity-minus"
+            );
 
-        if (!minusButton || !plusButton || !quantityDisplay) {
+        const plusButton =
+            option.querySelector(
+                ".quantity-plus"
+            );
+
+        const quantityDisplay =
+            option.querySelector(
+                ".quantity"
+            );
+
+        if (
+            !minusButton ||
+            !plusButton ||
+            !quantityDisplay
+        ) {
             return;
         }
 
@@ -97,42 +310,104 @@ document.addEventListener("DOMContentLoaded", function () {
         // PLUS BUTTON
         // -----------------------------------------------------
 
-        plusButton.addEventListener("click", function () {
+        plusButton.addEventListener(
+            "click",
+            function () {
 
-            const category = option.closest(".meal-category");
+                let quantity =
+                    Number(
+                        quantityDisplay.textContent
+                    );
 
-            let quantity = Number(quantityDisplay.textContent);
 
-            // Free water can only be selected once
-            const isWater =
-                category &&
-                category.classList.contains("water-option");
+                // =================================================
+                // FREE WATER RULE
+                // =================================================
 
-            if (isWater && quantity >= 1) {
-                return;
+                if (isWaterOption(option)) {
+
+                    /*
+                     * Only one free water is allowed.
+                     */
+
+                    if (quantity >= 1) {
+
+                        alert(
+                            "Only one free can of water is allowed with each order. 💧"
+                        );
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * IMPORTANT:
+                     * Water is tied specifically to a MAIN MEAL.
+                     *
+                     * A protein or extra alone does NOT qualify.
+                     */
+
+                    if (!hasMainMealSelected()) {
+
+                        alert(
+                            "Free water is available only when you order a main meal. 💧🍛"
+                        );
+
+                        return;
+
+                    }
+
+                }
+
+
+                quantity++;
+
+                quantityDisplay.textContent =
+                    quantity;
+
+
+                validateFreeWater();
+
             }
-
-            quantity++;
-
-            quantityDisplay.textContent = quantity;
-
-        });
+        );
 
 
         // -----------------------------------------------------
         // MINUS BUTTON
         // -----------------------------------------------------
 
-        minusButton.addEventListener("click", function () {
+        minusButton.addEventListener(
+            "click",
+            function () {
 
-            let quantity = Number(quantityDisplay.textContent);
+                let quantity =
+                    Number(
+                        quantityDisplay.textContent
+                    );
 
-            if (quantity > 0) {
-                quantity--;
-                quantityDisplay.textContent = quantity;
+                if (quantity > 0) {
+
+                    quantity--;
+
+                    quantityDisplay.textContent =
+                        quantity;
+
+                }
+
+
+                /*
+                 * If a main meal was removed,
+                 * make sure free water is still valid.
+                 */
+
+                setTimeout(
+                    validateFreeWater,
+                    0
+                );
+
             }
-
-        });
+        );
 
     });
 
@@ -141,13 +416,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // MEAL PREVIEW
     // =========================================================
 
-    const addMealButton = document.querySelector("#add-built-meal");
+    const addMealButton =
+        document.querySelector(
+            "#add-built-meal"
+        );
 
     if (addMealButton) {
 
-        const mealPreview = document.createElement("div");
+        const mealPreview =
+            document.createElement("div");
 
-        mealPreview.id = "meal-preview";
+        mealPreview.id =
+            "meal-preview";
 
         mealPreview.innerHTML = `
             <h3>Your Meal</h3>
@@ -159,9 +439,11 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
 
             <h4>
-                Meal Total: ₦<span id="meal-preview-total">0</span>
+                Meal Total: ₦
+                <span id="meal-preview-total">0</span>
             </h4>
         `;
+
 
         addMealButton.parentNode.insertBefore(
             mealPreview,
@@ -174,35 +456,86 @@ document.addEventListener("DOMContentLoaded", function () {
             let previewItems = [];
             let previewTotal = 0;
 
+
+            validateFreeWater();
+
+
             mealOptions.forEach(function (option) {
 
-                const quantity = Number(
-                    option.querySelector(".quantity").textContent
-                );
+                const quantityElement =
+                    option.querySelector(
+                        ".quantity"
+                    );
+
+                if (!quantityElement) {
+                    return;
+                }
+
+                const quantity =
+                    Number(
+                        quantityElement.textContent
+                    );
+
 
                 if (quantity > 0) {
 
                     const itemName =
-                        option.querySelector("h4").textContent.trim();
+                        option.querySelector(
+                            "h4"
+                        ).textContent.trim();
+
 
                     const priceText =
-                        option.querySelector("p").textContent;
+                        option.querySelector(
+                            "p"
+                        ).textContent;
 
-                    const priceMatch =
-                        priceText.match(/[\d,]+/);
 
-                    const price =
-                        priceMatch
-                            ? Number(priceMatch[0].replace(/,/g, ""))
-                            : 0;
+                    /*
+                     * Water is always free.
+                     */
+
+                    let price = 0;
+
+                    if (
+                        !isWaterOption(option)
+                    ) {
+
+                        const priceMatch =
+                            priceText.match(
+                                /[\d,]+/
+                            );
+
+                        price =
+                            priceMatch
+                                ? Number(
+                                    priceMatch[0]
+                                        .replace(
+                                            /,/g,
+                                            ""
+                                        )
+                                )
+                                : 0;
+
+                    }
+
 
                     previewItems.push({
-                        name: itemName,
-                        quantity: quantity,
-                        price: price
+
+                        name:
+                            itemName,
+
+                        quantity:
+                            quantity,
+
+                        price:
+                            price
+
                     });
 
-                    previewTotal += price * quantity;
+
+                    previewTotal +=
+                        price * quantity;
 
                 }
 
@@ -210,13 +543,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             const previewImagesContainer =
-                document.querySelector("#meal-preview-images");
+                document.querySelector(
+                    "#meal-preview-images"
+                );
 
             const previewItemsContainer =
-                document.querySelector("#meal-preview-items");
+                document.querySelector(
+                    "#meal-preview-items"
+                );
 
             const previewTotalElement =
-                document.querySelector("#meal-preview-total");
+                document.querySelector(
+                    "#meal-preview-total"
+                );
 
 
             // -------------------------------------------------
@@ -225,38 +564,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (previewImagesContainer) {
 
-                previewImagesContainer.innerHTML = "";
+                previewImagesContainer.innerHTML =
+                    "";
 
-                mealOptions.forEach(function (option) {
+                mealOptions.forEach(
+                    function (option) {
 
-                    const quantity = Number(
-                        option.querySelector(".quantity").textContent
-                    );
-
-                    if (quantity > 0) {
-
-                        const image = option.querySelector("img");
-
-                        if (image) {
-
-                            const previewImage =
-                                document.createElement("img");
-
-                            previewImage.src = image.src;
-
-                            previewImage.alt =
-                                option.querySelector("h4")
-                                    .textContent.trim();
-
-                            previewImagesContainer.appendChild(
-                                previewImage
+                        const quantity =
+                            Number(
+                                option.querySelector(
+                                    ".quantity"
+                                ).textContent
                             );
+
+                        if (quantity > 0) {
+
+                            const image =
+                                option.querySelector(
+                                    "img"
+                                );
+
+                            if (image) {
+
+                                const previewImage =
+                                    document.createElement(
+                                        "img"
+                                    );
+
+                                previewImage.src =
+                                    image.src;
+
+                                previewImage.alt =
+                                    option.querySelector(
+                                        "h4"
+                                    )
+                                    .textContent
+                                    .trim();
+
+                                previewImagesContainer.appendChild(
+                                    previewImage
+                                );
+
+                            }
 
                         }
 
                     }
-
-                });
+                );
 
             }
 
@@ -267,26 +621,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (previewItemsContainer) {
 
-                if (previewItems.length === 0) {
+                if (
+                    previewItems.length === 0
+                ) {
 
                     previewItemsContainer.innerHTML =
                         "Select an item to preview your order.";
 
                 } else {
 
-                    previewItemsContainer.innerHTML = "";
+                    previewItemsContainer.innerHTML =
+                        "";
 
-                    previewItems.forEach(function (item) {
+                    previewItems.forEach(
+                        function (item) {
 
-                        const row =
-                            document.createElement("p");
+                            const row =
+                                document.createElement(
+                                    "p"
+                                );
 
-                        row.textContent =
-                            `${item.name} ×${item.quantity}`;
 
-                        previewItemsContainer.appendChild(row);
+                            if (
+                                item.price === 0 &&
+                                item.name
+                                    .toLowerCase()
+                                    .includes("water")
+                            ) {
 
-                    });
+                                row.textContent =
+                                    `${item.name} ×${item.quantity} — FREE 💧`;
+
+                            } else {
+
+                                row.textContent =
+                                    `${item.name} ×${item.quantity}`;
+
+                            }
+
+
+                            previewItemsContainer.appendChild(
+                                row
+                            );
+
+                        }
+                    );
 
                 }
 
@@ -310,23 +689,31 @@ document.addEventListener("DOMContentLoaded", function () {
         mealOptions.forEach(function (option) {
 
             const plus =
-                option.querySelector(".quantity-plus");
+                option.querySelector(
+                    ".quantity-plus"
+                );
 
             const minus =
-                option.querySelector(".quantity-minus");
+                option.querySelector(
+                    ".quantity-minus"
+                );
 
             if (plus) {
+
                 plus.addEventListener(
                     "click",
                     updateMealPreview
                 );
+
             }
 
             if (minus) {
+
                 minus.addEventListener(
                     "click",
                     updateMealPreview
                 );
+
             }
 
         });
@@ -360,41 +747,53 @@ document.addEventListener("DOMContentLoaded", function () {
             return 0;
         }
 
-        if (subtotal >= FREE_DELIVERY_THRESHOLD) {
+        if (
+            subtotal >=
+            FREE_DELIVERY_THRESHOLD
+        ) {
             return 0;
         }
 
         return DELIVERY_FEE;
+
     }
 
 
     // =========================================================
     // CALCULATE CART SUBTOTAL
     // =========================================================
-    // This always calculates the real value of everything
-    // currently inside the cart.
 
     function calculateCartSubtotal() {
 
         let subtotal = 0;
 
+
         cart.forEach(function (item) {
 
             if (item.type === "meal") {
 
-                subtotal += Number(item.price) || 0;
+                subtotal +=
+                    Number(item.price) || 0;
 
             } else {
 
                 subtotal +=
-                    (Number(item.price) || 0) *
-                    (Number(item.quantity) || 0);
+                    (
+                        Number(item.price) ||
+                        0
+                    ) *
+                    (
+                        Number(item.quantity) ||
+                        0
+                    );
 
             }
 
         });
 
+
         return subtotal;
+
     }
 
 
@@ -403,25 +802,39 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================================
 
     const addToCartButtons =
-        document.querySelectorAll(".add-to-cart");
+        document.querySelectorAll(
+            ".add-to-cart"
+        );
 
     const cartCount =
-        document.querySelector("#cart-count");
+        document.querySelector(
+            "#cart-count"
+        );
 
     const cartItems =
-        document.querySelector("#cart-items");
+        document.querySelector(
+            "#cart-items"
+        );
 
     const cartTotal =
-        document.querySelector("#cart-total");
+        document.querySelector(
+            "#cart-total"
+        );
 
     const addBuiltMealButton =
-        document.querySelector("#add-built-meal");
+        document.querySelector(
+            "#add-built-meal"
+        );
 
     const cartIcon =
-        document.querySelector(".cart-icon");
+        document.querySelector(
+            ".cart-icon"
+        );
 
     const cartBox =
-        document.querySelector(".cart-box");
+        document.querySelector(
+            ".cart-box"
+        );
 
 
     // =========================================================
@@ -430,45 +843,74 @@ document.addEventListener("DOMContentLoaded", function () {
 
     addToCartButtons.forEach(function (button) {
 
-        button.addEventListener("click", function (e) {
+        button.addEventListener(
+            "click",
+            function (e) {
 
-            e.stopPropagation();
+                e.stopPropagation();
 
-            const card =
-                button.closest(".food-card");
 
-            if (!card) return;
+                const card =
+                    button.closest(
+                        ".food-card"
+                    );
 
-            const foodNameElement =
-                card.querySelector("h3");
+                if (!card) {
+                    return;
+                }
 
-            if (!foodNameElement) return;
 
-            const foodName =
-                foodNameElement.textContent.trim();
+                const foodNameElement =
+                    card.querySelector(
+                        "h3"
+                    );
 
-            const foodPrice =
-                Number(button.dataset.price);
+                if (!foodNameElement) {
+                    return;
+                }
 
-            if (!foodPrice || foodPrice < 0) {
-                return;
+
+                const foodName =
+                    foodNameElement.textContent.trim();
+
+
+                const foodPrice =
+                    Number(
+                        button.dataset.price
+                    );
+
+
+                if (
+                    isNaN(foodPrice) ||
+                    foodPrice < 0
+                ) {
+                    return;
+                }
+
+
+                cart.push({
+
+                    name:
+                        foodName,
+
+                    price:
+                        foodPrice,
+
+                    quantity:
+                        1
+
+                });
+
+
+                updateCart();
+
+
+                if (cartBox) {
+                    forceOpenCart();
+                }
+
             }
-
-            cart.push({
-                name: foodName,
-                price: foodPrice,
-                quantity: 1
-            });
-
-            updateCart();
-
-
-            // Automatically open cart
-            if (cartBox) {
-                forceOpenCart();
-            }
-
-        });
+        );
 
     });
 
@@ -485,16 +927,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 e.stopPropagation();
 
+
+                /*
+                 * Make sure water is still valid before
+                 * creating the cart item.
+                 */
+
+                validateFreeWater();
+
+
                 let selectedItems = [];
                 let mealTotal = 0;
 
 
                 mealOptions.forEach(function (option) {
 
-                    const quantity = Number(
-                        option.querySelector(".quantity")
-                            .textContent
-                    );
+                    const quantityElement =
+                        option.querySelector(
+                            ".quantity"
+                        );
+
+                    if (!quantityElement) {
+                        return;
+                    }
+
+
+                    const quantity =
+                        Number(
+                            quantityElement.textContent
+                        );
+
 
                     if (quantity <= 0) {
                         return;
@@ -502,32 +964,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                     const itemName =
-                        option.querySelector("h4")
-                            .textContent.trim();
+                        option.querySelector(
+                            "h4"
+                        )
+                        .textContent
+                        .trim();
+
 
                     const priceText =
-                        option.querySelector("p")
-                            .textContent;
+                        option.querySelector(
+                            "p"
+                        )
+                        .textContent;
 
 
                     let itemPrice = 0;
 
 
-                    // Water is FREE
-                    if (itemName === "Can of Water") {
+                    // =================================================
+                    // WATER IS ALWAYS FREE
+                    // =================================================
+
+                    if (
+                        isWaterOption(option)
+                    ) {
 
                         itemPrice = 0;
 
                     } else {
 
                         const priceMatch =
-                            priceText.match(/[\d,]+/);
+                            priceText.match(
+                                /[\d,]+/
+                            );
+
 
                         itemPrice =
                             priceMatch
                                 ? Number(
                                     priceMatch[0]
-                                        .replace(/,/g, "")
+                                        .replace(
+                                            /,/g,
+                                            ""
+                                        )
                                 )
                                 : 0;
 
@@ -535,71 +1014,173 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                     selectedItems.push({
-                        name: itemName,
-                        price: itemPrice,
-                        quantity: quantity
+
+                        name:
+                            itemName,
+
+                        price:
+                            itemPrice,
+
+                        quantity:
+                            quantity
+
                     });
 
 
                     mealTotal +=
-                        itemPrice * quantity;
+                        itemPrice *
+                        quantity;
 
                 });
 
 
-                // -------------------------------------------------
+                // =================================================
                 // MAKE SURE SOMETHING WAS SELECTED
-                // -------------------------------------------------
-                // IMPORTANT:
-                // A MAIN MEAL IS NO LONGER REQUIRED.
-                // Chicken, pasta, drinks, etc. can be added
-                // to an existing cart by themselves.
+                // =================================================
 
-                if (selectedItems.length === 0) {
+                if (
+                    selectedItems.length === 0
+                ) {
 
                     alert(
                         "Please select at least one item before adding to cart."
                     );
 
                     return;
+
                 }
 
 
-                // -------------------------------------------------
+                // =================================================
+                // MAIN MEAL CHECK
+                // =================================================
+
+                const mainMealSelected =
+                    hasMainMealSelected();
+
+
+                // =================================================
+                // WATER CHECK
+                // =================================================
+
+                const waterItems =
+                    selectedItems.filter(
+                        function (item) {
+
+                            return (
+                                item.name
+                                    .toLowerCase() ===
+                                "can of water"
+                                    .toLowerCase()
+                            );
+
+                        }
+                    );
+
+
+                /*
+                 * If water is selected, a MAIN MEAL
+                 * must also be selected.
+                 *
+                 * Protein alone or extras alone do NOT qualify.
+                 */
+
+                if (
+                    waterItems.length > 0 &&
+                    !mainMealSelected
+                ) {
+
+                    alert(
+                        "Free water is available only with a main meal. Please select a main meal first. 💧🍛"
+                    );
+
+                    return;
+
+                }
+
+
+                // =================================================
+                // WATER QUANTITY LIMIT
+                // =================================================
+
+                const waterQuantity =
+                    waterItems.reduce(
+                        function (total, item) {
+
+                            return (
+                                total +
+                                item.quantity
+                            );
+
+                        },
+                        0
+                    );
+
+
+                if (
+                    waterQuantity > 1
+                ) {
+
+                    alert(
+                        "Only one free can of water is allowed per order. 💧"
+                    );
+
+                    return;
+
+                }
+
+
+                // =================================================
                 // ADD COMPLETE SELECTION TO CART
-                // -------------------------------------------------
+                // =================================================
 
                 cart.push({
 
-                    type: "meal",
+                    type:
+                        "meal",
 
-                    items: selectedItems,
+                    items:
+                        selectedItems,
 
-                    price: mealTotal
+                    price:
+                        mealTotal
 
                 });
 
 
-                // -------------------------------------------------
+                // =================================================
                 // RESET MEAL BUILDER
-                // -------------------------------------------------
+                // =================================================
 
-                mealOptions.forEach(function (option) {
+                mealOptions.forEach(
+                    function (option) {
 
-                    const quantity =
-                        option.querySelector(".quantity");
+                        const quantity =
+                            option.querySelector(
+                                ".quantity"
+                            );
 
-                    if (quantity) {
-                        quantity.textContent = "0";
+                        if (quantity) {
+
+                            quantity.textContent =
+                                "0";
+
+                        }
+
                     }
+                );
 
-                });
+
+                updateMealPreview();
 
 
                 updateCart();
 
 
-                // Automatically open cart
+                // =================================================
+                // OPEN CART
+                // =================================================
+
                 if (cartBox) {
                     forceOpenCart();
                 }
@@ -628,6 +1209,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         cartItems.innerHTML = "";
 
+
         let itemCount = 0;
 
 
@@ -646,22 +1228,31 @@ document.addEventListener("DOMContentLoaded", function () {
         cart.forEach(function (item, index) {
 
             const div =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
-            div.classList.add("cart-item");
+            div.classList.add(
+                "cart-item"
+            );
 
 
             // =================================================
             // BUILT MEAL
             // =================================================
 
-            if (item.type === "meal") {
+            if (
+                item.type === "meal"
+            ) {
 
-                item.items.forEach(function (food) {
+                item.items.forEach(
+                    function (food) {
 
-                    itemCount += food.quantity;
+                        itemCount +=
+                            food.quantity;
 
-                });
+                    }
+                );
 
 
                 let mealHTML = `
@@ -684,26 +1275,42 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
 
 
-                item.items.forEach(function (food) {
+                item.items.forEach(
+                    function (food) {
 
-                    mealHTML += `
-                        <div class="cart-meal-item">
+                        const isFreeWater =
+                            food.name
+                                .toLowerCase() ===
+                            "can of water"
+                                .toLowerCase();
 
-                            <span>
-                                ${food.name} ×${food.quantity}
-                            </span>
 
-                            <span>
-                                ₦${(
-                                    food.price *
-                                    food.quantity
-                                ).toLocaleString()}
-                            </span>
+                        const foodTotal =
+                            food.price *
+                            food.quantity;
 
-                        </div>
-                    `;
 
-                });
+                        mealHTML += `
+                            <div class="cart-meal-item">
+
+                                <span>
+                                    ${food.name} ×${food.quantity}
+                                </span>
+
+                                <span>
+                                    ${
+                                        isFreeWater
+                                            ? "FREE"
+                                            : "₦" +
+                                              foodTotal.toLocaleString()
+                                    }
+                                </span>
+
+                            </div>
+                        `;
+
+                    }
+                );
 
 
                 mealHTML += `
@@ -720,7 +1327,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
 
 
-                div.innerHTML = mealHTML;
+                div.innerHTML =
+                    mealHTML;
 
 
             } else {
@@ -729,7 +1337,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 // NORMAL FOOD CARD ITEM
                 // =============================================
 
-                itemCount += item.quantity;
+                itemCount +=
+                    item.quantity;
 
 
                 div.innerHTML = `
@@ -763,7 +1372,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            cartItems.appendChild(div);
+            cartItems.appendChild(
+                div
+            );
 
         });
 
@@ -785,7 +1396,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // =====================================================
 
         deliveryFee =
-            calculateDelivery(subtotal);
+            calculateDelivery(
+                subtotal
+            );
 
 
         // =====================================================
@@ -793,7 +1406,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // =====================================================
 
         const grandTotal =
-            subtotal + deliveryFee;
+            subtotal +
+            deliveryFee;
 
 
         // -----------------------------------------------------
@@ -825,13 +1439,20 @@ document.addEventListener("DOMContentLoaded", function () {
         // =====================================================
 
         let deliveryDisplay =
-            document.querySelector("#cart-delivery");
+            document.querySelector(
+                "#cart-delivery"
+            );
 
 
-        if (!deliveryDisplay && cartItems.parentNode) {
+        if (
+            !deliveryDisplay &&
+            cartItems.parentNode
+        ) {
 
             deliveryDisplay =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             deliveryDisplay.id =
                 "cart-delivery";
@@ -848,7 +1469,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const totalElement =
                 cartTotal
-                    ? cartTotal.closest("h4")
+                    ? cartTotal.closest(
+                        "h4"
+                    )
                     : null;
 
 
@@ -874,9 +1497,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (subtotal === 0) {
 
-                deliveryDisplay.innerHTML = "";
+                deliveryDisplay.innerHTML =
+                    "";
 
-            } else if (deliveryFee === 0) {
+            } else if (
+                deliveryFee === 0
+            ) {
 
                 deliveryDisplay.innerHTML = `
                     🚚 Delivery:
@@ -913,7 +1539,9 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
 
             freeDeliveryMessage =
-                document.createElement("p");
+                document.createElement(
+                    "p"
+                );
 
             freeDeliveryMessage.id =
                 "free-delivery-message";
@@ -927,7 +1555,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const totalElement =
                 cartTotal
-                    ? cartTotal.closest("h4")
+                    ? cartTotal.closest(
+                        "h4"
+                    )
                     : null;
 
 
@@ -953,10 +1583,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (subtotal === 0) {
 
-                freeDeliveryMessage.textContent = "";
+                freeDeliveryMessage.textContent =
+                    "";
 
             } else if (
-                subtotal >= FREE_DELIVERY_THRESHOLD
+                subtotal >=
+                FREE_DELIVERY_THRESHOLD
             ) {
 
                 freeDeliveryMessage.textContent =
@@ -965,7 +1597,8 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
 
                 const remaining =
-                    FREE_DELIVERY_THRESHOLD - subtotal;
+                    FREE_DELIVERY_THRESHOLD -
+                    subtotal;
 
                 freeDeliveryMessage.textContent =
                     `Add ₦${remaining.toLocaleString()} more ` +
@@ -981,33 +1614,43 @@ document.addEventListener("DOMContentLoaded", function () {
         // =====================================================
 
         const removeMeals =
-            document.querySelectorAll(".remove-meal");
-
-
-        removeMeals.forEach(function (button) {
-
-            button.addEventListener(
-                "click",
-                function (e) {
-
-                    e.stopPropagation();
-
-                    const index =
-                        Number(button.dataset.index);
-
-
-                    if (cart[index]) {
-
-                        cart.splice(index, 1);
-
-                        updateCart();
-
-                    }
-
-                }
+            document.querySelectorAll(
+                ".remove-meal"
             );
 
-        });
+
+        removeMeals.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function (e) {
+
+                        e.stopPropagation();
+
+
+                        const index =
+                            Number(
+                                button.dataset.index
+                            );
+
+
+                        if (cart[index]) {
+
+                            cart.splice(
+                                index,
+                                1
+                            );
+
+                            updateCart();
+
+                        }
+
+                    }
+                );
+
+            }
+        );
 
 
         // =====================================================
@@ -1015,33 +1658,43 @@ document.addEventListener("DOMContentLoaded", function () {
         // =====================================================
 
         const removeButtons =
-            document.querySelectorAll(".remove-btn");
-
-
-        removeButtons.forEach(function (button) {
-
-            button.addEventListener(
-                "click",
-                function (e) {
-
-                    e.stopPropagation();
-
-                    const index =
-                        Number(button.dataset.index);
-
-
-                    if (cart[index]) {
-
-                        cart.splice(index, 1);
-
-                        updateCart();
-
-                    }
-
-                }
+            document.querySelectorAll(
+                ".remove-btn"
             );
 
-        });
+
+        removeButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function (e) {
+
+                        e.stopPropagation();
+
+
+                        const index =
+                            Number(
+                                button.dataset.index
+                            );
+
+
+                        if (cart[index]) {
+
+                            cart.splice(
+                                index,
+                                1
+                            );
+
+                            updateCart();
+
+                        }
+
+                    }
+                );
+
+            }
+        );
 
     }
 
@@ -1057,42 +1710,96 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        cartBox.style.display = "block";
+        cartBox.style.display =
+            "block";
 
 
-        if (window.innerWidth <= 768) {
+        if (
+            window.innerWidth <= 768
+        ) {
 
-            cartBox.style.position = "fixed";
-            cartBox.style.top = "120px";
-            cartBox.style.right = "10px";
-            cartBox.style.left = "auto";
-            cartBox.style.width = "92vw";
-            cartBox.style.maxWidth = "420px";
-            cartBox.style.maxHeight = "80vh";
-            cartBox.style.zIndex = "999999";
-            cartBox.style.background = "#ffffff";
-            cartBox.style.padding = "20px";
-            cartBox.style.borderRadius = "12px";
+            cartBox.style.position =
+                "fixed";
+
+            cartBox.style.top =
+                "120px";
+
+            cartBox.style.right =
+                "10px";
+
+            cartBox.style.left =
+                "auto";
+
+            cartBox.style.width =
+                "92vw";
+
+            cartBox.style.maxWidth =
+                "420px";
+
+            cartBox.style.maxHeight =
+                "80vh";
+
+            cartBox.style.zIndex =
+                "999999";
+
+            cartBox.style.background =
+                "#ffffff";
+
+            cartBox.style.padding =
+                "20px";
+
+            cartBox.style.borderRadius =
+                "12px";
+
             cartBox.style.boxShadow =
                 "0 15px 40px rgba(0,0,0,0.3)";
-            cartBox.style.overflowY = "auto";
-            cartBox.style.boxSizing = "border-box";
+
+            cartBox.style.overflowY =
+                "auto";
+
+            cartBox.style.boxSizing =
+                "border-box";
 
         } else {
 
-            cartBox.style.position = "";
-            cartBox.style.top = "";
-            cartBox.style.right = "";
-            cartBox.style.left = "";
-            cartBox.style.width = "";
-            cartBox.style.maxWidth = "";
-            cartBox.style.maxHeight = "";
-            cartBox.style.zIndex = "";
-            cartBox.style.background = "";
-            cartBox.style.padding = "";
-            cartBox.style.borderRadius = "";
-            cartBox.style.boxShadow = "";
-            cartBox.style.overflowY = "";
+            cartBox.style.position =
+                "";
+
+            cartBox.style.top =
+                "";
+
+            cartBox.style.right =
+                "";
+
+            cartBox.style.left =
+                "";
+
+            cartBox.style.width =
+                "";
+
+            cartBox.style.maxWidth =
+                "";
+
+            cartBox.style.maxHeight =
+                "";
+
+            cartBox.style.zIndex =
+                "";
+
+            cartBox.style.background =
+                "";
+
+            cartBox.style.padding =
+                "";
+
+            cartBox.style.borderRadius =
+                "";
+
+            cartBox.style.boxShadow =
+                "";
+
+            cartBox.style.overflowY =
+                "";
 
         }
 
@@ -1106,7 +1813,10 @@ document.addEventListener("DOMContentLoaded", function () {
     function closeCart() {
 
         if (cartBox) {
-            cartBox.style.display = "none";
+
+            cartBox.style.display =
+                "none";
+
         }
 
     }
@@ -1116,7 +1826,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // CART TOGGLE
     // =========================================================
 
-    if (cartIcon && cartBox) {
+    if (
+        cartIcon &&
+        cartBox
+    ) {
 
         cartIcon.addEventListener(
             "click",
@@ -1124,8 +1837,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 e.stopPropagation();
 
+
                 if (
-                    cartBox.style.display === "block"
+                    cartBox.style.display ===
+                    "block"
                 ) {
 
                     closeCart();
@@ -1140,24 +1855,29 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        // Clicking inside cart doesn't close it
         cartBox.addEventListener(
             "click",
             function (e) {
+
                 e.stopPropagation();
+
             }
         );
 
 
-        // Clicking outside closes cart
         document.addEventListener(
             "click",
             function (e) {
 
                 if (
-                    cartBox.style.display === "block" &&
-                    !cartBox.contains(e.target) &&
-                    !cartIcon.contains(e.target)
+                    cartBox.style.display ===
+                    "block" &&
+                    !cartBox.contains(
+                        e.target
+                    ) &&
+                    !cartIcon.contains(
+                        e.target
+                    )
                 ) {
 
                     closeCart();
@@ -1175,13 +1895,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================================
 
     const checkoutBtn =
-        document.querySelector("#checkout-btn");
+        document.querySelector(
+            "#checkout-btn"
+        );
 
     const checkoutForm =
-        document.querySelector("#checkout-form");
+        document.querySelector(
+            "#checkout-form"
+        );
 
 
-    if (checkoutBtn && checkoutForm) {
+    if (
+        checkoutBtn &&
+        checkoutForm
+    ) {
 
         checkoutBtn.addEventListener(
             "click",
@@ -1190,9 +1917,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 e.stopPropagation();
 
 
-                if (cart.length === 0) {
+                if (
+                    cart.length === 0
+                ) {
 
-                    alert("Your cart is empty!");
+                    alert(
+                        "Your cart is empty!"
+                    );
 
                     return;
 
@@ -1225,22 +1956,34 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================================
 
     const placeOrder =
-        document.querySelector("#place-order");
+        document.querySelector(
+            "#place-order"
+        );
 
     const paymentPopup =
-        document.querySelector("#payment-popup");
+        document.querySelector(
+            "#payment-popup"
+        );
 
     const paymentCheck =
-        document.querySelector("#payment-check");
+        document.querySelector(
+            "#payment-check"
+        );
 
     const paymentDone =
-        document.querySelector("#payment-done");
+        document.querySelector(
+            "#payment-done"
+        );
 
     const copyAccount =
-        document.querySelector("#copy-account");
+        document.querySelector(
+            "#copy-account"
+        );
 
     const accountNumber =
-        document.querySelector("#account-number");
+        document.querySelector(
+            "#account-number"
+        );
 
 
     let orderMessage = "";
@@ -1251,7 +1994,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================================================
 
     const receiptContainer =
-        document.querySelector("#receipt");
+        document.querySelector(
+            "#receipt"
+        );
 
     const receiptOrderNumber =
         document.querySelector(
@@ -1259,7 +2004,9 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
     const receiptDate =
-        document.querySelector("#receipt-date");
+        document.querySelector(
+            "#receipt-date"
+        );
 
     const receiptCustomerName =
         document.querySelector(
@@ -1277,13 +2024,32 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
     const receiptItems =
-        document.querySelector("#receipt-items");
+        document.querySelector(
+            "#receipt-items"
+        );
 
     const receiptTotal =
-        document.querySelector("#receipt-total");
+        document.querySelector(
+            "#receipt-total"
+        );
 
     const downloadReceipt =
-        document.querySelector("#download-receipt");
+        document.querySelector(
+            "#download-receipt"
+        );
+
+    const sendReceiptWhatsApp =
+        document.querySelector(
+            "#send-receipt-whatsapp"
+        );
+
+
+    // =========================================================
+    // CURRENT ORDER DATA
+    // =========================================================
+
+    let currentOrderNumber = "";
+    let currentOrderDate = "";
 
 
     // =========================================================
@@ -1335,7 +2101,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 // CART CHECK
                 // -------------------------------------------------
 
-                if (cart.length === 0) {
+                if (
+                    cart.length === 0
+                ) {
 
                     alert(
                         "Your cart is empty!"
@@ -1372,11 +2140,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 const subtotal =
                     calculateCartSubtotal();
 
+
                 deliveryFee =
-                    calculateDelivery(subtotal);
+                    calculateDelivery(
+                        subtotal
+                    );
+
 
                 const grandTotal =
-                    subtotal + deliveryFee;
+                    subtotal +
+                    deliveryFee;
 
 
                 // =================================================
@@ -1386,48 +2159,65 @@ document.addEventListener("DOMContentLoaded", function () {
                 let items = "";
 
 
-                cart.forEach(function (item, index) {
+                cart.forEach(
+                    function (item, index) {
 
-                    if (item.type === "meal") {
+                        if (
+                            item.type ===
+                            "meal"
+                        ) {
 
-                        items +=
-                            `\n🍛 MEAL ${index + 1}\n`;
-
-
-                        item.items.forEach(
-                            function (food) {
-
-                                const foodTotal =
-                                    food.price *
-                                    food.quantity;
+                            items +=
+                                `\n🍛 MEAL ${index + 1}\n`;
 
 
-                                items +=
-                                    `• ${food.name} ×${food.quantity} — ` +
-                                    `₦${foodTotal.toLocaleString()}\n`;
+                            item.items.forEach(
+                                function (food) {
 
-                            }
-                        );
-
-
-                        items +=
-                            `Meal Total: ₦${item.price.toLocaleString()}\n`;
+                                    const foodTotal =
+                                        food.price *
+                                        food.quantity;
 
 
-                    } else {
+                                    const isFreeWater =
+                                        food.name
+                                            .toLowerCase() ===
+                                        "can of water"
+                                            .toLowerCase();
 
-                        const itemTotal =
-                            item.price *
-                            item.quantity;
+
+                                    items +=
+                                        `• ${food.name} ×${food.quantity} — ` +
+                                        (
+                                            isFreeWater
+                                                ? "FREE"
+                                                : `₦${foodTotal.toLocaleString()}`
+                                        ) +
+                                        `\n`;
+
+                                }
+                            );
 
 
-                        items +=
-                            `• ${item.name} ×${item.quantity} — ` +
-                            `₦${itemTotal.toLocaleString()}\n`;
+                            items +=
+                                `Meal Total: ₦${item.price.toLocaleString()}\n`;
+
+
+                        } else {
+
+                            const itemTotal =
+                                item.price *
+                                item.quantity;
+
+
+                            items +=
+                                `• ${item.name} ×${item.quantity} — ` +
+                                `₦${itemTotal.toLocaleString()}\n`;
+
+                        }
 
                     }
-
-                });
+                );
 
 
                 // =================================================
@@ -1456,8 +2246,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 // =================================================
 
                 if (checkoutForm) {
+
                     checkoutForm.style.display =
                         "none";
+
                 }
 
 
@@ -1508,7 +2300,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // COPY ACCOUNT NUMBER
     // =========================================================
 
-    if (copyAccount && accountNumber) {
+    if (
+        copyAccount &&
+        accountNumber
+    ) {
 
         copyAccount.addEventListener(
             "click",
@@ -1553,9 +2348,12 @@ document.addEventListener("DOMContentLoaded", function () {
     function fallbackCopy(text) {
 
         const textArea =
-            document.createElement("textarea");
+            document.createElement(
+                "textarea"
+            );
 
-        textArea.value = text;
+        textArea.value =
+            text;
 
         document.body.appendChild(
             textArea
@@ -1563,7 +2361,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         textArea.select();
 
-        document.execCommand("copy");
+        document.execCommand(
+            "copy"
+        );
 
         document.body.removeChild(
             textArea
@@ -1580,13 +2380,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // ENABLE PAYMENT BUTTON
     // =========================================================
 
-    if (paymentCheck && paymentDone) {
+    if (
+        paymentCheck &&
+        paymentDone
+    ) {
 
         paymentCheck.addEventListener(
             "change",
             function () {
 
-                if (paymentCheck.checked) {
+                if (
+                    paymentCheck.checked
+                ) {
 
                     paymentDone.disabled =
                         false;
@@ -1617,7 +2422,319 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // =========================================================
-    // SEND TO WHATSAPP
+    // GENERATE RESTAURANT RECEIPT
+    // =========================================================
+
+    window.generateReceipt =
+        function generateReceipt() {
+
+            if (!receiptContainer) {
+                return;
+            }
+
+
+            // -------------------------------------------------
+            // ORDER NUMBER
+            // -------------------------------------------------
+
+            const orderNumber =
+                "BF-" +
+                Date.now()
+                    .toString()
+                    .slice(-6);
+
+
+            currentOrderNumber =
+                orderNumber;
+
+
+            // -------------------------------------------------
+            // DATE AND TIME
+            // -------------------------------------------------
+
+            const now =
+                new Date();
+
+
+            const date =
+                now.toLocaleDateString(
+                    "en-NG",
+                    {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric"
+                    }
+                );
+
+
+            const time =
+                now.toLocaleTimeString(
+                    "en-NG",
+                    {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                );
+
+
+            currentOrderDate =
+                date +
+                " • " +
+                time;
+
+
+            // -------------------------------------------------
+            // CUSTOMER DETAILS
+            // -------------------------------------------------
+
+            const customerName =
+                document.querySelector(
+                    "#customer-name"
+                )?.value.trim() || "";
+
+
+            const customerPhone =
+                document.querySelector(
+                    "#customer-phone"
+                )?.value.trim() || "";
+
+
+            const customerAddress =
+                document.querySelector(
+                    "#customer-address"
+                )?.value.trim() || "";
+
+
+            // -------------------------------------------------
+            // PUT INFORMATION INTO RECEIPT
+            // -------------------------------------------------
+
+            if (receiptOrderNumber) {
+
+                receiptOrderNumber.textContent =
+                    orderNumber;
+
+            }
+
+
+            if (receiptDate) {
+
+                receiptDate.textContent =
+                    currentOrderDate;
+
+            }
+
+
+            if (receiptCustomerName) {
+
+                receiptCustomerName.textContent =
+                    customerName;
+
+            }
+
+
+            if (receiptCustomerPhone) {
+
+                receiptCustomerPhone.textContent =
+                    customerPhone;
+
+            }
+
+
+            if (receiptCustomerAddress) {
+
+                receiptCustomerAddress.textContent =
+                    customerAddress;
+
+            }
+
+
+            // -------------------------------------------------
+            // CLEAR OLD RECEIPT ITEMS
+            // -------------------------------------------------
+
+            if (receiptItems) {
+
+                receiptItems.innerHTML =
+                    "";
+
+
+                // -------------------------------------------------
+                // ADD CART ITEMS
+                // -------------------------------------------------
+
+                cart.forEach(
+                    function (item, index) {
+
+                        if (
+                            item.type ===
+                            "meal"
+                        ) {
+
+                            const mealHeading =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            mealHeading.style.fontWeight =
+                                "600";
+
+                            mealHeading.style.marginTop =
+                                "12px";
+
+
+                            mealHeading.textContent =
+                                `🍛 Meal ${index + 1}`;
+
+
+                            receiptItems.appendChild(
+                                mealHeading
+                            );
+
+
+                            item.items.forEach(
+                                function (food) {
+
+                                    const row =
+                                        document.createElement(
+                                            "div"
+                                        );
+
+
+                                    row.className =
+                                        "receipt-item";
+
+
+                                    const isFreeWater =
+                                        food.name
+                                            .toLowerCase() ===
+                                        "can of water"
+                                            .toLowerCase();
+
+
+                                    row.innerHTML = `
+                                        <span class="receipt-item-name">
+                                            ${escapeHTML(food.name)} ×${food.quantity}
+                                        </span>
+
+                                        <span class="receipt-item-price">
+                                            ${
+                                                isFreeWater
+                                                    ? "FREE"
+                                                    : "₦" +
+                                                      (
+                                                          food.price *
+                                                          food.quantity
+                                                      ).toLocaleString()
+                                            }
+                                        </span>
+                                    `;
+
+
+                                    receiptItems.appendChild(
+                                        row
+                                    );
+
+                                }
+                            );
+
+
+                        } else {
+
+                            const row =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            row.className =
+                                "receipt-item";
+
+
+                            row.innerHTML = `
+                                <span class="receipt-item-name">
+                                    ${escapeHTML(item.name)} ×${item.quantity}
+                                </span>
+
+                                <span class="receipt-item-price">
+                                    ₦${(
+                                        item.price *
+                                        item.quantity
+                                    ).toLocaleString()}
+                                </span>
+                            `;
+
+
+                            receiptItems.appendChild(
+                                row
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            // -------------------------------------------------
+            // RECEIPT TOTAL
+            // -------------------------------------------------
+
+            const finalSubtotal =
+                calculateCartSubtotal();
+
+
+            const finalDelivery =
+                calculateDelivery(
+                    finalSubtotal
+                );
+
+
+            const finalGrandTotal =
+                finalSubtotal +
+                finalDelivery;
+
+
+            if (receiptTotal) {
+
+                receiptTotal.textContent =
+                    finalGrandTotal.toLocaleString();
+
+            }
+
+
+            // -------------------------------------------------
+            // SHOW RECEIPT
+            // -------------------------------------------------
+
+            receiptContainer.style.display =
+                "block";
+
+
+            /*
+             * Scroll to the receipt so the customer
+             * can see it immediately.
+             */
+
+            setTimeout(
+                function () {
+
+                    receiptContainer.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                },
+                100
+            );
+
+        };
+
+
+    // =========================================================
+    // SEND ORDER TO WHATSAPP
     // =========================================================
 
     function sendWhatsAppMessage() {
@@ -1659,6 +2776,15 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
+        /*
+         * IMPORTANT:
+         * The receipt must be generated BEFORE
+         * the cart is cleared.
+         */
+
+        window.generateReceipt();
+
+
         // =====================================================
         // RESET EVERYTHING
         // =====================================================
@@ -1666,6 +2792,7 @@ document.addEventListener("DOMContentLoaded", function () {
         cart = [];
 
         deliveryFee = 0;
+
 
         updateCart();
 
@@ -1728,9 +2855,11 @@ document.addEventListener("DOMContentLoaded", function () {
             customerName.value = "";
         }
 
+
         if (customerPhone) {
             customerPhone.value = "";
         }
+
 
         if (customerAddress) {
             customerAddress.value = "";
@@ -1756,10 +2885,287 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 e.preventDefault();
 
+
+                /*
+                 * Generate the receipt first while
+                 * the cart and customer information
+                 * are still available.
+                 */
+
+                window.generateReceipt();
+
+
+                /*
+                 * Send the order to WhatsApp.
+                 */
+
                 sendWhatsAppMessage();
 
             }
         );
+
+    }
+
+
+    // =========================================================
+    // SAVE RECEIPT
+    // =========================================================
+
+    if (downloadReceipt) {
+
+        downloadReceipt.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    !receiptContainer ||
+                    receiptContainer.style.display ===
+                    "none"
+                ) {
+
+                    alert(
+                        "Please complete an order first."
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * Print the receipt.
+                 * The customer can choose
+                 * "Save as PDF" from the browser.
+                 */
+
+                const receiptContent =
+                    receiptContainer.innerHTML;
+
+
+                const printWindow =
+                    window.open(
+                        "",
+                        "_blank",
+                        "width=800,height=900"
+                    );
+
+
+                if (!printWindow) {
+
+                    alert(
+                        "Please allow pop-ups in your browser to save the receipt."
+                    );
+
+                    return;
+
+                }
+
+
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+
+                    <head>
+
+                        <title>Beta Food Receipt ${currentOrderNumber}</title>
+
+                        <meta charset="UTF-8">
+
+                        <style>
+
+                            * {
+                                box-sizing: border-box;
+                            }
+
+                            body {
+                                font-family: Arial, sans-serif;
+                                background: #ffffff;
+                                color: #222;
+                                padding: 30px;
+                                margin: 0;
+                            }
+
+                            #receipt {
+                                max-width: 700px;
+                                margin: 0 auto;
+                            }
+
+                            img {
+                                max-width: 150px;
+                                height: auto;
+                            }
+
+                            .receipt-item {
+                                display: flex;
+                                justify-content: space-between;
+                                gap: 20px;
+                                padding: 8px 0;
+                                border-bottom: 1px solid #ddd;
+                            }
+
+                            .receipt-divider {
+                                border-top: 1px solid #222;
+                                margin: 15px 0;
+                            }
+
+                            .receipt-total {
+                                display: flex;
+                                justify-content: space-between;
+                                font-size: 20px;
+                                font-weight: bold;
+                                padding: 15px 0;
+                            }
+
+                            .payment-confirmed {
+                                font-weight: bold;
+                            }
+
+                            button {
+                                display: none;
+                            }
+
+                            @media print {
+                                body {
+                                    padding: 0;
+                                }
+                            }
+
+                        </style>
+
+                    </head>
+
+                    <body>
+
+                        <div id="receipt">
+                            ${receiptContent}
+                        </div>
+
+                    </body>
+
+                    </html>
+                `);
+
+
+                printWindow.document.close();
+
+
+                printWindow.focus();
+
+
+                setTimeout(
+                    function () {
+
+                        printWindow.print();
+
+                    },
+                    500
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // SEND RECEIPT TO WHATSAPP
+    // =========================================================
+
+    if (sendReceiptWhatsApp) {
+
+        sendReceiptWhatsApp.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    !currentOrderNumber
+                ) {
+
+                    alert(
+                        "Please complete an order first."
+                    );
+
+                    return;
+
+                }
+
+
+                const customerName =
+                    document.querySelector(
+                        "#receipt-customer-name"
+                    )?.textContent || "";
+
+
+                const customerPhone =
+                    document.querySelector(
+                        "#receipt-customer-phone"
+                    )?.textContent || "";
+
+
+                const customerAddress =
+                    document.querySelector(
+                        "#receipt-customer-address"
+                    )?.textContent || "";
+
+
+                const total =
+                    receiptTotal
+                        ? receiptTotal.textContent
+                        : "0";
+
+
+                const receiptMessage =
+                    `Hello Beta Food! 🍛\n\n` +
+                    `*ORDER RECEIPT*\n\n` +
+                    `🧾 Order No: ${currentOrderNumber}\n` +
+                    `📅 Date: ${currentOrderDate}\n\n` +
+                    `👤 Name: ${customerName}\n` +
+                    `📞 Phone: ${customerPhone}\n` +
+                    `📍 Address: ${customerAddress}\n\n` +
+                    `💰 TOTAL: ₦${total}\n\n` +
+                    `✅ Payment confirmed.\n\n` +
+                    `Thank you for ordering from Beta Food! ❤️`;
+
+
+                const whatsappNumber =
+                    "2349169452392";
+
+
+                const whatsappURL =
+                    "https://wa.me/" +
+                    whatsappNumber +
+                    "?text=" +
+                    encodeURIComponent(
+                        receiptMessage
+                    );
+
+
+                window.open(
+                    whatsappURL,
+                    "_blank"
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // ESCAPE HTML
+    // =========================================================
+
+    function escapeHTML(text) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+        div.textContent =
+            text;
+
+        return div.innerHTML;
 
     }
 
@@ -1777,8 +3183,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (themeToggle) {
 
         if (
-            localStorage.getItem("theme") ===
-            "dark"
+            localStorage.getItem(
+                "theme"
+            ) === "dark"
         ) {
 
             document.body.classList.add(
@@ -1898,266 +3305,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // =========================================================
-    // GENERATE RESTAURANT RECEIPT
-    // =========================================================
-
-    window.generateReceipt =
-        function generateReceipt() {
-
-            if (!receiptContainer) {
-                return;
-            }
-
-
-            // -------------------------------------------------
-            // ORDER NUMBER
-            // -------------------------------------------------
-
-            const orderNumber =
-                "BF-" +
-                Date.now()
-                    .toString()
-                    .slice(-6);
-
-
-            // -------------------------------------------------
-            // DATE AND TIME
-            // -------------------------------------------------
-
-            const now =
-                new Date();
-
-
-            const date =
-                now.toLocaleDateString(
-                    "en-NG",
-                    {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric"
-                    }
-                );
-
-
-            const time =
-                now.toLocaleTimeString(
-                    "en-NG",
-                    {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }
-                );
-
-
-            // -------------------------------------------------
-            // CUSTOMER DETAILS
-            // -------------------------------------------------
-
-            const customerName =
-                document.querySelector(
-                    "#customer-name"
-                )?.value.trim() || "";
-
-
-            const customerPhone =
-                document.querySelector(
-                    "#customer-phone"
-                )?.value.trim() || "";
-
-
-            const customerAddress =
-                document.querySelector(
-                    "#customer-address"
-                )?.value.trim() || "";
-
-
-            // -------------------------------------------------
-            // PUT INFORMATION INTO RECEIPT
-            // -------------------------------------------------
-
-            if (receiptOrderNumber) {
-
-                receiptOrderNumber.textContent =
-                    orderNumber;
-
-            }
-
-
-            if (receiptDate) {
-
-                receiptDate.textContent =
-                    date +
-                    " • " +
-                    time;
-
-            }
-
-
-            if (receiptCustomerName) {
-
-                receiptCustomerName.textContent =
-                    customerName;
-
-            }
-
-
-            if (receiptCustomerPhone) {
-
-                receiptCustomerPhone.textContent =
-                    customerPhone;
-
-            }
-
-
-            if (receiptCustomerAddress) {
-
-                receiptCustomerAddress.textContent =
-                    customerAddress;
-
-            }
-
-
-            // -------------------------------------------------
-            // CLEAR OLD RECEIPT ITEMS
-            // -------------------------------------------------
-
-            if (receiptItems) {
-
-                receiptItems.innerHTML = "";
-
-
-                // -------------------------------------------------
-                // ADD CART ITEMS
-                // -------------------------------------------------
-
-                cart.forEach(function (item) {
-
-                    if (
-                        item.type === "meal"
-                    ) {
-
-                        const mealHeading =
-                            document.createElement(
-                                "div"
-                            );
-
-                        mealHeading.style.fontWeight =
-                            "600";
-
-                        mealHeading.style.marginTop =
-                            "12px";
-
-                        mealHeading.textContent =
-                            "🍛 Meal";
-
-                        receiptItems.appendChild(
-                            mealHeading
-                        );
-
-
-                        item.items.forEach(
-                            function (food) {
-
-                                const row =
-                                    document.createElement(
-                                        "div"
-                                    );
-
-                                row.className =
-                                    "receipt-item";
-
-
-                                row.innerHTML = `
-                                    <span class="receipt-item-name">
-                                        ${food.name} ×${food.quantity}
-                                    </span>
-
-                                    <span class="receipt-item-price">
-                                        ₦${(
-                                            food.price *
-                                            food.quantity
-                                        ).toLocaleString()}
-                                    </span>
-                                `;
-
-
-                                receiptItems.appendChild(
-                                    row
-                                );
-
-                            }
-                        );
-
-
-                    } else {
-
-                        const row =
-                            document.createElement(
-                                "div"
-                            );
-
-                        row.className =
-                            "receipt-item";
-
-
-                        row.innerHTML = `
-                            <span class="receipt-item-name">
-                                ${item.name} ×${item.quantity}
-                            </span>
-
-                            <span class="receipt-item-price">
-                                ₦${(
-                                    item.price *
-                                    item.quantity
-                                ).toLocaleString()}
-                            </span>
-                        `;
-
-
-                        receiptItems.appendChild(
-                            row
-                        );
-
-                    }
-
-                });
-
-            }
-
-
-            // -------------------------------------------------
-            // RECEIPT TOTAL
-            // -------------------------------------------------
-
-            const finalSubtotal =
-                calculateCartSubtotal();
-
-            const finalDelivery =
-                calculateDelivery(finalSubtotal);
-
-            const finalGrandTotal =
-                finalSubtotal + finalDelivery;
-
-
-            if (receiptTotal) {
-
-                receiptTotal.textContent =
-                    finalGrandTotal.toLocaleString();
-
-            }
-
-
-            // -------------------------------------------------
-            // SHOW RECEIPT
-            // -------------------------------------------------
-
-            receiptContainer.style.display =
-                "block";
-
-        };
-
-
-    // =========================================================
     // FLOATING ADD TO CART BUTTON
     // =========================================================
 
@@ -2187,11 +3334,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     "button"
                 );
 
+
             floatingBtn.id =
                 "floating-add-btn";
 
+
             floatingBtn.className =
                 "btn";
+
 
             floatingBtn.textContent =
                 "🛒 Add Meal to Cart";
@@ -2200,59 +3350,78 @@ document.addEventListener("DOMContentLoaded", function () {
             floatingBtn.style.position =
                 "fixed";
 
+
             floatingBtn.style.bottom =
                 "30px";
+
 
             floatingBtn.style.left =
                 "50%";
 
+
             floatingBtn.style.transform =
                 "translateX(-50%) translateY(20px) scale(0.9)";
+
 
             floatingBtn.style.opacity =
                 "0";
 
+
             floatingBtn.style.pointerEvents =
                 "none";
+
 
             floatingBtn.style.zIndex =
                 "999999";
 
+
             floatingBtn.style.width =
                 "90%";
+
 
             floatingBtn.style.maxWidth =
                 "400px";
 
+
             floatingBtn.style.padding =
                 "16px 20px";
+
 
             floatingBtn.style.borderRadius =
                 "50px";
 
+
             floatingBtn.style.boxShadow =
                 "0 8px 30px rgba(0,0,0,0.3)";
+
 
             floatingBtn.style.fontSize =
                 "16px";
 
+
             floatingBtn.style.fontWeight =
                 "600";
+
 
             floatingBtn.style.cursor =
                 "pointer";
 
+
             floatingBtn.style.border =
                 "none";
+
 
             floatingBtn.style.background =
                 "#FF6B35";
 
+
             floatingBtn.style.color =
                 "#fff";
 
+
             floatingBtn.style.transition =
                 "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)";
+
 
             floatingBtn.style.willChange =
                 "transform, opacity";
@@ -2281,7 +3450,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     selectedTotal +=
                         parseInt(
-                            el.textContent || "0",
+                            el.textContent ||
+                            "0",
                             10
                         );
 
@@ -2303,7 +3473,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (icon) {
+
                 icon.click();
+
             }
 
         }
@@ -2509,7 +3681,8 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        let selectedRating = 0;
+        let selectedRating =
+            0;
 
 
         const ratingText =
@@ -2563,6 +3736,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             ratingText.style.color =
                                 "#FF6B35";
 
+
                             ratingText.style.fontWeight =
                                 "600";
 
@@ -2582,7 +3756,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                 10
                             );
 
-                        updateStars(value);
+
+                        updateStars(
+                            value
+                        );
 
                     }
                 );
@@ -2615,7 +3792,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         );
 
 
-                    if (value <= rating) {
+                    if (
+                        value <=
+                        rating
+                    ) {
 
                         star.classList.add(
                             "active"
@@ -2659,13 +3839,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         "review-comment"
                     );
 
+
                 const nameInput =
                     document.getElementById(
                         "review-name"
                     );
 
 
-                if (selectedRating === 0) {
+                if (
+                    selectedRating ===
+                    0
+                ) {
 
                     alert(
                         "Please select a star rating! ⭐"
@@ -2708,9 +3892,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         new Date().toLocaleDateString(
                             "en-US",
                             {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric"
+                                year:
+                                    "numeric",
+
+                                month:
+                                    "long",
+
+                                day:
+                                    "numeric"
                             }
                         ),
 
@@ -2720,14 +3909,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 };
 
 
-                saveReview(review);
+                saveReview(
+                    review
+                );
 
 
-                comment.value = "";
+                comment.value =
+                    "";
 
 
                 if (nameInput) {
-                    nameInput.value = "";
+
+                    nameInput.value =
+                        "";
+
                 }
 
 
@@ -2735,7 +3930,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     0;
 
 
-                updateStars(0);
+                updateStars(
+                    0
+                );
 
 
                 if (ratingText) {
@@ -2743,8 +3940,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     ratingText.textContent =
                         "Tap a star to rate";
 
+
                     ratingText.style.color =
                         "#888";
+
 
                     ratingText.style.fontWeight =
                         "400";
@@ -2766,6 +3965,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 btn.textContent =
                     "✅ Review Submitted!";
 
+
                 btn.style.background =
                     "#28a745";
 
@@ -2775,6 +3975,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         btn.textContent =
                             originalText;
+
 
                         btn.style.background =
                             "#FF6B35";
@@ -2808,7 +4009,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             localStorage.setItem(
                 "betaFoodReviews",
-                JSON.stringify(reviews)
+                JSON.stringify(
+                    reviews
+                )
             );
 
         }
@@ -2843,7 +4046,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 reviews.filter(
                     function (review) {
 
-                        return review.id !== id;
+                        return (
+                            review.id !==
+                            id
+                        );
 
                     }
                 );
@@ -2851,7 +4057,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             localStorage.setItem(
                 "betaFoodReviews",
-                JSON.stringify(reviews)
+                JSON.stringify(
+                    reviews
+                )
             );
 
 
@@ -2885,7 +4093,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-            if (reviews.length === 0) {
+            if (
+                reviews.length === 0
+            ) {
 
                 container.innerHTML =
                     '<p class="no-reviews">Be the first to leave a review! 🌟</p>';
@@ -2895,7 +4105,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            let html = "";
+            let html =
+                "";
 
 
             reviews.forEach(
@@ -2906,7 +4117,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             review.rating
                         ) +
                         "☆".repeat(
-                            5 - review.rating
+                            5 -
+                            review.rating
                         );
 
 
@@ -2981,33 +4193,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         );
 
 
-                    deleteReview(id);
+                    deleteReview(
+                        id
+                    );
 
                 }
 
             }
         );
-
-
-        // -----------------------------------------------------
-        // ESCAPE HTML
-        // -----------------------------------------------------
-
-        function escapeHTML(text) {
-
-            const div =
-                document.createElement(
-                    "div"
-                );
-
-
-            div.textContent =
-                text;
-
-
-            return div.innerHTML;
-
-        }
 
 
         // -----------------------------------------------------
@@ -3051,6 +4244,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     );
 
+
+    // =========================================================
+    // FINAL CONSOLE MESSAGE
+    // =========================================================
 
     console.log(
         "✅ Beta Food script loaded successfully."
