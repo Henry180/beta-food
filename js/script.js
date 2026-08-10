@@ -1,1681 +1,3059 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // =========================
+    // =========================================================
     // MOBILE MENU
-    // =========================
+    // =========================================================
 
     const menuToggle = document.querySelector(".menu-toggle");
     const menu = document.querySelector(".nav-links");
     const navLinks = document.querySelectorAll(".nav-links a");
 
-    if (menuToggle) {
+    if (menuToggle && menu) {
         menuToggle.addEventListener("click", function () {
             menu.classList.toggle("active");
         });
     }
 
-    navLinks.forEach(function(link){
-        link.addEventListener("click", function(){
-            menu.classList.remove("active");
+    navLinks.forEach(function (link) {
+        link.addEventListener("click", function () {
+            if (menu) {
+                menu.classList.remove("active");
+            }
         });
     });
 
 
-
-    // =========================
+    // =========================================================
     // BACK TO TOP
-    // =========================
+    // =========================================================
 
     const backToTop = document.querySelector(".back-to-top");
 
-    window.addEventListener("scroll", function(){
-        if(window.scrollY > 300){
-            backToTop.classList.add("show");
-        }else{
-            backToTop.classList.remove("show");
-        }
-    });
+    if (backToTop) {
+        window.addEventListener("scroll", function () {
+
+            if (window.scrollY > 300) {
+                backToTop.classList.add("show");
+            } else {
+                backToTop.classList.remove("show");
+            }
+
+        });
+    }
 
 
-
-    // =========================
+    // =========================================================
     // SEARCH
-    // =========================
+    // =========================================================
 
     const search = document.querySelector("#search");
     const foodCards = document.querySelectorAll(".food-card");
 
     if (search) {
-        search.addEventListener("input", function(){
-            const searchValue = search.value.toLowerCase();
-            foodCards.forEach(function(card){
-                const foodName = card.querySelector("h3").textContent.toLowerCase();
-                if(foodName.includes(searchValue)){
+
+        search.addEventListener("input", function () {
+
+            const searchValue = search.value.toLowerCase().trim();
+
+            foodCards.forEach(function (card) {
+
+                const heading = card.querySelector("h3");
+
+                if (!heading) return;
+
+                const foodName = heading.textContent.toLowerCase();
+
+                if (foodName.includes(searchValue)) {
                     card.style.display = "block";
-                }else{
+                } else {
                     card.style.display = "none";
                 }
+
             });
+
         });
+
     }
 
 
-// =========================
-// BUILD YOUR MEAL
-// =========================
+    // =========================================================
+    // BUILD YOUR MEAL
+    // =========================================================
 
-const mealOptions = document.querySelectorAll(".meal-option");
+    const mealOptions = document.querySelectorAll(".meal-option");
 
-mealOptions.forEach(function(option) {
+    mealOptions.forEach(function (option) {
 
-    const minusButton = option.querySelector(".quantity-minus");
-    const plusButton = option.querySelector(".quantity-plus");
-    const quantityDisplay = option.querySelector(".quantity");
+        const minusButton = option.querySelector(".quantity-minus");
+        const plusButton = option.querySelector(".quantity-plus");
+        const quantityDisplay = option.querySelector(".quantity");
 
-    // =========================
-    // PLUS BUTTON
-    // =========================
-
-    plusButton.addEventListener("click", function() {
-
-        const category = option.closest(".meal-category");
-
-        let quantity = Number(quantityDisplay.textContent);
-
-        // =========================
-        // FREE WATER
-        // Only ONE can be selected
-        // =========================
-
-        const isWater =
-            category &&
-            category.classList.contains("water-option");
-
-        if (isWater && quantity >= 1) {
+        if (!minusButton || !plusButton || !quantityDisplay) {
             return;
         }
 
-        // =========================
-        // MAIN MEALS
-        // PROTEINS
-        // EXTRAS
-        // Can all be selected
-        // multiple times
-        // =========================
 
-        quantity++;
+        // -----------------------------------------------------
+        // PLUS BUTTON
+        // -----------------------------------------------------
 
-        quantityDisplay.textContent = quantity;
+        plusButton.addEventListener("click", function () {
 
-    });
+            const category = option.closest(".meal-category");
 
+            let quantity = Number(quantityDisplay.textContent);
 
-    // =========================
-    // MINUS BUTTON
-    // =========================
+            // Free water can only be selected once
+            const isWater =
+                category &&
+                category.classList.contains("water-option");
 
-    minusButton.addEventListener("click", function() {
+            if (isWater && quantity >= 1) {
+                return;
+            }
 
-        let quantity = Number(quantityDisplay.textContent);
-
-        if (quantity > 0) {
-
-            quantity--;
+            quantity++;
 
             quantityDisplay.textContent = quantity;
 
-        }
-
-    });
-
-});
+        });
 
 
+        // -----------------------------------------------------
+        // MINUS BUTTON
+        // -----------------------------------------------------
 
-// =========================
-// MEAL PREVIEW
-// =========================
+        minusButton.addEventListener("click", function () {
 
-const addMealButton = document.querySelector("#add-built-meal");
+            let quantity = Number(quantityDisplay.textContent);
 
-if(addMealButton) {
-
-    const mealPreview = document.createElement("div");
-
-    mealPreview.id = "meal-preview";
-
-mealPreview.innerHTML = `
-    <h3>Your Meal</h3>
-
-    <div id="meal-preview-images"></div>
-
-    <div id="meal-preview-items">
-        Select a main meal to preview your order.
-    </div>
-
-    <h4>
-        Meal Total: ₦<span id="meal-preview-total">0</span>
-    </h4>
-`;
-    addMealButton.parentNode.insertBefore(
-        mealPreview,
-        addMealButton
-    );
-
-
-    function updateMealPreview() {
-
-        let mainMeal = null;
-        let previewItems = [];
-        let previewTotal = 0;
-
-
-        mealOptions.forEach(function(option) {
-
-            const quantity = Number(
-                option.querySelector(".quantity").textContent
-            );
-
-            if(quantity > 0) {
-
-                const category =
-                    option.closest(".meal-category");
-
-                const categoryName =
-                    category.querySelector("h3").textContent.trim();
-
-                const itemName =
-                    option.querySelector("h4").textContent.trim();
-
-              const priceText = option
-    .querySelector("p")
-    .textContent;
-
-const priceMatch = priceText.match(/[\d,]+/);
-
-const price = priceMatch
-    ? Number(priceMatch[0].replace(/,/g, ""))
-    : 0;
-
-
-                previewItems.push({
-                    name: itemName,
-                    quantity: quantity,
-                    price: price
-                });
-
-
-                previewTotal += price * quantity;
-
-
-                if(categoryName.includes("Main Meals")) {
-
-                    mainMeal = option;
-
-                }
-
+            if (quantity > 0) {
+                quantity--;
+                quantityDisplay.textContent = quantity;
             }
 
         });
 
-
-       const previewImagesContainer =
-    document.querySelector("#meal-preview-images");
-
-const previewItemsContainer =
-    document.querySelector("#meal-preview-items");
-
-const previewTotalElement =
-    document.querySelector("#meal-preview-total");
+    });
 
 
-        previewImagesContainer.innerHTML = "";
+    // =========================================================
+    // MEAL PREVIEW
+    // =========================================================
 
-mealOptions.forEach(function(option) {
+    const addMealButton = document.querySelector("#add-built-meal");
 
-    const quantity = Number(
-        option.querySelector(".quantity").textContent
-    );
+    if (addMealButton) {
 
-    if(quantity > 0) {
+        const mealPreview = document.createElement("div");
 
-        const image =
-            option.querySelector("img");
+        mealPreview.id = "meal-preview";
 
-        if(image) {
+        mealPreview.innerHTML = `
+            <h3>Your Meal</h3>
 
-            const previewImage =
-                document.createElement("img");
+            <div id="meal-preview-images"></div>
 
-            previewImage.src = image.src;
-            previewImage.alt =
-                option.querySelector("h4").textContent.trim();
+            <div id="meal-preview-items">
+                Select an item to preview your order.
+            </div>
 
-            previewImagesContainer.appendChild(
-                previewImage
-            );
+            <h4>
+                Meal Total: ₦<span id="meal-preview-total">0</span>
+            </h4>
+        `;
 
-        }
+        addMealButton.parentNode.insertBefore(
+            mealPreview,
+            addMealButton
+        );
 
-    }
 
-});
+        function updateMealPreview() {
 
-        if(previewItems.length === 0) {
+            let previewItems = [];
+            let previewTotal = 0;
 
-            previewItemsContainer.innerHTML =
-                "Select a main meal to preview your order.";
+            mealOptions.forEach(function (option) {
 
-        } else {
+                const quantity = Number(
+                    option.querySelector(".quantity").textContent
+                );
 
-            previewItemsContainer.innerHTML = "";
+                if (quantity > 0) {
 
-            previewItems.forEach(function(item) {
+                    const itemName =
+                        option.querySelector("h4").textContent.trim();
 
-                const row =
-                    document.createElement("p");
+                    const priceText =
+                        option.querySelector("p").textContent;
 
-                row.textContent =
-                    `${item.name} ×${item.quantity}`;
+                    const priceMatch =
+                        priceText.match(/[\d,]+/);
 
-                previewItemsContainer.appendChild(row);
+                    const price =
+                        priceMatch
+                            ? Number(priceMatch[0].replace(/,/g, ""))
+                            : 0;
+
+                    previewItems.push({
+                        name: itemName,
+                        quantity: quantity,
+                        price: price
+                    });
+
+                    previewTotal += price * quantity;
+
+                }
 
             });
 
-        }
+
+            const previewImagesContainer =
+                document.querySelector("#meal-preview-images");
+
+            const previewItemsContainer =
+                document.querySelector("#meal-preview-items");
+
+            const previewTotalElement =
+                document.querySelector("#meal-preview-total");
 
 
-        previewTotalElement.textContent =
-            previewTotal.toLocaleString();
+            // -------------------------------------------------
+            // PREVIEW IMAGES
+            // -------------------------------------------------
 
-    }
+            if (previewImagesContainer) {
 
+                previewImagesContainer.innerHTML = "";
 
-    mealOptions.forEach(function(option) {
+                mealOptions.forEach(function (option) {
 
-        const plus =
-            option.querySelector(".quantity-plus");
-
-        const minus =
-            option.querySelector(".quantity-minus");
-
-
-        plus.addEventListener(
-            "click",
-            updateMealPreview
-        );
-
-        minus.addEventListener(
-            "click",
-            updateMealPreview
-        );
-
-    });
-
-
-    updateMealPreview();
-
-}
-
-   // =========================
-// SHOPPING CART
-// =========================
-
-let cart = [];
-let total = 0;
-
-const addToCartButtons = document.querySelectorAll(".add-to-cart");
-const cartCount = document.querySelector("#cart-count");
-const cartItems = document.querySelector("#cart-items");
-const cartTotal = document.querySelector("#cart-total");
-const addBuiltMealButton = document.querySelector("#add-built-meal");
-const cartIcon = document.querySelector(".cart-icon");
-const cartBox = document.querySelector(".cart-box");
-
-
-// =========================
-// ADD OLD FOOD CARDS TO CART
-// =========================
-
-
-addToCartButtons.forEach(function(button){
-
-   button.addEventListener("click", function(e){
-
-    e.stopPropagation();
-
-    const card = button.closest(".food-card");
-
-        const foodName = card.querySelector("h3").textContent;
-        const foodPrice = Number(button.dataset.price);
-
-        cart.push({
-            name: foodName,
-            price: foodPrice,
-            quantity: 1
-        });
-
-        total += foodPrice;
-
-updateCart();
-
-// Automatically open cart
-if (cartBox) {
-    cartBox.style.display = "block";
-}
-
-    });
-
-});
-
-
-// =========================
-// ADD BUILT MEAL TO CART
-// =========================
-
-if (addBuiltMealButton) {
-
-    addBuiltMealButton.addEventListener("click", function(e){
-
-        e.stopPropagation();
-        
-        let selectedItems = [];
-        let mealTotal = 0;
-
-        mealOptions.forEach(function(option){
-
-            const quantity = Number(
-                option.querySelector(".quantity").textContent
-            );
-
-            if(quantity > 0){
-
-                const itemName =
-                    option.querySelector("h4").textContent.trim();
-
-                const priceText =
-                    option.querySelector("p").textContent;
-
-                let itemPrice = 0;
-
-                if(itemName === "Can of Water"){
-
-                    itemPrice = 0;
-
-                }else{
-
-                    itemPrice = Number(
-                        priceText.replace(/[₦,]/g, "").trim()
+                    const quantity = Number(
+                        option.querySelector(".quantity").textContent
                     );
 
-                }
+                    if (quantity > 0) {
 
-                selectedItems.push({
-                    name: itemName,
-                    price: itemPrice,
-                    quantity: quantity
+                        const image = option.querySelector("img");
+
+                        if (image) {
+
+                            const previewImage =
+                                document.createElement("img");
+
+                            previewImage.src = image.src;
+
+                            previewImage.alt =
+                                option.querySelector("h4")
+                                    .textContent.trim();
+
+                            previewImagesContainer.appendChild(
+                                previewImage
+                            );
+
+                        }
+
+                    }
+
                 });
-
-                mealTotal += itemPrice * quantity;
 
             }
 
-        });
+
+            // -------------------------------------------------
+            // PREVIEW ITEMS
+            // -------------------------------------------------
+
+            if (previewItemsContainer) {
+
+                if (previewItems.length === 0) {
+
+                    previewItemsContainer.innerHTML =
+                        "Select an item to preview your order.";
+
+                } else {
+
+                    previewItemsContainer.innerHTML = "";
+
+                    previewItems.forEach(function (item) {
+
+                        const row =
+                            document.createElement("p");
+
+                        row.textContent =
+                            `${item.name} ×${item.quantity}`;
+
+                        previewItemsContainer.appendChild(row);
+
+                    });
+
+                }
+
+            }
 
 
-       // =========================
-// MAIN MEAL IS REQUIRED
-// =========================
+            // -------------------------------------------------
+            // PREVIEW TOTAL
+            // -------------------------------------------------
 
-let hasMainMeal = false;
+            if (previewTotalElement) {
 
-mealOptions.forEach(function(option) {
+                previewTotalElement.textContent =
+                    previewTotal.toLocaleString();
 
-    const quantity = Number(
-        option.querySelector(".quantity").textContent
-    );
-
-    if(quantity > 0) {
-
-        const category = option.closest(".meal-category");
-
-        if(category) {
-
-            const categoryName =
-                category.querySelector("h3").textContent.trim();
-
-            if(categoryName.includes("Main Meals")) {
-                hasMainMeal = true;
             }
 
         }
 
+
+        mealOptions.forEach(function (option) {
+
+            const plus =
+                option.querySelector(".quantity-plus");
+
+            const minus =
+                option.querySelector(".quantity-minus");
+
+            if (plus) {
+                plus.addEventListener(
+                    "click",
+                    updateMealPreview
+                );
+            }
+
+            if (minus) {
+                minus.addEventListener(
+                    "click",
+                    updateMealPreview
+                );
+            }
+
+        });
+
+
+        updateMealPreview();
+
     }
 
-});
+
+    // =========================================================
+    // SHOPPING CART
+    // =========================================================
+
+    let cart = [];
 
 
-if(!hasMainMeal) {
+    // =========================================================
+    // DELIVERY
+    // =========================================================
 
-    alert(
-        "Please select at least one Main Meal before adding to cart."
-    );
+    const DELIVERY_FEE = 500;
+    const FREE_DELIVERY_THRESHOLD = 10000;
 
-    return;
-
-}
+    let deliveryFee = 0;
 
 
-        // Add the complete meal
+    function calculateDelivery(subtotal) {
 
-        cart.push({
+        if (subtotal <= 0) {
+            return 0;
+        }
 
-            type: "meal",
+        if (subtotal >= FREE_DELIVERY_THRESHOLD) {
+            return 0;
+        }
 
-            items: selectedItems,
+        return DELIVERY_FEE;
+    }
 
-            price: mealTotal
+
+    // =========================================================
+    // CALCULATE CART SUBTOTAL
+    // =========================================================
+    // This always calculates the real value of everything
+    // currently inside the cart.
+
+    function calculateCartSubtotal() {
+
+        let subtotal = 0;
+
+        cart.forEach(function (item) {
+
+            if (item.type === "meal") {
+
+                subtotal += Number(item.price) || 0;
+
+            } else {
+
+                subtotal +=
+                    (Number(item.price) || 0) *
+                    (Number(item.quantity) || 0);
+
+            }
 
         });
 
+        return subtotal;
+    }
 
-        total += mealTotal;
+
+    // =========================================================
+    // CART ELEMENTS
+    // =========================================================
+
+    const addToCartButtons =
+        document.querySelectorAll(".add-to-cart");
+
+    const cartCount =
+        document.querySelector("#cart-count");
+
+    const cartItems =
+        document.querySelector("#cart-items");
+
+    const cartTotal =
+        document.querySelector("#cart-total");
+
+    const addBuiltMealButton =
+        document.querySelector("#add-built-meal");
+
+    const cartIcon =
+        document.querySelector(".cart-icon");
+
+    const cartBox =
+        document.querySelector(".cart-box");
 
 
-        // Reset meal builder
+    // =========================================================
+    // ADD OLD FOOD CARDS TO CART
+    // =========================================================
 
-        mealOptions.forEach(function(option){
+    addToCartButtons.forEach(function (button) {
 
-            option.querySelector(".quantity").textContent = "0";
+        button.addEventListener("click", function (e) {
+
+            e.stopPropagation();
+
+            const card =
+                button.closest(".food-card");
+
+            if (!card) return;
+
+            const foodNameElement =
+                card.querySelector("h3");
+
+            if (!foodNameElement) return;
+
+            const foodName =
+                foodNameElement.textContent.trim();
+
+            const foodPrice =
+                Number(button.dataset.price);
+
+            if (!foodPrice || foodPrice < 0) {
+                return;
+            }
+
+            cart.push({
+                name: foodName,
+                price: foodPrice,
+                quantity: 1
+            });
+
+            updateCart();
+
+
+            // Automatically open cart
+            if (cartBox) {
+                forceOpenCart();
+            }
 
         });
-
-
-        updateCart();
-
-// Automatically open the cart
-if(cartBox) {
-    cartBox.style.display = "block";
-}
-
-alert("Your meal has been added to the cart! 🛒");
 
     });
 
-}
+
+    // =========================================================
+    // ADD BUILT MEAL TO CART
+    // =========================================================
+
+    if (addBuiltMealButton) {
+
+        addBuiltMealButton.addEventListener(
+            "click",
+            function (e) {
+
+                e.stopPropagation();
+
+                let selectedItems = [];
+                let mealTotal = 0;
 
 
-// =========================
-// UPDATE CART
-// =========================
+                mealOptions.forEach(function (option) {
 
-function updateCart(){
+                    const quantity = Number(
+                        option.querySelector(".quantity")
+                            .textContent
+                    );
 
-    if(!cartItems) return;
-
-    cartItems.innerHTML = "";
-
-    let itemCount = 0;
-
-
-    cart.forEach(function(item, index){
-
-        const div = document.createElement("div");
-
-        div.classList.add("cart-item");
+                    if (quantity <= 0) {
+                        return;
+                    }
 
 
-        // BUILT MEAL
+                    const itemName =
+                        option.querySelector("h4")
+                            .textContent.trim();
 
-        if(item.type === "meal"){
-
-            item.items.forEach(function(food){
-
-                itemCount += food.quantity;
-
-            });
+                    const priceText =
+                        option.querySelector("p")
+                            .textContent;
 
 
-            let mealHTML = `
-                <div class="cart-meal">
+                    let itemPrice = 0;
 
-                    <div class="cart-meal-header">
 
-                        <strong>🍛 Meal ${index + 1}</strong>
+                    // Water is FREE
+                    if (itemName === "Can of Water") {
+
+                        itemPrice = 0;
+
+                    } else {
+
+                        const priceMatch =
+                            priceText.match(/[\d,]+/);
+
+                        itemPrice =
+                            priceMatch
+                                ? Number(
+                                    priceMatch[0]
+                                        .replace(/,/g, "")
+                                )
+                                : 0;
+
+                    }
+
+
+                    selectedItems.push({
+                        name: itemName,
+                        price: itemPrice,
+                        quantity: quantity
+                    });
+
+
+                    mealTotal +=
+                        itemPrice * quantity;
+
+                });
+
+
+                // -------------------------------------------------
+                // MAKE SURE SOMETHING WAS SELECTED
+                // -------------------------------------------------
+                // IMPORTANT:
+                // A MAIN MEAL IS NO LONGER REQUIRED.
+                // Chicken, pasta, drinks, etc. can be added
+                // to an existing cart by themselves.
+
+                if (selectedItems.length === 0) {
+
+                    alert(
+                        "Please select at least one item before adding to cart."
+                    );
+
+                    return;
+                }
+
+
+                // -------------------------------------------------
+                // ADD COMPLETE SELECTION TO CART
+                // -------------------------------------------------
+
+                cart.push({
+
+                    type: "meal",
+
+                    items: selectedItems,
+
+                    price: mealTotal
+
+                });
+
+
+                // -------------------------------------------------
+                // RESET MEAL BUILDER
+                // -------------------------------------------------
+
+                mealOptions.forEach(function (option) {
+
+                    const quantity =
+                        option.querySelector(".quantity");
+
+                    if (quantity) {
+                        quantity.textContent = "0";
+                    }
+
+                });
+
+
+                updateCart();
+
+
+                // Automatically open cart
+                if (cartBox) {
+                    forceOpenCart();
+                }
+
+
+                alert(
+                    "Your meal has been added to the cart! 🛒"
+                );
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // UPDATE CART
+    // =========================================================
+
+    function updateCart() {
+
+        if (!cartItems) {
+            return;
+        }
+
+
+        cartItems.innerHTML = "";
+
+        let itemCount = 0;
+
+
+        // -----------------------------------------------------
+        // ALWAYS RECALCULATE SUBTOTAL
+        // -----------------------------------------------------
+
+        const subtotal =
+            calculateCartSubtotal();
+
+
+        // -----------------------------------------------------
+        // DISPLAY CART ITEMS
+        // -----------------------------------------------------
+
+        cart.forEach(function (item, index) {
+
+            const div =
+                document.createElement("div");
+
+            div.classList.add("cart-item");
+
+
+            // =================================================
+            // BUILT MEAL
+            // =================================================
+
+            if (item.type === "meal") {
+
+                item.items.forEach(function (food) {
+
+                    itemCount += food.quantity;
+
+                });
+
+
+                let mealHTML = `
+                    <div class="cart-meal">
+
+                        <div class="cart-meal-header">
+
+                            <strong>
+                                🍛 Meal ${index + 1}
+                            </strong>
+
+                            <button
+                                type="button"
+                                class="remove-meal"
+                                data-index="${index}">
+                                ❌
+                            </button>
+
+                        </div>
+                `;
+
+
+                item.items.forEach(function (food) {
+
+                    mealHTML += `
+                        <div class="cart-meal-item">
+
+                            <span>
+                                ${food.name} ×${food.quantity}
+                            </span>
+
+                            <span>
+                                ₦${(
+                                    food.price *
+                                    food.quantity
+                                ).toLocaleString()}
+                            </span>
+
+                        </div>
+                    `;
+
+                });
+
+
+                mealHTML += `
+                        <div class="cart-meal-total">
+
+                            <strong>
+                                Meal Total:
+                                ₦${item.price.toLocaleString()}
+                            </strong>
+
+                        </div>
+
+                    </div>
+                `;
+
+
+                div.innerHTML = mealHTML;
+
+
+            } else {
+
+                // =============================================
+                // NORMAL FOOD CARD ITEM
+                // =============================================
+
+                itemCount += item.quantity;
+
+
+                div.innerHTML = `
+                    <div class="cart-item-row">
+
+                        <span class="food-name">
+                            ${item.name}
+                        </span>
+
+                        <span class="food-qty">
+                            ×${item.quantity}
+                        </span>
+
+                        <span>
+                            ₦${(
+                                item.price *
+                                item.quantity
+                            ).toLocaleString()}
+                        </span>
 
                         <button
-                            class="remove-meal"
+                            type="button"
+                            class="remove-btn"
                             data-index="${index}">
                             ❌
                         </button>
 
                     </div>
-            `;
-
-
-            item.items.forEach(function(food){
-
-                mealHTML += `
-                    <div class="cart-meal-item">
-
-                        <span>
-                            ${food.name} ×${food.quantity}
-                        </span>
-
-                        <span>
-                            ₦${(food.price * food.quantity).toLocaleString()}
-                        </span>
-
-                    </div>
                 `;
 
-            });
-
-
-            mealHTML += `
-
-                    <div class="cart-meal-total">
-
-                        <strong>
-                            Meal Total:
-                            ₦${item.price.toLocaleString()}
-                        </strong>
-
-                    </div>
-
-                </div>
-
-            `;
-
-
-            div.innerHTML = mealHTML;
-
-
-        }else{
-
-            // OLD FOOD CARD ITEM
-
-            itemCount += item.quantity;
-
-
-            div.innerHTML = `
-
-                <div class="cart-item-row">
-
-                    <span class="food-name">
-                        ${item.name}
-                    </span>
-
-                    <span class="food-qty">
-                        ×${item.quantity}
-                    </span>
-
-                    <span>
-                        ₦${(item.price * item.quantity).toLocaleString()}
-                    </span>
-
-                    <button
-                        class="remove-btn"
-                        data-index="${index}">
-                        ❌
-                    </button>
-
-                </div>
-
-            `;
-
-        }
-
-
-        cartItems.appendChild(div);
-
-    });
-
-
-    // EMPTY CART
-
-    if(cart.length === 0){
-
-        cartItems.innerHTML = "Your cart is empty";
-
-    }
-
-
-    // UPDATE CART NUMBER
-
-    if(cartCount){
-
-        cartCount.textContent = itemCount;
-
-    }
-
-
-    // UPDATE TOTAL
-
-    if(cartTotal){
-
-        cartTotal.textContent =
-            total.toLocaleString();
-
-    }
-
-
-    // =========================
-    // REMOVE COMPLETE MEAL
-    // =========================
-
-    const removeMeals =
-        document.querySelectorAll(".remove-meal");
-
-
-    removeMeals.forEach(function(button){
-
-        button.addEventListener("click", function(){
-
-            const index =
-                Number(button.dataset.index);
-
-            if(cart[index]){
-
-                total -= cart[index].price;
-
-                cart.splice(index, 1);
-
-                updateCart();
-
             }
+
+
+            cartItems.appendChild(div);
 
         });
 
-    });
 
-
-    // =========================
-    // REMOVE OLD CART ITEM
-    // =========================
-
-    const removeButtons =
-        document.querySelectorAll(".remove-btn");
-
-
-    removeButtons.forEach(function(button){
-
-        button.addEventListener("click", function(){
-
-            const index =
-                Number(button.dataset.index);
-
-
-            if(cart[index]){
-
-                total -=
-                    cart[index].price *
-                    cart[index].quantity;
-
-
-                cart.splice(index, 1);
-
-                updateCart();
-
-            }
-
-        });
-
-    });
-
-}
-
-// =========================
-// FORCE CART TO RIGHT SIDE (MOBILE FIX)
-// =========================
-
-function forceOpenCart() {
-    if (!cartBox) return;
-
-    // Show the cart
-    cartBox.style.display = "block";
-
-    // 🟢 CHECK IF MOBILE (768px and below)
-    if (window.innerWidth <= 768) {
-        // Override ALL positioning to glue it to the viewport's right side
-        cartBox.style.position = "fixed";
-        cartBox.style.top = "120px";          // Adjust if your nav is taller/shorter
-        cartBox.style.right = "10px";
-        cartBox.style.left = "auto";
-        cartBox.style.width = "92vw";
-        cartBox.style.maxWidth = "420px";
-        cartBox.style.maxHeight = "80vh";
-        cartBox.style.zIndex = "999999";
-        cartBox.style.background = "#ffffff";
-        cartBox.style.padding = "20px";
-        cartBox.style.borderRadius = "12px";
-        cartBox.style.boxShadow = "0 15px 40px rgba(0,0,0,0.3)";
-        cartBox.style.overflowY = "auto";
-        cartBox.style.boxSizing = "border-box";
-    } else {
-        // Desktop: remove inline styles so CSS takes over
-        cartBox.style.position = "";
-        cartBox.style.top = "";
-        cartBox.style.right = "";
-        cartBox.style.left = "";
-        cartBox.style.width = "";
-        cartBox.style.maxWidth = "";
-        cartBox.style.maxHeight = "";
-        cartBox.style.zIndex = "";
-        cartBox.style.background = "";
-        cartBox.style.padding = "";
-        cartBox.style.borderRadius = "";
-        cartBox.style.boxShadow = "";
-        cartBox.style.overflowY = "";
-    }
-}
-
-function closeCart() {
-    if (cartBox) {
-        cartBox.style.display = "none";
-    }
-}
-
-// =========================
-// CART TOGGLE (UPDATED)
-// =========================
-
-if (cartIcon && cartBox) {
-
-    cartIcon.addEventListener("click", function(e) {
-        e.stopPropagation();
-
-        if (cartBox.style.display === "block") {
-            closeCart();
-        } else {
-            forceOpenCart();  // Uses the mobile-aware function
-        }
-    });
-
-    // Clicking inside the cart should NOT close it
-    cartBox.addEventListener("click", function(e) {
-        e.stopPropagation();
-    });
-
-    // Clicking anywhere outside the cart closes it
-    document.addEventListener("click", function(e) {
-        if (cartBox.style.display === "block" &&
-            !cartBox.contains(e.target) &&
-            !cartIcon.contains(e.target)) {
-            closeCart();
-        }
-    });
-
-}
-
-
-    // =========================
-// CHECKOUT
-// =========================
-
-const checkoutBtn = document.querySelector("#checkout-btn");
-const checkoutForm = document.querySelector("#checkout-form");
-
-if (checkoutBtn && checkoutForm) {
-
-    checkoutBtn.addEventListener("click", function(e) {
-
-        e.stopPropagation();
-
-        // Cart is empty
-        if (cart.length === 0) {
-            alert("Your cart is empty!");
-            return;
-        }
-
-        // Open checkout form
-        if (checkoutForm.style.display === "block") {
-            checkoutForm.style.display = "none";
-        } else {
-            checkoutForm.style.display = "block";
-        }
-
-    });
-
-}
-
-// =========================
-// PAYMENT VARIABLES
-// =========================
-
-const placeOrder = document.querySelector("#place-order");
-const paymentPopup = document.querySelector("#payment-popup");
-const paymentCheck = document.querySelector("#payment-check");
-const paymentDone = document.querySelector("#payment-done");
-const copyAccount = document.querySelector("#copy-account");
-const accountNumber = document.querySelector("#account-number");
-
-let orderMessage = "";
-
-// =========================
-// RECEIPT ELEMENTS
-// =========================
-
-const receiptContainer = document.querySelector("#receipt");
-const receiptOrderNumber = document.querySelector("#receipt-order-number");
-const receiptDate = document.querySelector("#receipt-date");
-const receiptCustomerName = document.querySelector("#receipt-customer-name");
-const receiptCustomerPhone = document.querySelector("#receipt-customer-phone");
-const receiptCustomerAddress = document.querySelector("#receipt-customer-address");
-const receiptItems = document.querySelector("#receipt-items");
-const receiptTotal = document.querySelector("#receipt-total");
-const downloadReceipt = document.querySelector("#download-receipt");
-
-// =========================
-// PROCEED TO PAYMENT
-// =========================
-
-if (placeOrder) {
-
-    placeOrder.addEventListener("click", function(e) {
-
-        e.preventDefault();
-
-        const name =
-            document.querySelector("#customer-name").value.trim();
-
-        const phone =
-            document.querySelector("#customer-phone").value.trim();
-
-        const address =
-            document.querySelector("#customer-address").value.trim();
-
-
-        // Make sure cart isn't empty
+        // -----------------------------------------------------
+        // EMPTY CART
+        // -----------------------------------------------------
 
         if (cart.length === 0) {
 
-            alert("Your cart is empty!");
-
-            return;
-
-        }
-
-
-        // Make sure customer details are filled
-
-        if (name === "" || phone === "" || address === "") {
-
-            alert("Please fill in all your details.");
-
-            return;
+            cartItems.innerHTML =
+                "Your cart is empty";
 
         }
 
 
-        // Build WhatsApp order message
+        // =====================================================
+        // DELIVERY
+        // =====================================================
 
-        let items = "";
+        deliveryFee =
+            calculateDelivery(subtotal);
 
-        cart.forEach(function(item, index) {
 
-            if (item.type === "meal") {
+        // =====================================================
+        // GRAND TOTAL
+        // =====================================================
 
-                items += `\n🍛 MEAL ${index + 1}\n`;
+        const grandTotal =
+            subtotal + deliveryFee;
 
-                item.items.forEach(function(food) {
 
-                    const foodTotal =
-                        food.price * food.quantity;
+        // -----------------------------------------------------
+        // CART COUNT
+        // -----------------------------------------------------
 
-                    items +=
-                        `• ${food.name} ×${food.quantity} — ₦${foodTotal.toLocaleString()}\n`;
+        if (cartCount) {
 
-                });
+            cartCount.textContent =
+                itemCount;
 
-                items +=
-                    `Meal Total: ₦${item.price.toLocaleString()}\n`;
+        }
+
+
+        // -----------------------------------------------------
+        // CART TOTAL
+        // -----------------------------------------------------
+
+        if (cartTotal) {
+
+            cartTotal.textContent =
+                grandTotal.toLocaleString();
+
+        }
+
+
+        // =====================================================
+        // DELIVERY DISPLAY
+        // =====================================================
+
+        let deliveryDisplay =
+            document.querySelector("#cart-delivery");
+
+
+        if (!deliveryDisplay && cartItems.parentNode) {
+
+            deliveryDisplay =
+                document.createElement("div");
+
+            deliveryDisplay.id =
+                "cart-delivery";
+
+            deliveryDisplay.style.marginTop =
+                "10px";
+
+            deliveryDisplay.style.padding =
+                "10px 0";
+
+            deliveryDisplay.style.borderTop =
+                "1px solid #ddd";
+
+
+            const totalElement =
+                cartTotal
+                    ? cartTotal.closest("h4")
+                    : null;
+
+
+            if (totalElement) {
+
+                totalElement.parentNode.insertBefore(
+                    deliveryDisplay,
+                    totalElement
+                );
 
             } else {
 
-                const itemTotal =
-                    item.price * item.quantity;
-
-                items +=
-                    `• ${item.name} ×${item.quantity} — ₦${itemTotal.toLocaleString()}\n`;
+                cartItems.parentNode.appendChild(
+                    deliveryDisplay
+                );
 
             }
-
-        });
-
-
-        orderMessage = `Hello Beta Food! 🍛
-
-*NEW ORDER*
-
-👤 Customer: ${name}
-
-📞 Phone: ${phone}
-
-📍 Address:
-${address}
-
-🛒 ORDER:
-${items}
-
-💰 TOTAL: ₦${total.toLocaleString()}
-`;
-
-
-        // Hide checkout form
-
-        checkoutForm.style.display = "none";
-
-
-        // Show payment popup
-
-        if (paymentPopup) {
-
-            paymentPopup.style.display = "block";
 
         }
 
 
-        // Reset payment confirmation
+        if (deliveryDisplay) {
+
+            if (subtotal === 0) {
+
+                deliveryDisplay.innerHTML = "";
+
+            } else if (deliveryFee === 0) {
+
+                deliveryDisplay.innerHTML = `
+                    🚚 Delivery:
+                    <strong>FREE</strong>
+                `;
+
+            } else {
+
+                deliveryDisplay.innerHTML = `
+                    🚚 Delivery:
+                    <strong>
+                        ₦${deliveryFee.toLocaleString()}
+                    </strong>
+                `;
+
+            }
+
+        }
+
+
+        // =====================================================
+        // FREE DELIVERY MESSAGE
+        // =====================================================
+
+        let freeDeliveryMessage =
+            document.querySelector(
+                "#free-delivery-message"
+            );
+
+
+        if (
+            !freeDeliveryMessage &&
+            cartItems.parentNode
+        ) {
+
+            freeDeliveryMessage =
+                document.createElement("p");
+
+            freeDeliveryMessage.id =
+                "free-delivery-message";
+
+            freeDeliveryMessage.style.fontSize =
+                "13px";
+
+            freeDeliveryMessage.style.marginTop =
+                "8px";
+
+
+            const totalElement =
+                cartTotal
+                    ? cartTotal.closest("h4")
+                    : null;
+
+
+            if (totalElement) {
+
+                totalElement.parentNode.insertBefore(
+                    freeDeliveryMessage,
+                    totalElement
+                );
+
+            } else {
+
+                cartItems.parentNode.appendChild(
+                    freeDeliveryMessage
+                );
+
+            }
+
+        }
+
+
+        if (freeDeliveryMessage) {
+
+            if (subtotal === 0) {
+
+                freeDeliveryMessage.textContent = "";
+
+            } else if (
+                subtotal >= FREE_DELIVERY_THRESHOLD
+            ) {
+
+                freeDeliveryMessage.textContent =
+                    "🎉 You qualify for FREE delivery!";
+
+            } else {
+
+                const remaining =
+                    FREE_DELIVERY_THRESHOLD - subtotal;
+
+                freeDeliveryMessage.textContent =
+                    `Add ₦${remaining.toLocaleString()} more ` +
+                    `to get FREE delivery! 🚚`;
+
+            }
+
+        }
+
+
+        // =====================================================
+        // REMOVE COMPLETE MEAL
+        // =====================================================
+
+        const removeMeals =
+            document.querySelectorAll(".remove-meal");
+
+
+        removeMeals.forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                function (e) {
+
+                    e.stopPropagation();
+
+                    const index =
+                        Number(button.dataset.index);
+
+
+                    if (cart[index]) {
+
+                        cart.splice(index, 1);
+
+                        updateCart();
+
+                    }
+
+                }
+            );
+
+        });
+
+
+        // =====================================================
+        // REMOVE NORMAL CART ITEM
+        // =====================================================
+
+        const removeButtons =
+            document.querySelectorAll(".remove-btn");
+
+
+        removeButtons.forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                function (e) {
+
+                    e.stopPropagation();
+
+                    const index =
+                        Number(button.dataset.index);
+
+
+                    if (cart[index]) {
+
+                        cart.splice(index, 1);
+
+                        updateCart();
+
+                    }
+
+                }
+            );
+
+        });
+
+    }
+
+
+    // =========================================================
+    // FORCE CART OPEN
+    // =========================================================
+
+    function forceOpenCart() {
+
+        if (!cartBox) {
+            return;
+        }
+
+
+        cartBox.style.display = "block";
+
+
+        if (window.innerWidth <= 768) {
+
+            cartBox.style.position = "fixed";
+            cartBox.style.top = "120px";
+            cartBox.style.right = "10px";
+            cartBox.style.left = "auto";
+            cartBox.style.width = "92vw";
+            cartBox.style.maxWidth = "420px";
+            cartBox.style.maxHeight = "80vh";
+            cartBox.style.zIndex = "999999";
+            cartBox.style.background = "#ffffff";
+            cartBox.style.padding = "20px";
+            cartBox.style.borderRadius = "12px";
+            cartBox.style.boxShadow =
+                "0 15px 40px rgba(0,0,0,0.3)";
+            cartBox.style.overflowY = "auto";
+            cartBox.style.boxSizing = "border-box";
+
+        } else {
+
+            cartBox.style.position = "";
+            cartBox.style.top = "";
+            cartBox.style.right = "";
+            cartBox.style.left = "";
+            cartBox.style.width = "";
+            cartBox.style.maxWidth = "";
+            cartBox.style.maxHeight = "";
+            cartBox.style.zIndex = "";
+            cartBox.style.background = "";
+            cartBox.style.padding = "";
+            cartBox.style.borderRadius = "";
+            cartBox.style.boxShadow = "";
+            cartBox.style.overflowY = "";
+
+        }
+
+    }
+
+
+    // =========================================================
+    // CLOSE CART
+    // =========================================================
+
+    function closeCart() {
+
+        if (cartBox) {
+            cartBox.style.display = "none";
+        }
+
+    }
+
+
+    // =========================================================
+    // CART TOGGLE
+    // =========================================================
+
+    if (cartIcon && cartBox) {
+
+        cartIcon.addEventListener(
+            "click",
+            function (e) {
+
+                e.stopPropagation();
+
+                if (
+                    cartBox.style.display === "block"
+                ) {
+
+                    closeCart();
+
+                } else {
+
+                    forceOpenCart();
+
+                }
+
+            }
+        );
+
+
+        // Clicking inside cart doesn't close it
+        cartBox.addEventListener(
+            "click",
+            function (e) {
+                e.stopPropagation();
+            }
+        );
+
+
+        // Clicking outside closes cart
+        document.addEventListener(
+            "click",
+            function (e) {
+
+                if (
+                    cartBox.style.display === "block" &&
+                    !cartBox.contains(e.target) &&
+                    !cartIcon.contains(e.target)
+                ) {
+
+                    closeCart();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // CHECKOUT
+    // =========================================================
+
+    const checkoutBtn =
+        document.querySelector("#checkout-btn");
+
+    const checkoutForm =
+        document.querySelector("#checkout-form");
+
+
+    if (checkoutBtn && checkoutForm) {
+
+        checkoutBtn.addEventListener(
+            "click",
+            function (e) {
+
+                e.stopPropagation();
+
+
+                if (cart.length === 0) {
+
+                    alert("Your cart is empty!");
+
+                    return;
+
+                }
+
+
+                if (
+                    checkoutForm.style.display ===
+                    "block"
+                ) {
+
+                    checkoutForm.style.display =
+                        "none";
+
+                } else {
+
+                    checkoutForm.style.display =
+                        "block";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // PAYMENT VARIABLES
+    // =========================================================
+
+    const placeOrder =
+        document.querySelector("#place-order");
+
+    const paymentPopup =
+        document.querySelector("#payment-popup");
+
+    const paymentCheck =
+        document.querySelector("#payment-check");
+
+    const paymentDone =
+        document.querySelector("#payment-done");
+
+    const copyAccount =
+        document.querySelector("#copy-account");
+
+    const accountNumber =
+        document.querySelector("#account-number");
+
+
+    let orderMessage = "";
+
+
+    // =========================================================
+    // RECEIPT ELEMENTS
+    // =========================================================
+
+    const receiptContainer =
+        document.querySelector("#receipt");
+
+    const receiptOrderNumber =
+        document.querySelector(
+            "#receipt-order-number"
+        );
+
+    const receiptDate =
+        document.querySelector("#receipt-date");
+
+    const receiptCustomerName =
+        document.querySelector(
+            "#receipt-customer-name"
+        );
+
+    const receiptCustomerPhone =
+        document.querySelector(
+            "#receipt-customer-phone"
+        );
+
+    const receiptCustomerAddress =
+        document.querySelector(
+            "#receipt-customer-address"
+        );
+
+    const receiptItems =
+        document.querySelector("#receipt-items");
+
+    const receiptTotal =
+        document.querySelector("#receipt-total");
+
+    const downloadReceipt =
+        document.querySelector("#download-receipt");
+
+
+    // =========================================================
+    // PROCEED TO PAYMENT
+    // =========================================================
+
+    if (placeOrder) {
+
+        placeOrder.addEventListener(
+            "click",
+            function (e) {
+
+                e.preventDefault();
+
+
+                const nameInput =
+                    document.querySelector(
+                        "#customer-name"
+                    );
+
+                const phoneInput =
+                    document.querySelector(
+                        "#customer-phone"
+                    );
+
+                const addressInput =
+                    document.querySelector(
+                        "#customer-address"
+                    );
+
+
+                const name =
+                    nameInput
+                        ? nameInput.value.trim()
+                        : "";
+
+                const phone =
+                    phoneInput
+                        ? phoneInput.value.trim()
+                        : "";
+
+                const address =
+                    addressInput
+                        ? addressInput.value.trim()
+                        : "";
+
+
+                // -------------------------------------------------
+                // CART CHECK
+                // -------------------------------------------------
+
+                if (cart.length === 0) {
+
+                    alert(
+                        "Your cart is empty!"
+                    );
+
+                    return;
+
+                }
+
+
+                // -------------------------------------------------
+                // CUSTOMER DETAILS CHECK
+                // -------------------------------------------------
+
+                if (
+                    name === "" ||
+                    phone === "" ||
+                    address === ""
+                ) {
+
+                    alert(
+                        "Please fill in all your details."
+                    );
+
+                    return;
+
+                }
+
+
+                // =================================================
+                // CALCULATE FINAL TOTAL
+                // =================================================
+
+                const subtotal =
+                    calculateCartSubtotal();
+
+                deliveryFee =
+                    calculateDelivery(subtotal);
+
+                const grandTotal =
+                    subtotal + deliveryFee;
+
+
+                // =================================================
+                // BUILD WHATSAPP ORDER MESSAGE
+                // =================================================
+
+                let items = "";
+
+
+                cart.forEach(function (item, index) {
+
+                    if (item.type === "meal") {
+
+                        items +=
+                            `\n🍛 MEAL ${index + 1}\n`;
+
+
+                        item.items.forEach(
+                            function (food) {
+
+                                const foodTotal =
+                                    food.price *
+                                    food.quantity;
+
+
+                                items +=
+                                    `• ${food.name} ×${food.quantity} — ` +
+                                    `₦${foodTotal.toLocaleString()}\n`;
+
+                            }
+                        );
+
+
+                        items +=
+                            `Meal Total: ₦${item.price.toLocaleString()}\n`;
+
+
+                    } else {
+
+                        const itemTotal =
+                            item.price *
+                            item.quantity;
+
+
+                        items +=
+                            `• ${item.name} ×${item.quantity} — ` +
+                            `₦${itemTotal.toLocaleString()}\n`;
+
+                    }
+
+                });
+
+
+                // =================================================
+                // WHATSAPP MESSAGE
+                // =================================================
+
+                orderMessage =
+                    `Hello Beta Food! 🍛\n\n` +
+                    `*NEW ORDER*\n\n` +
+                    `👤 Customer: ${name}\n\n` +
+                    `📞 Phone: ${phone}\n\n` +
+                    `📍 Address:\n${address}\n\n` +
+                    `🛒 ORDER:\n${items}\n` +
+                    `\n💵 SUBTOTAL: ₦${subtotal.toLocaleString()}\n` +
+                    `🚚 DELIVERY: ${
+                        deliveryFee === 0
+                            ? "FREE"
+                            : "₦" +
+                              deliveryFee.toLocaleString()
+                    }\n` +
+                    `💰 TOTAL: ₦${grandTotal.toLocaleString()}`;
+
+
+                // =================================================
+                // HIDE CHECKOUT
+                // =================================================
+
+                if (checkoutForm) {
+                    checkoutForm.style.display =
+                        "none";
+                }
+
+
+                // =================================================
+                // SHOW PAYMENT POPUP
+                // =================================================
+
+                if (paymentPopup) {
+
+                    paymentPopup.style.display =
+                        "block";
+
+                }
+
+
+                // =================================================
+                // RESET PAYMENT CONFIRMATION
+                // =================================================
+
+                if (paymentCheck) {
+
+                    paymentCheck.checked =
+                        false;
+
+                }
+
+
+                if (paymentDone) {
+
+                    paymentDone.disabled =
+                        true;
+
+                    paymentDone.style.opacity =
+                        "0.5";
+
+                    paymentDone.style.pointerEvents =
+                        "none";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // COPY ACCOUNT NUMBER
+    // =========================================================
+
+    if (copyAccount && accountNumber) {
+
+        copyAccount.addEventListener(
+            "click",
+            function () {
+
+                const text =
+                    accountNumber.textContent.trim();
+
+
+                if (
+                    navigator.clipboard &&
+                    navigator.clipboard.writeText
+                ) {
+
+                    navigator.clipboard
+                        .writeText(text)
+                        .then(function () {
+
+                            alert(
+                                "Account number copied successfully!"
+                            );
+
+                        })
+                        .catch(function () {
+
+                            fallbackCopy(text);
+
+                        });
+
+                } else {
+
+                    fallbackCopy(text);
+
+                }
+
+            }
+        );
+
+    }
+
+
+    function fallbackCopy(text) {
+
+        const textArea =
+            document.createElement("textarea");
+
+        textArea.value = text;
+
+        document.body.appendChild(
+            textArea
+        );
+
+        textArea.select();
+
+        document.execCommand("copy");
+
+        document.body.removeChild(
+            textArea
+        );
+
+        alert(
+            "Account number copied successfully!"
+        );
+
+    }
+
+
+    // =========================================================
+    // ENABLE PAYMENT BUTTON
+    // =========================================================
+
+    if (paymentCheck && paymentDone) {
+
+        paymentCheck.addEventListener(
+            "change",
+            function () {
+
+                if (paymentCheck.checked) {
+
+                    paymentDone.disabled =
+                        false;
+
+                    paymentDone.style.opacity =
+                        "1";
+
+                    paymentDone.style.pointerEvents =
+                        "auto";
+
+                } else {
+
+                    paymentDone.disabled =
+                        true;
+
+                    paymentDone.style.opacity =
+                        "0.5";
+
+                    paymentDone.style.pointerEvents =
+                        "none";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // SEND TO WHATSAPP
+    // =========================================================
+
+    function sendWhatsAppMessage() {
+
+        if (
+            !orderMessage ||
+            orderMessage === ""
+        ) {
+
+            alert(
+                "Please place an order first."
+            );
+
+            return;
+
+        }
+
+
+        const whatsappNumber =
+            "2349169452392";
+
+
+        const whatsappURL =
+            "https://wa.me/" +
+            whatsappNumber +
+            "?text=" +
+            encodeURIComponent(
+                orderMessage +
+                "\n\n" +
+                "✅ I have completed payment." +
+                "\n\n" +
+                "I am about to attach my payment receipt."
+            );
+
+
+        window.open(
+            whatsappURL,
+            "_blank"
+        );
+
+
+        // =====================================================
+        // RESET EVERYTHING
+        // =====================================================
+
+        cart = [];
+
+        deliveryFee = 0;
+
+        updateCart();
+
+
+        if (paymentPopup) {
+
+            paymentPopup.style.display =
+                "none";
+
+        }
+
+
+        if (checkoutForm) {
+
+            checkoutForm.style.display =
+                "none";
+
+        }
+
 
         if (paymentCheck) {
 
-            paymentCheck.checked = false;
+            paymentCheck.checked =
+                false;
 
         }
 
 
         if (paymentDone) {
 
-            paymentDone.disabled = true;
-            paymentDone.style.opacity = "0.5";
-            paymentDone.style.pointerEvents = "none";
+            paymentDone.disabled =
+                true;
+
+            paymentDone.style.opacity =
+                "0.5";
+
+            paymentDone.style.pointerEvents =
+                "none";
 
         }
 
-    });
 
-}
+        const customerName =
+            document.querySelector(
+                "#customer-name"
+            );
 
-    // =========================
-    // COPY ACCOUNT NUMBER
-    // =========================
+        const customerPhone =
+            document.querySelector(
+                "#customer-phone"
+            );
 
-    if (copyAccount && accountNumber) {
-        copyAccount.addEventListener("click", function(){
-            navigator.clipboard.writeText(accountNumber.textContent).then(function() {
-                alert("Account number copied successfully!");
-            }).catch(function() {
-                const textArea = document.createElement("textarea");
-                textArea.value = accountNumber.textContent;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand("copy");
-                document.body.removeChild(textArea);
-                alert("Account number copied successfully!");
-            });
-        });
+        const customerAddress =
+            document.querySelector(
+                "#customer-address"
+            );
+
+
+        if (customerName) {
+            customerName.value = "";
+        }
+
+        if (customerPhone) {
+            customerPhone.value = "";
+        }
+
+        if (customerAddress) {
+            customerAddress.value = "";
+        }
+
+
+        alert(
+            "Thank you! Kindly attach your payment receipt in WhatsApp and send it."
+        );
+
     }
 
 
+    // =========================================================
+    // PAYMENT BUTTON
+    // =========================================================
 
-    // =========================
-    // ENABLE PAYMENT BUTTON
-    // =========================
+    if (paymentDone) {
 
-    if (paymentCheck && paymentDone) {
-        paymentCheck.addEventListener("change", function(){
-            if(paymentCheck.checked){
-                paymentDone.disabled = false;
-                paymentDone.style.opacity = "1";
-                paymentDone.style.pointerEvents = "auto";
-            }else{
-                paymentDone.disabled = true;
-                paymentDone.style.opacity = "0.5";
-                paymentDone.style.pointerEvents = "none";
+        paymentDone.addEventListener(
+            "click",
+            function (e) {
+
+                e.preventDefault();
+
+                sendWhatsAppMessage();
+
             }
-        });
+        );
+
     }
 
 
-    
+    // =========================================================
+    // DARK MODE
+    // =========================================================
 
-    // =========================
-    // SEND TO WHATSAPP
-    // =========================
+    const themeToggle =
+        document.querySelector(
+            "#theme-toggle"
+        );
 
-    function sendWhatsAppMessage() {
-        if (!orderMessage || orderMessage === "") {
-            alert("Please place an order first.");
+
+    if (themeToggle) {
+
+        if (
+            localStorage.getItem("theme") ===
+            "dark"
+        ) {
+
+            document.body.classList.add(
+                "dark"
+            );
+
+            themeToggle.innerHTML =
+                '<i class="fa-solid fa-sun"></i>';
+
+        }
+
+
+        themeToggle.addEventListener(
+            "click",
+            function () {
+
+                document.body.classList.toggle(
+                    "dark"
+                );
+
+
+                if (
+                    document.body.classList.contains(
+                        "dark"
+                    )
+                ) {
+
+                    localStorage.setItem(
+                        "theme",
+                        "dark"
+                    );
+
+                    themeToggle.innerHTML =
+                        '<i class="fa-solid fa-sun"></i>';
+
+                } else {
+
+                    localStorage.setItem(
+                        "theme",
+                        "light"
+                    );
+
+                    themeToggle.innerHTML =
+                        '<i class="fa-solid fa-moon"></i>';
+
+                }
+
+
+                fixPlusButtons();
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // FIX PLUS BUTTONS IN DARK MODE
+    // =========================================================
+
+    function fixPlusButtons() {
+
+        const isDark =
+            document.body.classList.contains(
+                "dark"
+            );
+
+
+        const plusButtons =
+            document.querySelectorAll(
+                ".quantity-plus"
+            );
+
+
+        plusButtons.forEach(
+            function (btn) {
+
+                if (isDark) {
+
+                    btn.style.backgroundColor =
+                        "#4CAF50";
+
+                    btn.style.borderColor =
+                        "#4CAF50";
+
+                    btn.style.color =
+                        "#ffffff";
+
+                } else {
+
+                    btn.style.backgroundColor =
+                        "";
+
+                    btn.style.borderColor =
+                        "";
+
+                    btn.style.color =
+                        "";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    setTimeout(
+        fixPlusButtons,
+        100
+    );
+
+    setTimeout(
+        fixPlusButtons,
+        300
+    );
+
+
+    // =========================================================
+    // GENERATE RESTAURANT RECEIPT
+    // =========================================================
+
+    window.generateReceipt =
+        function generateReceipt() {
+
+            if (!receiptContainer) {
+                return;
+            }
+
+
+            // -------------------------------------------------
+            // ORDER NUMBER
+            // -------------------------------------------------
+
+            const orderNumber =
+                "BF-" +
+                Date.now()
+                    .toString()
+                    .slice(-6);
+
+
+            // -------------------------------------------------
+            // DATE AND TIME
+            // -------------------------------------------------
+
+            const now =
+                new Date();
+
+
+            const date =
+                now.toLocaleDateString(
+                    "en-NG",
+                    {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric"
+                    }
+                );
+
+
+            const time =
+                now.toLocaleTimeString(
+                    "en-NG",
+                    {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                );
+
+
+            // -------------------------------------------------
+            // CUSTOMER DETAILS
+            // -------------------------------------------------
+
+            const customerName =
+                document.querySelector(
+                    "#customer-name"
+                )?.value.trim() || "";
+
+
+            const customerPhone =
+                document.querySelector(
+                    "#customer-phone"
+                )?.value.trim() || "";
+
+
+            const customerAddress =
+                document.querySelector(
+                    "#customer-address"
+                )?.value.trim() || "";
+
+
+            // -------------------------------------------------
+            // PUT INFORMATION INTO RECEIPT
+            // -------------------------------------------------
+
+            if (receiptOrderNumber) {
+
+                receiptOrderNumber.textContent =
+                    orderNumber;
+
+            }
+
+
+            if (receiptDate) {
+
+                receiptDate.textContent =
+                    date +
+                    " • " +
+                    time;
+
+            }
+
+
+            if (receiptCustomerName) {
+
+                receiptCustomerName.textContent =
+                    customerName;
+
+            }
+
+
+            if (receiptCustomerPhone) {
+
+                receiptCustomerPhone.textContent =
+                    customerPhone;
+
+            }
+
+
+            if (receiptCustomerAddress) {
+
+                receiptCustomerAddress.textContent =
+                    customerAddress;
+
+            }
+
+
+            // -------------------------------------------------
+            // CLEAR OLD RECEIPT ITEMS
+            // -------------------------------------------------
+
+            if (receiptItems) {
+
+                receiptItems.innerHTML = "";
+
+
+                // -------------------------------------------------
+                // ADD CART ITEMS
+                // -------------------------------------------------
+
+                cart.forEach(function (item) {
+
+                    if (
+                        item.type === "meal"
+                    ) {
+
+                        const mealHeading =
+                            document.createElement(
+                                "div"
+                            );
+
+                        mealHeading.style.fontWeight =
+                            "600";
+
+                        mealHeading.style.marginTop =
+                            "12px";
+
+                        mealHeading.textContent =
+                            "🍛 Meal";
+
+                        receiptItems.appendChild(
+                            mealHeading
+                        );
+
+
+                        item.items.forEach(
+                            function (food) {
+
+                                const row =
+                                    document.createElement(
+                                        "div"
+                                    );
+
+                                row.className =
+                                    "receipt-item";
+
+
+                                row.innerHTML = `
+                                    <span class="receipt-item-name">
+                                        ${food.name} ×${food.quantity}
+                                    </span>
+
+                                    <span class="receipt-item-price">
+                                        ₦${(
+                                            food.price *
+                                            food.quantity
+                                        ).toLocaleString()}
+                                    </span>
+                                `;
+
+
+                                receiptItems.appendChild(
+                                    row
+                                );
+
+                            }
+                        );
+
+
+                    } else {
+
+                        const row =
+                            document.createElement(
+                                "div"
+                            );
+
+                        row.className =
+                            "receipt-item";
+
+
+                        row.innerHTML = `
+                            <span class="receipt-item-name">
+                                ${item.name} ×${item.quantity}
+                            </span>
+
+                            <span class="receipt-item-price">
+                                ₦${(
+                                    item.price *
+                                    item.quantity
+                                ).toLocaleString()}
+                            </span>
+                        `;
+
+
+                        receiptItems.appendChild(
+                            row
+                        );
+
+                    }
+
+                });
+
+            }
+
+
+            // -------------------------------------------------
+            // RECEIPT TOTAL
+            // -------------------------------------------------
+
+            const finalSubtotal =
+                calculateCartSubtotal();
+
+            const finalDelivery =
+                calculateDelivery(finalSubtotal);
+
+            const finalGrandTotal =
+                finalSubtotal + finalDelivery;
+
+
+            if (receiptTotal) {
+
+                receiptTotal.textContent =
+                    finalGrandTotal.toLocaleString();
+
+            }
+
+
+            // -------------------------------------------------
+            // SHOW RECEIPT
+            // -------------------------------------------------
+
+            receiptContainer.style.display =
+                "block";
+
+        };
+
+
+    // =========================================================
+    // FLOATING ADD TO CART BUTTON
+    // =========================================================
+
+    (function () {
+
+        const originalBtn =
+            document.getElementById(
+                "add-built-meal"
+            );
+
+
+        if (!originalBtn) {
             return;
         }
 
-        const whatsappNumber = "2349169452392";
-        const whatsappURL = 
-            "https://wa.me/" + 
-            whatsappNumber + 
-            "?text=" + 
-            encodeURIComponent(
-                orderMessage + 
-                "\n\n✅ I have completed payment.\n\nI am about to attach my payment receipt."
+
+        let floatingBtn =
+            document.getElementById(
+                "floating-add-btn"
             );
 
-            
-        window.open(whatsappURL, "_blank");
 
-        // Reset everything
-        cart = [];
-        total = 0;
-        updateCart();
-
-        paymentPopup.style.display = "none";
-        checkoutForm.style.display = "none";
-
-        paymentCheck.checked = false;
-        paymentDone.disabled = true;
-        paymentDone.style.opacity = "0.5";
-        paymentDone.style.pointerEvents = "none";
-
-        document.querySelector("#customer-name").value = "";
-        document.querySelector("#customer-phone").value = "";
-        document.querySelector("#customer-address").value = "";
-
-        alert("Thank you! Kindly attach your payment receipt in WhatsApp and send it.");
-    }
-
-    // Attach click event to payment button (simple, no cloning)
-    if (paymentDone) {
-        paymentDone.addEventListener("click", function(e) {
-            e.preventDefault();
-            sendWhatsAppMessage();
-        });
-    }
-
-    // Also add a fallback using onclick (just in case)
-    if (paymentDone) {
-        paymentDone.onclick = function(e) {
-            e.preventDefault();
-            sendWhatsAppMessage();
-            return false;
-        };
-    }
-
-    console.log("✅ All event listeners attached.");
-
-
-// ==========================
-// DARK MODE
-// ==========================
-
-const themeToggle = document.querySelector("#theme-toggle");
-
-if(themeToggle){
-
-    if(localStorage.getItem("theme") === "dark"){
-
-        document.body.classList.add("dark");
-        themeToggle.innerHTML =
-        '<i class="fa-solid fa-sun"></i>';
-
-    }
-
-    themeToggle.addEventListener("click",function(){
-
-        document.body.classList.toggle("dark");
-
-        if(document.body.classList.contains("dark")){
-
-            localStorage.setItem("theme","dark");
-
-            themeToggle.innerHTML =
-            '<i class="fa-solid fa-sun"></i>';
-
-        }else{
-
-            localStorage.setItem("theme","light");
-
-            themeToggle.innerHTML =
-            '<i class="fa-solid fa-moon"></i>';
-
-        }
-
-    });
-
-}
-
-});
-
-window.addEventListener("load",function(){
-
-document.getElementById("loader").classList.add("hide");
-
-});
-
-// =========================
-// GENERATE RESTAURANT RECEIPT
-// =========================
-
-function generateReceipt() {
-
-    if (!receiptContainer) return;
-
-    // Order number
-    const orderNumber =
-        "BF-" + Date.now().toString().slice(-6);
-
-    // Date and time
-    const now = new Date();
-
-    const date =
-        now.toLocaleDateString("en-NG", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric"
-        });
-
-    const time =
-        now.toLocaleTimeString("en-NG", {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
-
-    // Customer details
-    const customerName =
-        document.querySelector("#customer-name").value.trim();
-
-    const customerPhone =
-        document.querySelector("#customer-phone").value.trim();
-
-    const customerAddress =
-        document.querySelector("#customer-address").value.trim();
-
-
-    // Put information into receipt
-
-    receiptOrderNumber.textContent = orderNumber;
-
-    receiptDate.textContent =
-        date + " • " + time;
-
-    receiptCustomerName.textContent =
-        customerName;
-
-    receiptCustomerPhone.textContent =
-        customerPhone;
-
-    receiptCustomerAddress.textContent =
-        customerAddress;
-
-
-    // Clear old receipt items
-
-    receiptItems.innerHTML = "";
-
-
-    // Add cart items
-
-    cart.forEach(function(item) {
-
-        if (item.type === "meal") {
-
-            // Meal heading
-
-            const mealHeading =
-                document.createElement("div");
-
-            mealHeading.style.fontWeight = "600";
-            mealHeading.style.marginTop = "12px";
-            mealHeading.textContent =
-                "🍛 Meal";
-
-            receiptItems.appendChild(mealHeading);
-
-
-            // Items inside meal
-
-            item.items.forEach(function(food) {
-
-                const row =
-                    document.createElement("div");
-
-                row.className =
-                    "receipt-item";
-
-                row.innerHTML = `
-
-                    <span class="receipt-item-name">
-                        ${food.name} ×${food.quantity}
-                    </span>
-
-                    <span class="receipt-item-price">
-                        ₦${(
-                            food.price *
-                            food.quantity
-                        ).toLocaleString()}
-                    </span>
-
-                `;
-
-                receiptItems.appendChild(row);
-
-            });
-
-
-        } else {
-
-            const row =
-                document.createElement("div");
-
-            row.className =
-                "receipt-item";
-
-            row.innerHTML = `
-
-                <span class="receipt-item-name">
-                    ${item.name} ×${item.quantity}
-                </span>
-
-                <span class="receipt-item-price">
-                    ₦${(
-                        item.price *
-                        item.quantity
-                    ).toLocaleString()}
-                </span>
-
-            `;
-
-            receiptItems.appendChild(row);
-
-        }
-
-    });
-
-
-    // Total
-
-    receiptTotal.textContent =
-        total.toLocaleString();
-
-
-    // Show receipt
-
-    receiptContainer.style.display =
-        "block";
-
-}
-
-// =========================================
-// FLOATING ADD TO CART - FINAL POLISHED
-// (Exactly as you described)
-// =========================================
-
-(function() {
-    'use strict';
-
-    document.addEventListener('DOMContentLoaded', function() {
-
-        const originalBtn = document.getElementById('add-built-meal');
-        if (!originalBtn) return;
-
-        // --- 1. Create the floating button ---
-        let floatingBtn = document.getElementById('floating-add-btn');
         if (!floatingBtn) {
-            floatingBtn = document.createElement('button');
-            floatingBtn.id = 'floating-add-btn';
-            floatingBtn.className = 'btn';
-            floatingBtn.textContent = '🛒 Add Meal to Cart';
 
-            floatingBtn.style.position = 'fixed';
-            floatingBtn.style.bottom = '30px';
-            floatingBtn.style.left = '50%';
-            floatingBtn.style.transform = 'translateX(-50%) translateY(20px) scale(0.9)';
-            floatingBtn.style.opacity = '0';
-            floatingBtn.style.pointerEvents = 'none';
-            floatingBtn.style.zIndex = '999999';
-            floatingBtn.style.width = '90%';
-            floatingBtn.style.maxWidth = '400px';
-            floatingBtn.style.padding = '16px 20px';
-            floatingBtn.style.borderRadius = '50px';
-            floatingBtn.style.boxShadow = '0 8px 30px rgba(0,0,0,0.3)';
-            floatingBtn.style.fontSize = '16px';
-            floatingBtn.style.fontWeight = '600';
-            floatingBtn.style.cursor = 'pointer';
-            floatingBtn.style.border = 'none';
-            floatingBtn.style.background = '#FF6B35';
-            floatingBtn.style.color = '#fff';
-            floatingBtn.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            floatingBtn.style.willChange = 'transform, opacity';
+            floatingBtn =
+                document.createElement(
+                    "button"
+                );
 
-            document.body.appendChild(floatingBtn);
+            floatingBtn.id =
+                "floating-add-btn";
+
+            floatingBtn.className =
+                "btn";
+
+            floatingBtn.textContent =
+                "🛒 Add Meal to Cart";
+
+
+            floatingBtn.style.position =
+                "fixed";
+
+            floatingBtn.style.bottom =
+                "30px";
+
+            floatingBtn.style.left =
+                "50%";
+
+            floatingBtn.style.transform =
+                "translateX(-50%) translateY(20px) scale(0.9)";
+
+            floatingBtn.style.opacity =
+                "0";
+
+            floatingBtn.style.pointerEvents =
+                "none";
+
+            floatingBtn.style.zIndex =
+                "999999";
+
+            floatingBtn.style.width =
+                "90%";
+
+            floatingBtn.style.maxWidth =
+                "400px";
+
+            floatingBtn.style.padding =
+                "16px 20px";
+
+            floatingBtn.style.borderRadius =
+                "50px";
+
+            floatingBtn.style.boxShadow =
+                "0 8px 30px rgba(0,0,0,0.3)";
+
+            floatingBtn.style.fontSize =
+                "16px";
+
+            floatingBtn.style.fontWeight =
+                "600";
+
+            floatingBtn.style.cursor =
+                "pointer";
+
+            floatingBtn.style.border =
+                "none";
+
+            floatingBtn.style.background =
+                "#FF6B35";
+
+            floatingBtn.style.color =
+                "#fff";
+
+            floatingBtn.style.transition =
+                "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)";
+
+            floatingBtn.style.willChange =
+                "transform, opacity";
+
+
+            document.body.appendChild(
+                floatingBtn
+            );
+
         }
 
-        // --- 2. Check if any item is selected ---
+
         function hasSelectedItems() {
-            const quantities = document.querySelectorAll('.quantity');
-            let total = 0;
-            quantities.forEach(function(el) {
-                total += parseInt(el.textContent || '0', 10);
-            });
-            return total > 0;
+
+            const quantities =
+                document.querySelectorAll(
+                    ".quantity"
+                );
+
+
+            let selectedTotal = 0;
+
+
+            quantities.forEach(
+                function (el) {
+
+                    selectedTotal +=
+                        parseInt(
+                            el.textContent || "0",
+                            10
+                        );
+
+                }
+            );
+
+
+            return selectedTotal > 0;
+
         }
 
-        // --- 3. Open the cart ---
+
         function openCart() {
-            const cartIcon = document.querySelector('.cart-icon');
-            if (cartIcon) cartIcon.click();
+
+            const icon =
+                document.querySelector(
+                    ".cart-icon"
+                );
+
+
+            if (icon) {
+                icon.click();
+            }
+
         }
 
-        // --- 4. Click handlers ---
+
         function handleAddToCart() {
-            setTimeout(openCart, 150);
+
+            setTimeout(
+                openCart,
+                150
+            );
+
         }
-        originalBtn.addEventListener('click', handleAddToCart);
-        floatingBtn.addEventListener('click', function() {
-            originalBtn.click();
-        });
 
-        // --- 5. State tracking (prevents vibration) ---
-        let isFloatingVisible = false;
 
-        // --- 6. MAIN LOGIC: Exactly what you described ---
+        originalBtn.addEventListener(
+            "click",
+            handleAddToCart
+        );
+
+
+        floatingBtn.addEventListener(
+            "click",
+            function () {
+
+                originalBtn.click();
+
+            }
+        );
+
+
+        let isFloatingVisible =
+            false;
+
+
         function updateFloatingButton() {
-            const rect = originalBtn.getBoundingClientRect();
-            const viewportHeight = window.innerHeight;
-            const hasItems = hasSelectedItems();
 
-            // 
-            // 🔍 SCROLL POSITION CHECK:
-            // - If the original button is ON-SCREEN → floating button DISABLES (hides).
-            // - If the original button is OFF-SCREEN → floating button APPEARS (shows).
-            // 
-            // This works for BOTH scrolling DOWN (past the button) 
-            // AND scrolling BACK UP (past the button again)!
-            // 
-            const isOriginalOnScreen = rect.bottom > 30 && rect.top < viewportHeight - 30;
-            const shouldShow = !isOriginalOnScreen && hasItems;
+            const rect =
+                originalBtn.getBoundingClientRect();
 
-            // ⭐ ONLY change the button if the state actually flips (no vibration!)
-            if (shouldShow === isFloatingVisible) return;
-            isFloatingVisible = shouldShow;
+
+            const viewportHeight =
+                window.innerHeight;
+
+
+            const hasItems =
+                hasSelectedItems();
+
+
+            const isOriginalOnScreen =
+                rect.bottom > 30 &&
+                rect.top <
+                    viewportHeight - 30;
+
+
+            const shouldShow =
+                !isOriginalOnScreen &&
+                hasItems;
+
+
+            if (
+                shouldShow ===
+                isFloatingVisible
+            ) {
+
+                return;
+
+            }
+
+
+            isFloatingVisible =
+                shouldShow;
+
 
             if (shouldShow) {
-                // 📌 SCROLLED PAST its original place → POP UP!
-                floatingBtn.style.pointerEvents = 'auto';
-                floatingBtn.style.opacity = '1';
-                floatingBtn.style.transform = 'translateX(-50%) translateY(0) scale(1)';
+
+                floatingBtn.style.pointerEvents =
+                    "auto";
+
+                floatingBtn.style.opacity =
+                    "1";
+
+                floatingBtn.style.transform =
+                    "translateX(-50%) translateY(0) scale(1)";
+
             } else {
-                // 📌 REACHED its original position → DISABLE (hide)!
-                floatingBtn.style.pointerEvents = 'none';
-                floatingBtn.style.opacity = '0';
-                floatingBtn.style.transform = 'translateX(-50%) translateY(20px) scale(0.9)';
+
+                floatingBtn.style.pointerEvents =
+                    "none";
+
+                floatingBtn.style.opacity =
+                    "0";
+
+                floatingBtn.style.transform =
+                    "translateX(-50%) translateY(20px) scale(0.9)";
+
             }
+
         }
 
-        // --- 7. Scroll listener (throttled to 50ms) ---
+
         let scrollTimeout;
-        window.addEventListener('scroll', function() {
-            if (scrollTimeout) return;
-            scrollTimeout = setTimeout(function() {
-                updateFloatingButton();
-                scrollTimeout = null;
-            }, 50);
-        });
 
-        // --- 8. Resize listener ---
-        let resizeTimeout;
-        window.addEventListener('resize', function() {
-            if (resizeTimeout) return;
-            resizeTimeout = setTimeout(function() {
-                updateFloatingButton();
-                resizeTimeout = null;
-            }, 100);
-        });
 
-        // --- 9. Watch + and - clicks ---
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.quantity-plus, .quantity-minus')) {
-                setTimeout(updateFloatingButton, 50);
-            }
-        });
+        window.addEventListener(
+            "scroll",
+            function () {
 
-        // --- 10. Run on load ---
-        setTimeout(updateFloatingButton, 100);
-        setTimeout(updateFloatingButton, 300);
-
-    });
-
-})();
-
-// =========================================
-// CUSTOMER REVIEWS SYSTEM (WITH DELETE)
-// =========================================
-
-(function() {
-    'use strict';
-
-    document.addEventListener('DOMContentLoaded', function() {
-
-        // --- 1. Star Rating Logic ---
-        const stars = document.querySelectorAll('.star');
-        let selectedRating = 0;
-        const ratingText = document.querySelector('.rating-text');
-
-        stars.forEach(function(star) {
-            star.addEventListener('click', function() {
-                selectedRating = parseInt(this.dataset.value);
-                updateStars(selectedRating);
-                
-                if (ratingText) {
-                    const messages = [
-                        '',
-                        '⭐ Poor - We\'ll do better!',
-                        '⭐⭐ Fair - Room for improvement!',
-                        '⭐⭐⭐ Good - Thank you!',
-                        '⭐⭐⭐⭐ Great - We appreciate you!',
-                        '⭐⭐⭐⭐⭐ Excellent - You made our day!'
-                    ];
-                    ratingText.textContent = messages[selectedRating] || 'Tap a star to rate';
-                    ratingText.style.color = '#FF6B35';
-                    ratingText.style.fontWeight = '600';
+                if (scrollTimeout) {
+                    return;
                 }
-            });
 
-            star.addEventListener('mouseenter', function() {
-                const value = parseInt(this.dataset.value);
-                updateStars(value);
-            });
 
-            star.addEventListener('mouseleave', function() {
-                updateStars(selectedRating);
-            });
-        });
+                scrollTimeout =
+                    setTimeout(
+                        function () {
+
+                            updateFloatingButton();
+
+                            scrollTimeout =
+                                null;
+
+                        },
+                        50
+                    );
+
+            }
+        );
+
+
+        let resizeTimeout;
+
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (resizeTimeout) {
+                    return;
+                }
+
+
+                resizeTimeout =
+                    setTimeout(
+                        function () {
+
+                            updateFloatingButton();
+
+                            resizeTimeout =
+                                null;
+
+                        },
+                        100
+                    );
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            function (e) {
+
+                if (
+                    e.target.closest(
+                        ".quantity-plus, .quantity-minus"
+                    )
+                ) {
+
+                    setTimeout(
+                        updateFloatingButton,
+                        50
+                    );
+
+                }
+
+            }
+        );
+
+
+        setTimeout(
+            updateFloatingButton,
+            100
+        );
+
+        setTimeout(
+            updateFloatingButton,
+            300
+        );
+
+    })();
+
+
+    // =========================================================
+    // CUSTOMER REVIEWS SYSTEM
+    // =========================================================
+
+    (function () {
+
+        const stars =
+            document.querySelectorAll(
+                ".star"
+            );
+
+
+        let selectedRating = 0;
+
+
+        const ratingText =
+            document.querySelector(
+                ".rating-text"
+            );
+
+
+        // -----------------------------------------------------
+        // STAR RATING
+        // -----------------------------------------------------
+
+        stars.forEach(
+            function (star) {
+
+                star.addEventListener(
+                    "click",
+                    function () {
+
+                        selectedRating =
+                            parseInt(
+                                this.dataset.value,
+                                10
+                            );
+
+
+                        updateStars(
+                            selectedRating
+                        );
+
+
+                        if (ratingText) {
+
+                            const messages = [
+                                "",
+                                "⭐ Poor - We'll do better!",
+                                "⭐⭐ Fair - Room for improvement!",
+                                "⭐⭐⭐ Good - Thank you!",
+                                "⭐⭐⭐⭐ Great - We appreciate you!",
+                                "⭐⭐⭐⭐⭐ Excellent - You made our day!"
+                            ];
+
+
+                            ratingText.textContent =
+                                messages[
+                                    selectedRating
+                                ] ||
+                                "Tap a star to rate";
+
+
+                            ratingText.style.color =
+                                "#FF6B35";
+
+                            ratingText.style.fontWeight =
+                                "600";
+
+                        }
+
+                    }
+                );
+
+
+                star.addEventListener(
+                    "mouseenter",
+                    function () {
+
+                        const value =
+                            parseInt(
+                                this.dataset.value,
+                                10
+                            );
+
+                        updateStars(value);
+
+                    }
+                );
+
+
+                star.addEventListener(
+                    "mouseleave",
+                    function () {
+
+                        updateStars(
+                            selectedRating
+                        );
+
+                    }
+                );
+
+            }
+        );
+
 
         function updateStars(rating) {
-            stars.forEach(function(star) {
-                const value = parseInt(star.dataset.value);
-                if (value <= rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
+
+            stars.forEach(
+                function (star) {
+
+                    const value =
+                        parseInt(
+                            star.dataset.value,
+                            10
+                        );
+
+
+                    if (value <= rating) {
+
+                        star.classList.add(
+                            "active"
+                        );
+
+                    } else {
+
+                        star.classList.remove(
+                            "active"
+                        );
+
+                    }
+
                 }
-            });
+            );
+
         }
 
-        // --- 2. Submit Review ---
-        const submitBtn = document.getElementById('submit-review');
-        if (!submitBtn) return;
 
-        submitBtn.addEventListener('click', function() {
-            const comment = document.getElementById('review-comment');
-            const nameInput = document.getElementById('review-name');
+        // -----------------------------------------------------
+        // SUBMIT REVIEW
+        // -----------------------------------------------------
 
-            if (selectedRating === 0) {
-                alert('Please select a star rating! ⭐');
-                return;
+        const submitBtn =
+            document.getElementById(
+                "submit-review"
+            );
+
+
+        if (!submitBtn) {
+            return;
+        }
+
+
+        submitBtn.addEventListener(
+            "click",
+            function () {
+
+                const comment =
+                    document.getElementById(
+                        "review-comment"
+                    );
+
+                const nameInput =
+                    document.getElementById(
+                        "review-name"
+                    );
+
+
+                if (selectedRating === 0) {
+
+                    alert(
+                        "Please select a star rating! ⭐"
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    !comment ||
+                    !comment.value.trim()
+                ) {
+
+                    alert(
+                        "Please write your review! 📝"
+                    );
+
+                    return;
+
+                }
+
+
+                const review = {
+
+                    rating:
+                        selectedRating,
+
+                    comment:
+                        comment.value.trim(),
+
+                    name:
+                        nameInput &&
+                        nameInput.value.trim()
+                            ? nameInput.value.trim()
+                            : "Anonymous",
+
+                    date:
+                        new Date().toLocaleDateString(
+                            "en-US",
+                            {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric"
+                            }
+                        ),
+
+                    id:
+                        Date.now()
+
+                };
+
+
+                saveReview(review);
+
+
+                comment.value = "";
+
+
+                if (nameInput) {
+                    nameInput.value = "";
+                }
+
+
+                selectedRating =
+                    0;
+
+
+                updateStars(0);
+
+
+                if (ratingText) {
+
+                    ratingText.textContent =
+                        "Tap a star to rate";
+
+                    ratingText.style.color =
+                        "#888";
+
+                    ratingText.style.fontWeight =
+                        "400";
+
+                }
+
+
+                displayReviews();
+
+
+                const btn =
+                    this;
+
+
+                const originalText =
+                    btn.textContent;
+
+
+                btn.textContent =
+                    "✅ Review Submitted!";
+
+                btn.style.background =
+                    "#28a745";
+
+
+                setTimeout(
+                    function () {
+
+                        btn.textContent =
+                            originalText;
+
+                        btn.style.background =
+                            "#FF6B35";
+
+                    },
+                    2000
+                );
+
             }
+        );
 
-            if (!comment.value.trim()) {
-                alert('Please write your review! 📝');
-                return;
-            }
 
-            const review = {
-                rating: selectedRating,
-                comment: comment.value.trim(),
-                name: nameInput.value.trim() || 'Anonymous',
-                date: new Date().toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                }),
-                id: Date.now()
-            };
+        // -----------------------------------------------------
+        // SAVE REVIEW
+        // -----------------------------------------------------
 
-            saveReview(review);
-            comment.value = '';
-            nameInput.value = '';
-            selectedRating = 0;
-            updateStars(0);
-            if (ratingText) {
-                ratingText.textContent = 'Tap a star to rate';
-                ratingText.style.color = '#888';
-                ratingText.style.fontWeight = '400';
-            }
-
-            displayReviews();
-
-            const btn = this;
-            const originalText = btn.textContent;
-            btn.textContent = '✅ Review Submitted!';
-            btn.style.background = '#28a745';
-            setTimeout(function() {
-                btn.textContent = originalText;
-                btn.style.background = '#FF6B35';
-            }, 2000);
-        });
-
-        // --- 3. Save to localStorage ---
         function saveReview(review) {
-            let reviews = JSON.parse(localStorage.getItem('betaFoodReviews') || '[]');
-            reviews.unshift(review);
-            localStorage.setItem('betaFoodReviews', JSON.stringify(reviews));
+
+            let reviews =
+                JSON.parse(
+                    localStorage.getItem(
+                        "betaFoodReviews"
+                    ) || "[]"
+                );
+
+
+            reviews.unshift(
+                review
+            );
+
+
+            localStorage.setItem(
+                "betaFoodReviews",
+                JSON.stringify(reviews)
+            );
+
         }
 
-        // --- 4. 🗑️ DELETE a review ---
+
+        // -----------------------------------------------------
+        // DELETE REVIEW
+        // -----------------------------------------------------
+
         function deleteReview(id) {
-            if (!confirm('Delete this review? This cannot be undone.')) return;
-            
-            let reviews = JSON.parse(localStorage.getItem('betaFoodReviews') || '[]');
-            reviews = reviews.filter(function(review) {
-                return review.id !== id;
-            });
-            localStorage.setItem('betaFoodReviews', JSON.stringify(reviews));
+
+            if (
+                !confirm(
+                    "Delete this review? This cannot be undone."
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            let reviews =
+                JSON.parse(
+                    localStorage.getItem(
+                        "betaFoodReviews"
+                    ) || "[]"
+                );
+
+
+            reviews =
+                reviews.filter(
+                    function (review) {
+
+                        return review.id !== id;
+
+                    }
+                );
+
+
+            localStorage.setItem(
+                "betaFoodReviews",
+                JSON.stringify(reviews)
+            );
+
+
             displayReviews();
+
         }
 
-        // --- 5. Display Reviews (with Delete Button) ---
-        function displayReviews() {
-            const container = document.getElementById('reviews-list');
-            if (!container) return;
 
-            const reviews = JSON.parse(localStorage.getItem('betaFoodReviews') || '[]');
+        // -----------------------------------------------------
+        // DISPLAY REVIEWS
+        // -----------------------------------------------------
+
+        function displayReviews() {
+
+            const container =
+                document.getElementById(
+                    "reviews-list"
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            const reviews =
+                JSON.parse(
+                    localStorage.getItem(
+                        "betaFoodReviews"
+                    ) || "[]"
+                );
+
 
             if (reviews.length === 0) {
-                container.innerHTML = '<p class="no-reviews">Be the first to leave a review! 🌟</p>';
+
+                container.innerHTML =
+                    '<p class="no-reviews">Be the first to leave a review! 🌟</p>';
+
                 return;
+
             }
 
-            let html = '';
-            reviews.forEach(function(review) {
-                const starsHTML = '⭐'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-                html += `
-                    <div class="review-item">
-                        <div class="review-header">
-                            <span class="review-name">${escapeHTML(review.name)}</span>
-                            <div>
-                                <span class="review-stars">${starsHTML}</span>
-                                <button class="delete-review" data-id="${review.id}" title="Delete this review">🗑️</button>
+
+            let html = "";
+
+
+            reviews.forEach(
+                function (review) {
+
+                    const starsHTML =
+                        "⭐".repeat(
+                            review.rating
+                        ) +
+                        "☆".repeat(
+                            5 - review.rating
+                        );
+
+
+                    html += `
+                        <div class="review-item">
+
+                            <div class="review-header">
+
+                                <span class="review-name">
+                                    ${escapeHTML(review.name)}
+                                </span>
+
+                                <div>
+
+                                    <span class="review-stars">
+                                        ${starsHTML}
+                                    </span>
+
+                                    <button
+                                        type="button"
+                                        class="delete-review"
+                                        data-id="${review.id}"
+                                        title="Delete this review">
+                                        🗑️
+                                    </button>
+
+                                </div>
+
                             </div>
+
+                            <p class="review-comment">
+                                ${escapeHTML(review.comment)}
+                            </p>
+
+                            <span class="review-date">
+                                ${review.date}
+                            </span>
+
                         </div>
-                        <p class="review-comment">${escapeHTML(review.comment)}</p>
-                        <span class="review-date">${review.date}</span>
-                    </div>
-                `;
-            });
+                    `;
 
-            container.innerHTML = html;
+                }
+            );
+
+
+            container.innerHTML =
+                html;
+
         }
 
-        // --- 6. 🗑️ Handle Delete Clicks (Event Delegation) ---
-        document.addEventListener('click', function(e) {
-            const deleteBtn = e.target.closest('.delete-review');
-            if (deleteBtn) {
-                const id = parseInt(deleteBtn.dataset.id);
-                deleteReview(id);
+
+        // -----------------------------------------------------
+        // DELETE CLICK
+        // -----------------------------------------------------
+
+        document.addEventListener(
+            "click",
+            function (e) {
+
+                const deleteBtn =
+                    e.target.closest(
+                        ".delete-review"
+                    );
+
+
+                if (deleteBtn) {
+
+                    const id =
+                        parseInt(
+                            deleteBtn.dataset.id,
+                            10
+                        );
+
+
+                    deleteReview(id);
+
+                }
+
             }
-        });
+        );
 
-        // --- 7. Simple escape function ---
+
+        // -----------------------------------------------------
+        // ESCAPE HTML
+        // -----------------------------------------------------
+
         function escapeHTML(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.textContent =
+                text;
+
+
             return div.innerHTML;
+
         }
 
-        // --- 8. Load reviews on page load ---
+
+        // -----------------------------------------------------
+        // LOAD REVIEWS
+        // -----------------------------------------------------
+
         displayReviews();
 
-    });
+    })();
 
-})();
 
-// =========================================
-// FIX: PLUS BUTTON GREEN IN DARK MODE
-// =========================================
+    // =========================================================
+    // INITIAL CART UPDATE
+    // =========================================================
 
-(function() {
-    'use strict';
+    updateCart();
 
-    function fixPlusButtons() {
-        const isDark = document.body.classList.contains('dark');
-        const plusButtons = document.querySelectorAll('.quantity-plus');
-        
-        plusButtons.forEach(function(btn) {
-            if (isDark) {
-                btn.style.backgroundColor = '#4CAF50';
-                btn.style.borderColor = '#4CAF50';
-                btn.style.color = '#ffffff';
-            } else {
-                // Reset to default (remove inline styles)
-                btn.style.backgroundColor = '';
-                btn.style.borderColor = '';
-                btn.style.color = '';
+
+    // =========================================================
+    // LOADER
+    // =========================================================
+
+    window.addEventListener(
+        "load",
+        function () {
+
+            const loader =
+                document.getElementById(
+                    "loader"
+                );
+
+
+            if (loader) {
+
+                loader.classList.add(
+                    "hide"
+                );
+
             }
-        });
-    }
 
-    // Run on load
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initial fix
-        setTimeout(fixPlusButtons, 100);
-        setTimeout(fixPlusButtons, 300);
-        
-        // Watch for dark mode toggle
-        const themeToggle = document.querySelector('#theme-toggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', function() {
-                setTimeout(fixPlusButtons, 50);
-            });
         }
-        
-        // Watch for DOM changes (in case buttons are added dynamically)
-        const observer = new MutationObserver(function() {
-            fixPlusButtons();
-        });
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    });
+    );
 
-})();
+
+    console.log(
+        "✅ Beta Food script loaded successfully."
+    );
+
+});
