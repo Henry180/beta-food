@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Build your perfect meal at Beta Food. Choose from Jollof Rice, Fried Rice, Spaghetti, proteins, extras and more.">
+    <meta name="keywords" content="Beta Food menu, Nsukka food, Build your meal, Rice, Jollof, Fried Rice, Spaghetti, Food Delivery">
+    <meta name="author" content="Beta Food">
+    <meta property="og:title" content="Menu – Beta Food">
+    <meta property="og:description" content="Build your perfect meal. Fresh rice, pasta and more.">
+    <meta property="og:image" content="images/logo.png">
+    <meta property="og:type" content="website">
+    <title>Menu – Beta Food</title>
+
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <body>
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <!-- LOADER -->
+    <div id="loader">
+        <img src="images/logo.png" alt="Loading">
+    </div>
+
+    <!-- WHATSAPP BUTTON -->
+    <a href="https://wa.me/2349169452392?text=Hello%20Beta%20Food!" class="whatsapp" target="_blank">💬</a>
+
+    <!-- =========================================================
+    NAVIGATION (SAME AS INDEX)
+    ========================================================= -->
+    <nav>
+        <img src="images/logo.png" alt="Beta Food Logo">
+
+        <div class="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="menu.html" class="active">Menu</a>
+            <a href="about.html">About</a>
+            <a href="reviews.html">Reviews</a>
+            <a href="contact.html">Contact</a>
+        </div>
+
+        <div class="cart-icon">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span id="cart-count">0</span>
+        </div>
+
+        <div class="theme-toggle" id="theme-toggle">
+            <i class="fa-solid fa-moon"></i>
+        </div>
+
+        <!-- CART BOX -->
+        <div class="cart-box">
+            <h3>Your Cart</h3>
+            <div id="cart-items">Your cart is empty</div>
+            <h4>Total: ₦<span id="cart-total">0</span></h4>
+            <button class="checkout-btn" id="checkout-btn">Checkout</button>
+
+            <!-- Checkout Form -->
+            <div class="checkout-form" id="checkout-form">
+                <h3>Complete Your Order</h3>
+                <input type="text" id="customer-name" placeholder="Your Name">
+                <input type="tel" id="customer-phone" placeholder="Phone Number">
+                <textarea id="customer-address" placeholder="Delivery Address"></textarea>
+                <button id="place-order">Proceed to Payment</button>
+            </div>
+
+            <!-- Payment Popup -->
+            <div class="payment-popup" id="payment-popup">
+                <h2>🎉 Thank You For Your Order!</h2>
+                <p>Please complete payment using the account below.</p>
+                <hr>
+                <p><strong>Bank:</strong> Opay</p>
+                <p><strong>Account Name:</strong> Tochukwu Beta Food</p>
+                <p><strong>Account Number:</strong> <span id="account-number">9169452392</span></p>
+                <button id="copy-account">📋 Copy Account Number</button>
+                <br><br>
+                <label class="payment-check">
+                    <input type="checkbox" id="payment-check">
+                    I have completed my payment
+                </label>
+                <button id="payment-done">I've Made Payment</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- =========================================================
+    MENU PAGE CONTENT – Build Your Meal
+    ========================================================= -->
+    <section class="menu" id="menu" data-aos="fade-up">
+        <h2>Build Your Meal</h2>
+        <p class="menu-intro">Create your meal just the way you like it.</p>
+
+        <!-- MAIN MEALS -->
+        <div class="meal-category">
+            <h3>🍛 Main Meals</h3>
+            <div class="meal-options">
+                <div class="meal-option">
+                    <img src="images/Jollof Rice.jpg" alt="Jollof Rice">
+                    <div>
+                        <h4>Jollof Rice</h4>
+                        <p>₦1,500</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <img src="images/fried rice.jpg" alt="Fried Rice">
+                    <div>
+                        <h4>Fried Rice</h4>
+                        <p>₦2,000</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <img src="images/white rice and stew.jpg" alt="White Rice and Stew">
+                    <div>
+                        <h4>White Rice &amp; Stew</h4>
+                        <p>₦1,500</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <img src="images/White Rice and Bnaga.jpg" alt="White Rice and Banga">
+                    <div>
+                        <h4>White Rice &amp; Banga</h4>
+                        <p>₦1,500</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <img src="images/spaghetti 1.jpg" alt="Spaghetti">
+                    <div>
+                        <h4>Spaghetti</h4>
+                        <p>₦1,500</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROTEINS -->
+        <div class="meal-category">
+            <h3>🍗 Proteins</h3>
+            <div class="meal-options">
+                <div class="meal-option">
+                    <img src="images/chicken.jpg" alt="Chicken">
+                    <div>
+                        <h4>Chicken</h4>
+                        <p>₦2,000</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <img src="images/turkey.jpg" alt="Turkey">
+                    <div>
+                        <h4>Turkey</h4>
+                        <p>₦3,500</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <img src="images/beef.jpg" alt="Beef">
+                    <div>
+                        <h4>Beef</h4>
+                        <p>₦500</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <img src="images/fish.jpg" alt="Fish">
+                    <div>
+                        <h4>Fish</h4>
+                        <p>₦500</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <img src="images/egg.jpg" alt="Egg">
+                    <div>
+                        <h4>Egg</h4>
+                        <p>₦300</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXTRAS -->
+        <div class="meal-category">
+            <h3>🥗 Extras</h3>
+            <div class="meal-options">
+                <div class="meal-option">
+                    <img src="images/plantains.jpg" alt="Plantain">
+                    <div>
+                        <h4>Plantain</h4>
+                        <p>₦300</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <img src="images/moi moi.jpg" alt="Moi Moi">
+                    <div>
+                        <h4>Moi Moi</h4>
+                        <p>₦200</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+
+                <div class="meal-option">
+                    <img src="images/coleslaw.jpg" alt="Coleslaw">
+                    <div>
+                        <h4>Coleslaw</h4>
+                        <p>₦200</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-minus">−</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-plus">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FREE WATER -->
+        <div class="meal-category water-option">
+            <h3>💧 Free Water</h3>
+            <div class="meal-option">
+                <img src="images/Bottled Water.jpg" alt="Can of Water">
+                <div>
+                    <h4>Can of Water</h4>
+                    <p>FREE — ₦0</p>
+                </div>
+                <div class="quantity-control">
+                    <button class="quantity-minus">−</button>
+                    <span class="quantity">0</span>
+                    <button class="quantity-plus">+</button>
+                </div>
+            </div>
+            <p class="water-note">You can add one free can of water to this meal.</p>
+        </div>
+
+        <!-- ADD MEAL TO CART -->
+        <button id="add-built-meal" class="btn">Add Meal to Cart</button>
+    
+    <section class="menu" id="main-content" data-aos="fade-up">
+
+    </section>
+
+    <!-- =========================================================
+    FOOTER (SAME AS INDEX)
+    ========================================================= -->
+    <footer>
+        <h3>© 2026 Beta Food</h3>
+        <p>Better Food For Better People</p>
+        <p>Designed with ❤️ by Beta Food</p>
+        <p>
+            <a href="privacy.html">Privacy Policy</a> |
+            <a href="terms.html">Terms & Conditions</a>
+        </p>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <a href="#home" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </a>
+
+    <!-- =========================================================
+    RECEIPT CONTAINER (SAME AS INDEX)
+    ========================================================= -->
+    <div id="receipt-container">
+        <div id="receipt">
+            <div class="receipt-header">
+                <img src="images/logo.png" alt="Beta Food Logo">
+                <h2>BETA FOOD</h2>
+                <p>Better Food For Better People</p>
+                <span>ORDER RECEIPT</span>
+            </div>
+            <div class="receipt-divider"></div>
+            <div class="receipt-info">
+                <p><strong>Order No:</strong> <span id="receipt-order-number"></span></p>
+                <p><strong>Date:</strong> <span id="receipt-date"></span></p>
+            </div>
+            <div class="receipt-customer">
+                <h3>CUSTOMER DETAILS</h3>
+                <p><strong>Name:</strong> <span id="receipt-customer-name"></span></p>
+                <p><strong>Phone:</strong> <span id="receipt-customer-phone"></span></p>
+                <p><strong>Address:</strong> <span id="receipt-customer-address"></span></p>
+            </div>
+            <div class="receipt-divider"></div>
+            <h3>YOUR ORDER</h3>
+            <div id="receipt-items"></div>
+            <div class="receipt-divider"></div>
+            <div class="receipt-total">
+                <span>TOTAL</span>
+                <strong>₦<span id="receipt-total"></span></strong>
+            </div>
+            <div class="receipt-payment">
+                <h3>PAYMENT DETAILS</h3>
+                <p><strong>Payment Method:</strong> Bank Transfer</p>
+                <p><strong>Bank:</strong> Opay</p>
+                <p><strong>Account Name:</strong> Tochukwu Beta Food</p>
+                <p><strong>Account Number:</strong> 9169452392</p>
+                <p><strong>Payment Status:</strong> <span class="payment-confirmed">✓ PAYMENT CONFIRMED</span></p>
+            </div>
+            <div class="receipt-footer">
+                <p>Thank you for ordering from Beta Food ❤️</p>
+                <p>Better Food For Better People</p>
+                <small>Please keep this receipt for your records.</small>
+            </div>
+        </div>
+        <div id="receipt-actions">
+            <button id="download-receipt"><i class="fa-solid fa-download"></i> Save Receipt</button>
+            <button id="send-receipt-whatsapp"><i class="fa-brands fa-whatsapp"></i> Send Receipt to WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- =========================================================
+    SCRIPTS (SAME AS INDEX)
+    ========================================================= -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script src="js/script.js"></script>
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Beta Food",
+    "description": "Better Food For Better People. Fresh rice, pasta and fast delivery in Nsukka.",
+    "image": "https://betafood.netlify.app/images/logo.png",
+    "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Nsukka",
+        "addressRegion": "Enugu",
+        "addressCountry": "NG"
+    },
+    "telephone": "+2349169452392",
+    "openingHours": "Mo-Fr 08:00-20:00, Sa 09:00-21:00, Su 12:00-18:00",
+    "servesCuisine": "Nigerian, African",
+    "priceRange": "₦500 - ₦3,500",
+    "url": "https://betafood.netlify.app/",
+    "hasMenu": "https://betafood.netlify.app/menu.html",
+    "sameAs": [
+        "https://wa.me/2349169452392",
+        "mailto:betafood247@gmail.com"
+    ]
+}
+</script>
+</body>
+</html>

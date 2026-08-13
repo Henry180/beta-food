@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Read customer reviews for Beta Food. Share your experience and see what others are saying about our meals.">
+    <meta name="keywords" content="Beta Food reviews, Customer feedback, Nsukka food, Food reviews">
+    <meta name="author" content="Beta Food">
+    <meta property="og:title" content="Reviews – Beta Food">
+    <meta property="og:description" content="What our customers are saying about Beta Food.">
+    <meta property="og:image" content="images/logo.png">
+    <meta property="og:type" content="website">
+    <title>Reviews – Beta Food</title>
+
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- LOADER -->
+    <div id="loader">
+        <img src="images/logo.png" alt="Loading">
+    </div>
+
+    <!-- WHATSAPP BUTTON -->
+    <a href="https://wa.me/2349169452392?text=Hello%20Beta%20Food!" class="whatsapp" target="_blank">💬</a>
+
+    <!-- =========================================================
+    NAVIGATION (SAME AS OTHER PAGES)
+    ========================================================= -->
+    <nav>
+        <img src="images/logo.png" alt="Beta Food Logo">
+
+        <div class="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="about.html">About</a>
+            <a href="reviews.html" class="active">Reviews</a>
+            <a href="contact.html">Contact</a>
+        </div>
+
+        <div class="cart-icon">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span id="cart-count">0</span>
+        </div>
+
+        <div class="theme-toggle" id="theme-toggle">
+            <i class="fa-solid fa-moon"></i>
+        </div>
+
+        <!-- CART BOX -->
+        <div class="cart-box">
+            <h3>Your Cart</h3>
+            <div id="cart-items">Your cart is empty</div>
+            <h4>Total: ₦<span id="cart-total">0</span></h4>
+            <button class="checkout-btn" id="checkout-btn">Checkout</button>
+
+            <!-- Checkout Form -->
+            <div class="checkout-form" id="checkout-form">
+                <h3>Complete Your Order</h3>
+                <input type="text" id="customer-name" placeholder="Your Name">
+                <input type="tel" id="customer-phone" placeholder="Phone Number">
+                <textarea id="customer-address" placeholder="Delivery Address"></textarea>
+                <button id="place-order">Proceed to Payment</button>
+            </div>
+
+            <!-- Payment Popup -->
+            <div class="payment-popup" id="payment-popup">
+                <h2>🎉 Thank You For Your Order!</h2>
+                <p>Please complete payment using the account below.</p>
+                <hr>
+                <p><strong>Bank:</strong> Opay</p>
+                <p><strong>Account Name:</strong> Tochukwu Beta Food</p>
+                <p><strong>Account Number:</strong> <span id="account-number">9169452392</span></p>
+                <button id="copy-account">📋 Copy Account Number</button>
+                <br><br>
+                <label class="payment-check">
+                    <input type="checkbox" id="payment-check">
+                    I have completed my payment
+                </label>
+                <button id="payment-done">I've Made Payment</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- =========================================================
+    REVIEWS PAGE CONTENT
+    ========================================================= -->
+
+    <!-- REVIEWS HERO -->
+    <section class="reviews-hero" data-aos="fade-up" style="padding: 80px 20px 40px; text-align: center; background: linear-gradient(135deg, #2e8b57 0%, #1e6b3a 100%); color: white;">
+        <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 15px;">⭐ Customer Reviews</h1>
+        <p style="max-width: 600px; margin: 0 auto; font-size: 18px; opacity: 0.9;">See what our customers are saying – and share your own experience!</p>
+    </section>
+
+    <!-- CUSTOMER REVIEWS SECTION -->
+    <section class="customer-reviews" data-aos="fade-up" id="reviews" style="margin-top: 40px;">
+        <h2 id="reviews-heading" style="transition: color 0.3s ease;">📝 Share Your Feedback</h2>
+        <p class="review-intro" style="transition: color 0.3s ease;">Your opinion matters to us. Rate your experience and leave a review!</p>
+
+        <!-- Review Form -->
+        <div class="review-form">
+            <div class="star-rating">
+                <span class="star" data-value="1">⭐</span>
+                <span class="star" data-value="2">⭐</span>
+                <span class="star" data-value="3">⭐</span>
+                <span class="star" data-value="4">⭐</span>
+                <span class="star" data-value="5">⭐</span>
+            </div>
+            <p class="rating-text">Tap a star to rate</p>
+
+            <textarea 
+                id="review-comment" 
+                placeholder="Write your review here..." 
+                rows="3"
+                style="transition: all 0.3s ease;"
+            ></textarea>
+
+            <input 
+                type="text" 
+                id="review-name" 
+                placeholder="Your name (optional)"
+                style="transition: all 0.3s ease;"
+            >
+
+            <button id="submit-review" class="btn">Submit Review</button>
+        </div>
+
+        <!-- Reviews List -->
+        <div id="reviews-container">
+            <h3 id="reviews-list-heading" style="transition: color 0.3s ease;">What our customers are saying</h3>
+            <div id="reviews-list">
+                <!-- Reviews will be displayed here by JavaScript -->
+                <p class="no-reviews" style="transition: color 0.3s ease;">Be the first to leave a review! 🌟</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- AVERAGE RATING SUMMARY (Optional) -->
+    <section data-aos="fade-up" style="padding: 40px 20px; text-align: center; max-width: 800px; margin: 0 auto;">
+        <div style="background: #f8f8f8; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.06);" class="rating-summary">
+            <h3 style="font-size: 24px; margin-bottom: 10px; color: #2e8b57;">Overall Rating</h3>
+            <div style="font-size: 48px; margin: 10px 0;" id="average-stars">⭐⭐⭐⭐⭐</div>
+            <p style="font-size: 18px; color: #555;" id="average-rating-text">Based on <span id="review-count">0</span> reviews</p>
+        </div>
+    </section>
+
+    <!-- =========================================================
+    FOOTER (SAME AS OTHER PAGES)
+    ========================================================= -->
+    <footer>
+        <h3>© 2026 Beta Food</h3>
+        <p>Better Food For Better People</p>
+        <p>Designed with ❤️ by Beta Food</p>
+        <p>
+            <a href="privacy.html">Privacy Policy</a> |
+            <a href="terms.html">Terms & Conditions</a>
+        </p>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <a href="#top" class="back-to-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </a>
+
+    <!-- =========================================================
+    RECEIPT CONTAINER (SAME AS OTHER PAGES)
+    ========================================================= -->
+    <div id="receipt-container">
+        <div id="receipt">
+            <div class="receipt-header">
+                <img src="images/logo.png" alt="Beta Food Logo">
+                <h2>BETA FOOD</h2>
+                <p>Better Food For Better People</p>
+                <span>ORDER RECEIPT</span>
+            </div>
+            <div class="receipt-divider"></div>
+            <div class="receipt-info">
+                <p><strong>Order No:</strong> <span id="receipt-order-number"></span></p>
+                <p><strong>Date:</strong> <span id="receipt-date"></span></p>
+            </div>
+            <div class="receipt-customer">
+                <h3>CUSTOMER DETAILS</h3>
+                <p><strong>Name:</strong> <span id="receipt-customer-name"></span></p>
+                <p><strong>Phone:</strong> <span id="receipt-customer-phone"></span></p>
+                <p><strong>Address:</strong> <span id="receipt-customer-address"></span></p>
+            </div>
+            <div class="receipt-divider"></div>
+            <h3>YOUR ORDER</h3>
+            <div id="receipt-items"></div>
+            <div class="receipt-divider"></div>
+            <div class="receipt-total">
+                <span>TOTAL</span>
+                <strong>₦<span id="receipt-total"></span></strong>
+            </div>
+            <div class="receipt-payment">
+                <h3>PAYMENT DETAILS</h3>
+                <p><strong>Payment Method:</strong> Bank Transfer</p>
+                <p><strong>Bank:</strong> Opay</p>
+                <p><strong>Account Name:</strong> Tochukwu Beta Food</p>
+                <p><strong>Account Number:</strong> 9169452392</p>
+                <p><strong>Payment Status:</strong> <span class="payment-confirmed">✓ PAYMENT CONFIRMED</span></p>
+            </div>
+            <div class="receipt-footer">
+                <p>Thank you for ordering from Beta Food ❤️</p>
+                <p>Better Food For Better People</p>
+                <small>Please keep this receipt for your records.</small>
+            </div>
+        </div>
+        <div id="receipt-actions">
+            <button id="download-receipt"><i class="fa-solid fa-download"></i> Save Receipt</button>
+            <button id="send-receipt-whatsapp"><i class="fa-brands fa-whatsapp"></i> Send Receipt to WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- =========================================================
+    SCRIPTS (SAME AS OTHER PAGES)
+    ========================================================= -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script src="js/script.js"></script>
+
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Beta Food",
+    "description": "Better Food For Better People. Fresh rice, pasta and fast delivery in Nsukka.",
+    "image": "https://betafood.netlify.app/images/logo.png",
+    "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Nsukka",
+        "addressRegion": "Enugu",
+        "addressCountry": "NG"
+    },
+    "telephone": "+2349169452392",
+    "openingHours": "Mo-Fr 08:00-20:00, Sa 09:00-21:00, Su 12:00-18:00",
+    "servesCuisine": "Nigerian, African",
+    "priceRange": "₦500 - ₦3,500",
+    "url": "https://betafood.netlify.app/",
+    "hasMenu": "https://betafood.netlify.app/menu.html",
+    "sameAs": [
+        "https://wa.me/2349169452392",
+        "mailto:betafood247@gmail.com"
+    ]
+}
+</script>
+</body>
+</html>
