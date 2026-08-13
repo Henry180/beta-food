@@ -2721,3 +2721,218 @@ body.dark .skip-link:focus {
 .hero img {
     display: none !important;
 }
+
+/* Fix email icon visibility in light mode */
+.contact .fa-envelope,
+.contact-card .fa-envelope,
+.contact [style*="color: #2e8b57"] .fa-envelope {
+    color: #2e8b57 !important;
+}
+
+/* Ensure all contact icons are visible */
+.contact .fa-solid,
+.contact .fa-regular,
+.contact .fa-brands {
+    color: #2e8b57;
+}
+
+.contact .fa-brands.fa-whatsapp {
+    color: #25D366 !important;
+}
+
+.contact .fa-solid.fa-phone {
+    color: #2e8b57 !important;
+}
+
+.contact .fa-solid.fa-envelope {
+    color: #2e8b57 !important;
+}
+
+.contact .fa-solid.fa-location-dot {
+    color: #2e8b57 !important;
+}
+
+/* Make "Build Your Meal" visible in dark mode */
+body.dark .menu h2 {
+    color: #f0f0f0 !important;
+}
+
+body.dark .menu h2 span {
+    color: #4caf78 !important;
+}
+
+body.dark .menu-intro {
+    color: #aaaaaa !important;
+}
+
+/* Remove horizontal scroll */
+html, body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+* {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Fix any overflowing elements */
+.hero,
+.menu,
+.about,
+.hours,
+.gallery,
+.testimonials,
+.contact,
+footer {
+    overflow-x: hidden !important;
+}
+
+/* Fix images that might be causing overflow */
+img {
+    max-width: 100%;
+    height: auto;
+}
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* =========================================================
+   FIX: EMAIL ICON VISIBILITY IN LIGHT MODE
+   ========================================================= */
+
+/* Force email icon to show in light mode */
+.contact .fa-envelope,
+.contact .fa-solid.fa-envelope,
+.contact-card .fa-envelope,
+.contact-card .fa-solid.fa-envelope,
+.contact [style*="color: #2e8b57"] .fa-envelope,
+.contact [style*="color: #2e8b57"] .fa-solid.fa-envelope {
+    color: #2e8b57 !important;
+}
+
+/* Also ensure the parent div isn't hiding it */
+.contact .contact-card .fa-envelope,
+.contact div[style*="font-size: 40px"] .fa-envelope {
+    color: #2e8b57 !important;
+}
+
+/* Make sure all contact icons are visible in light mode */
+.contact .fa-solid,
+.contact .fa-regular,
+.contact .fa-brands {
+    color: #2e8b57;
+}
+
+/* WhatsApp icon gets its own color */
+.contact .fa-brands.fa-whatsapp {
+    color: #25D366 !important;
+}
+
+/* Phone icon */
+.contact .fa-solid.fa-phone {
+    color: #2e8b57 !important;
+}
+
+/* Email icon - explicit */
+.contact .fa-solid.fa-envelope {
+    color: #2e8b57 !important;
+}
+
+/* Location icon */
+.contact .fa-solid.fa-location-dot {
+    color: #2e8b57 !important;
+}
+
+/* =========================================================
+   FIX: SOCIAL LINK ICONS VISIBILITY IN LIGHT MODE
+   ========================================================= */
+
+/* Force icons inside Connect With Us buttons to be white */
+.contact .social-link i,
+.contact .social-link .fa-brands,
+.contact .social-link .fa-solid,
+.contact a[style*="background: #25D366"] i,
+.contact a[style*="background: #2e8b57"] i,
+.contact a[style*="background: #1a1a1a"] i {
+    color: white !important;
+}
+
+/* WhatsApp button icon */
+.contact a[style*="background: #25D366"] .fa-whatsapp {
+    color: white !important;
+}
+
+/* Email button icon */
+.contact a[style*="background: #2e8b57"] .fa-envelope {
+    color: white !important;
+}
+
+/* Call button icon */
+.contact a[style*="background: #1a1a1a"] .fa-phone {
+    color: white !important;
+}
+
+/* Make sure all social link icons stay white */
+.social-link i,
+.social-link .fa-brands,
+.social-link .fa-solid {
+    color: white !important;
+}
+
+/* Also fix the WhatsApp floating button if it has the same issue */
+.whatsapp i,
+.whatsapp .fa-brands {
+    color: white !important;
+}
+
+/* Ensure contact icons in the cards (Phone, WhatsApp, Email, Location) are visible */
+.contact .fa-solid,
+.contact .fa-regular,
+.contact .fa-brands {
+    color: inherit;
+}
+
+/* But for the card icons, keep their brand colors */
+.contact .fa-phone {
+    color: #2e8b57 !important;
+}
+
+.contact .fa-whatsapp {
+    color: #25D366 !important;
+}
+
+.contact .fa-envelope {
+    color: #2e8b57 !important;
+}
+
+.contact .fa-location-dot {
+    color: #2e8b57 !important;
+}
+
+/* Pulsing animation for the order button */
+.hero .btn {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 20px rgba(46, 139, 87, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 8px 40px rgba(46, 139, 87, 0.5);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 20px rgba(46, 139, 87, 0.3);
+    }
+}

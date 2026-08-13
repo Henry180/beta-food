@@ -916,7 +916,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // =========================================================
-    // ADD BUILT MEAL TO CART
+    // ADD BUILT MEAL TO CART (MAIN BUTTON - NO AUTO-OPEN)
     // =========================================================
 
     if (addBuiltMealButton) {
@@ -1178,17 +1178,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 // =================================================
-                // OPEN CART
+                // ❌ DO NOT OPEN CART OR SHOW VISUAL FEEDBACK
                 // =================================================
-
-                if (cartBox) {
-                    forceOpenCart();
-                }
-
-
-                alert(
-                    "Your meal has been added to the cart! 🛒"
-                );
 
             }
         );
@@ -1891,7 +1882,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // =========================================================
-    // CHECKOUT
+    // CHECKOUT (UPDATED WITH AUTO-SCROLL)
     // =========================================================
 
     const checkoutBtn =
@@ -1942,6 +1933,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     checkoutForm.style.display =
                         "block";
+
+                    // 🔥 AUTO-SCROLL TO CHECKOUT FORM
+                    setTimeout(function() {
+                        checkoutForm.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+
+                        // Auto-focus first input field
+                        const firstNameInput = document.querySelector("#customer-name");
+                        if (firstNameInput) {
+                            firstNameInput.focus();
+                        }
+                    }, 200);
 
                 }
 
@@ -3305,7 +3310,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // =========================================================
-    // FLOATING ADD TO CART BUTTON
+    // FLOATING ADD TO CART BUTTON (OPENS CART)
     // =========================================================
 
     (function () {
@@ -3497,11 +3502,21 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
+        // ✅ FLOATING BUTTON CLICK – ADD MEAL AND OPEN CART
         floatingBtn.addEventListener(
             "click",
             function () {
 
+                // Trigger the main button's click (adds meal to cart)
                 originalBtn.click();
+
+                // Then open the cart after a short delay
+                setTimeout(function() {
+                    const cartIcon = document.querySelector(".cart-icon");
+                    if (cartIcon) {
+                        cartIcon.click(); // this toggles the cart open
+                    }
+                }, 300);
 
             }
         );
