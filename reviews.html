@@ -10,21 +10,58 @@
     <meta property="og:description" content="What our customers are saying about Beta Food.">
     <meta property="og:image" content="images/logo.png">
     <meta property="og:type" content="website">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
     <title>Reviews – Beta Food</title>
 
-    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="icon" type="image/png" href="images/mlogo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
     <link rel="stylesheet" href="css/style.css">
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+
+<!-- Theme Color for Mobile -->
+<meta name="theme-color" content="#2e8b57">
+
+<!-- Apple Touch Icon (for iOS) -->
+<link rel="apple-touch-icon" href="images/logo-192.png">
+
+<!-- Service Worker Registration -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('✅ Service Worker registered:', registration);
+                })
+                .catch(function(error) {
+                    console.log('❌ Service Worker registration failed:', error);
+                });
+        });
+    }
+</script>
+
+<!-- Before -->
+<link rel="icon" type="image/png" href="images/logo.png">
+
+<!-- After -->
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<!-- OR keep both for compatibility -->
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+
 </head>
 
 <body>
     <!-- LOADER -->
     <div id="loader">
-        <img src="images/logo.png" alt="Loading">
+        <img src="images/mlogo.png" alt="Loading">
     </div>
 
     <!-- WHATSAPP BUTTON -->
@@ -34,7 +71,7 @@
     NAVIGATION (SAME AS OTHER PAGES)
     ========================================================= -->
     <nav>
-        <img src="images/logo.png" alt="Beta Food Logo">
+        <img src="images/mlogo.png" alt="Beta Food Logo">
 
         <div class="menu-toggle">
             <i class="fa-solid fa-bars"></i>

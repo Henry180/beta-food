@@ -1178,8 +1178,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 // =================================================
-                // ❌ DO NOT OPEN CART OR SHOW VISUAL FEEDBACK
+                // ✅ OPEN CART AFTER ADDING MEAL
                 // =================================================
+
+                if (cartBox) {
+                    forceOpenCart();
+                }
 
             }
         );
@@ -1882,79 +1886,91 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // =========================================================
-    // CHECKOUT (UPDATED WITH AUTO-SCROLL)
-    // =========================================================
+// CHECKOUT (POP-UP WITH ANIMATION)
+// =========================================================
 
-    const checkoutBtn =
-        document.querySelector(
-            "#checkout-btn"
-        );
+const checkoutBtn =
+    document.querySelector(
+        "#checkout-btn"
+    );
 
-    const checkoutForm =
-        document.querySelector(
-            "#checkout-form"
-        );
-
-
-    if (
-        checkoutBtn &&
-        checkoutForm
-    ) {
-
-        checkoutBtn.addEventListener(
-            "click",
-            function (e) {
-
-                e.stopPropagation();
+const checkoutForm =
+    document.querySelector(
+        "#checkout-form"
+    );
 
 
-                if (
-                    cart.length === 0
-                ) {
+if (
+    checkoutBtn &&
+    checkoutForm
+) {
 
-                    alert(
-                        "Your cart is empty!"
-                    );
+    checkoutBtn.addEventListener(
+        "click",
+        function (e) {
 
-                    return;
-
-                }
+            e.stopPropagation();
 
 
-                if (
-                    checkoutForm.style.display ===
-                    "block"
-                ) {
+            if (
+                cart.length === 0
+            ) {
 
-                    checkoutForm.style.display =
-                        "none";
+                alert(
+                    "Your cart is empty!"
+                );
 
-                } else {
-
-                    checkoutForm.style.display =
-                        "block";
-
-                    // 🔥 AUTO-SCROLL TO CHECKOUT FORM
-                    setTimeout(function() {
-                        checkoutForm.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-
-                        // Auto-focus first input field
-                        const firstNameInput = document.querySelector("#customer-name");
-                        if (firstNameInput) {
-                            firstNameInput.focus();
-                        }
-                    }, 200);
-
-                }
+                return;
 
             }
-        );
 
-    }
 
+            // Toggle the 'open' class for smooth animation
+            const isOpen =
+                checkoutForm.classList.contains("open");
+
+            if (isOpen) {
+
+                // Close the form
+                checkoutForm.classList.remove("open");
+
+                // After animation ends, hide it completely
+                setTimeout(function() {
+                    if (!checkoutForm.classList.contains("open")) {
+                        checkoutForm.style.display = "none";
+                    }
+                }, 400);
+
+            } else {
+
+                // Show the form
+                checkoutForm.style.display = "block";
+
+                // Small delay to trigger the transition
+                setTimeout(function() {
+                    checkoutForm.classList.add("open");
+                }, 20);
+
+                // 🔥 AUTO-SCROLL TO THE FORM
+                setTimeout(function() {
+                    checkoutForm.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+
+                    // Auto-focus first input
+                    const firstNameInput = document.querySelector("#customer-name");
+                    if (firstNameInput) {
+                        firstNameInput.focus();
+                    }
+                }, 300);
+
+            }
+
+        }
+    );
+
+}
 
     // =========================================================
     // PAYMENT VARIABLES
@@ -3310,381 +3326,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // =========================================================
-    // FLOATING ADD TO CART BUTTON (OPENS CART)
-    // =========================================================
-
-    (function () {
-
-        const originalBtn =
-            document.getElementById(
-                "add-built-meal"
-            );
-
-
-        if (!originalBtn) {
-            return;
-        }
-
-
-        let floatingBtn =
-            document.getElementById(
-                "floating-add-btn"
-            );
-
-
-        if (!floatingBtn) {
-
-            floatingBtn =
-                document.createElement(
-                    "button"
-                );
-
-
-            floatingBtn.id =
-                "floating-add-btn";
-
-
-            floatingBtn.className =
-                "btn";
-
-
-            floatingBtn.textContent =
-                "🛒 Add Meal to Cart";
-
-
-            floatingBtn.style.position =
-                "fixed";
-
-
-            floatingBtn.style.bottom =
-                "30px";
-
-
-            floatingBtn.style.left =
-                "50%";
-
-
-            floatingBtn.style.transform =
-                "translateX(-50%) translateY(20px) scale(0.9)";
-
-
-            floatingBtn.style.opacity =
-                "0";
-
-
-            floatingBtn.style.pointerEvents =
-                "none";
-
-
-            floatingBtn.style.zIndex =
-                "999999";
-
-
-            floatingBtn.style.width =
-                "90%";
-
-
-            floatingBtn.style.maxWidth =
-                "400px";
-
-
-            floatingBtn.style.padding =
-                "16px 20px";
-
-
-            floatingBtn.style.borderRadius =
-                "50px";
-
-
-            floatingBtn.style.boxShadow =
-                "0 8px 30px rgba(0,0,0,0.3)";
-
-
-            floatingBtn.style.fontSize =
-                "16px";
-
-
-            floatingBtn.style.fontWeight =
-                "600";
-
-
-            floatingBtn.style.cursor =
-                "pointer";
-
-
-            floatingBtn.style.border =
-                "none";
-
-
-            floatingBtn.style.background =
-                "#FF6B35";
-
-
-            floatingBtn.style.color =
-                "#fff";
-
-
-            floatingBtn.style.transition =
-                "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)";
-
-
-            floatingBtn.style.willChange =
-                "transform, opacity";
-
-
-            document.body.appendChild(
-                floatingBtn
-            );
-
-        }
-
-
-        function hasSelectedItems() {
-
-            const quantities =
-                document.querySelectorAll(
-                    ".quantity"
-                );
-
-
-            let selectedTotal = 0;
-
-
-            quantities.forEach(
-                function (el) {
-
-                    selectedTotal +=
-                        parseInt(
-                            el.textContent ||
-                            "0",
-                            10
-                        );
-
-                }
-            );
-
-
-            return selectedTotal > 0;
-
-        }
-
-
-        function openCart() {
-
-            const icon =
-                document.querySelector(
-                    ".cart-icon"
-                );
-
-
-            if (icon) {
-
-                icon.click();
-
-            }
-
-        }
-
-
-        function handleAddToCart() {
-
-            setTimeout(
-                openCart,
-                150
-            );
-
-        }
-
-
-        originalBtn.addEventListener(
-            "click",
-            handleAddToCart
-        );
-
-
-        // ✅ FLOATING BUTTON CLICK – ADD MEAL AND OPEN CART
-        floatingBtn.addEventListener(
-            "click",
-            function () {
-
-                // Trigger the main button's click (adds meal to cart)
-                originalBtn.click();
-
-                // Then open the cart after a short delay
-                setTimeout(function() {
-                    const cartIcon = document.querySelector(".cart-icon");
-                    if (cartIcon) {
-                        cartIcon.click(); // this toggles the cart open
-                    }
-                }, 300);
-
-            }
-        );
-
-
-        let isFloatingVisible =
-            false;
-
-
-        function updateFloatingButton() {
-
-            const rect =
-                originalBtn.getBoundingClientRect();
-
-
-            const viewportHeight =
-                window.innerHeight;
-
-
-            const hasItems =
-                hasSelectedItems();
-
-
-            const isOriginalOnScreen =
-                rect.bottom > 30 &&
-                rect.top <
-                    viewportHeight - 30;
-
-
-            const shouldShow =
-                !isOriginalOnScreen &&
-                hasItems;
-
-
-            if (
-                shouldShow ===
-                isFloatingVisible
-            ) {
-
-                return;
-
-            }
-
-
-            isFloatingVisible =
-                shouldShow;
-
-
-            if (shouldShow) {
-
-                floatingBtn.style.pointerEvents =
-                    "auto";
-
-                floatingBtn.style.opacity =
-                    "1";
-
-                floatingBtn.style.transform =
-                    "translateX(-50%) translateY(0) scale(1)";
-
-            } else {
-
-                floatingBtn.style.pointerEvents =
-                    "none";
-
-                floatingBtn.style.opacity =
-                    "0";
-
-                floatingBtn.style.transform =
-                    "translateX(-50%) translateY(20px) scale(0.9)";
-
-            }
-
-        }
-
-
-        let scrollTimeout;
-
-
-        window.addEventListener(
-            "scroll",
-            function () {
-
-                if (scrollTimeout) {
-                    return;
-                }
-
-
-                scrollTimeout =
-                    setTimeout(
-                        function () {
-
-                            updateFloatingButton();
-
-                            scrollTimeout =
-                                null;
-
-                        },
-                        50
-                    );
-
-            }
-        );
-
-
-        let resizeTimeout;
-
-
-        window.addEventListener(
-            "resize",
-            function () {
-
-                if (resizeTimeout) {
-                    return;
-                }
-
-
-                resizeTimeout =
-                    setTimeout(
-                        function () {
-
-                            updateFloatingButton();
-
-                            resizeTimeout =
-                                null;
-
-                        },
-                        100
-                    );
-
-            }
-        );
-
-
-        document.addEventListener(
-            "click",
-            function (e) {
-
-                if (
-                    e.target.closest(
-                        ".quantity-plus, .quantity-minus"
-                    )
-                ) {
-
-                    setTimeout(
-                        updateFloatingButton,
-                        50
-                    );
-
-                }
-
-            }
-        );
-
-
-        setTimeout(
-            updateFloatingButton,
-            100
-        );
-
-        setTimeout(
-            updateFloatingButton,
-            300
-        );
-
-    })();
-
-
-    // =========================================================
     // CUSTOMER REVIEWS SYSTEM
     // =========================================================
 
@@ -4268,4 +3909,248 @@ document.addEventListener("DOMContentLoaded", function () {
         "✅ Beta Food script loaded successfully."
     );
 
+});
+
+// =========================================
+// FLOATING ARROW - SCROLL TO ADD MEAL
+// =========================================
+
+(function() {
+    'use strict';
+
+    // --- Create the floating arrow button ---
+    let arrowBtn = document.getElementById('floating-arrow');
+    if (!arrowBtn) {
+        arrowBtn = document.createElement('div');
+        arrowBtn.id = 'floating-arrow';
+        arrowBtn.innerHTML = `
+            <span class="arrow-icon">⬇️</span>
+            <span class="arrow-text">Add Meal to Cart</span>
+        `;
+        arrowBtn.style.position = 'fixed';
+        arrowBtn.style.bottom = '30px';
+        arrowBtn.style.right = '20px';
+        arrowBtn.style.zIndex = '999999';
+        arrowBtn.style.display = 'flex';
+        arrowBtn.style.alignItems = 'center';
+        arrowBtn.style.gap = '10px';
+        arrowBtn.style.padding = '14px 22px';
+        arrowBtn.style.background = '#FF6B35';
+        arrowBtn.style.color = '#fff';
+        arrowBtn.style.borderRadius = '50px';
+        arrowBtn.style.boxShadow = '0 8px 25px rgba(255, 107, 53, 0.4)';
+        arrowBtn.style.fontSize = '16px';
+        arrowBtn.style.fontWeight = '600';
+        arrowBtn.style.cursor = 'pointer';
+        arrowBtn.style.opacity = '0';
+        arrowBtn.style.transform = 'translateY(30px) scale(0.9)';
+        arrowBtn.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        arrowBtn.style.pointerEvents = 'none';
+        arrowBtn.style.userSelect = 'none';
+        arrowBtn.style.fontFamily = "'Poppins', sans-serif";
+        arrowBtn.style.border = 'none';
+        arrowBtn.style.boxSizing = 'border-box';
+        arrowBtn.style.whiteSpace = 'nowrap';
+
+        // Style the icon
+        const icon = arrowBtn.querySelector('.arrow-icon');
+        if (icon) {
+            icon.style.fontSize = '20px';
+            icon.style.display = 'inline-block';
+            icon.style.transform = 'translateY(1px)';
+        }
+
+        // Style the text
+        const text = arrowBtn.querySelector('.arrow-text');
+        if (text) {
+            text.style.fontSize = '15px';
+            text.style.fontWeight = '600';
+        }
+
+        document.body.appendChild(arrowBtn);
+    }
+
+    // --- Helper: Check if any item is selected ---
+    function hasSelectedItems() {
+        const quantities = document.querySelectorAll('.quantity');
+        let total = 0;
+        quantities.forEach(function(el) {
+            total += parseInt(el.textContent || '0', 10);
+        });
+        return total > 0;
+    }
+
+    // --- Scroll to the "Add Meal to Cart" button ---
+    function scrollToAddMeal() {
+        const targetBtn = document.getElementById('add-built-meal');
+        if (targetBtn) {
+            // Smooth scroll to the button
+            targetBtn.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+
+            // Add a subtle highlight effect
+            targetBtn.style.transition = 'box-shadow 0.3s ease';
+            targetBtn.style.boxShadow = '0 0 0 4px #FF6B35, 0 8px 30px rgba(255, 107, 53, 0.5)';
+            setTimeout(function() {
+                targetBtn.style.boxShadow = '';
+            }, 2000);
+        }
+    }
+
+    // --- Click handler for the arrow ---
+    arrowBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        scrollToAddMeal();
+    });
+
+    // --- State tracking ---
+    let isArrowVisible = false;
+
+    // --- Update the arrow visibility ---
+    function updateArrow() {
+        const hasItems = hasSelectedItems();
+
+        if (hasItems && !isArrowVisible) {
+            // SHOW the arrow with animation
+            isArrowVisible = true;
+            arrowBtn.style.pointerEvents = 'auto';
+            arrowBtn.style.opacity = '1';
+            arrowBtn.style.transform = 'translateY(0) scale(1)';
+        } else if (!hasItems && isArrowVisible) {
+            // HIDE the arrow
+            isArrowVisible = false;
+            arrowBtn.style.pointerEvents = 'none';
+            arrowBtn.style.opacity = '0';
+            arrowBtn.style.transform = 'translateY(30px) scale(0.9)';
+        }
+    }
+
+    // --- Watch for quantity changes ---
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.quantity-plus, .quantity-minus')) {
+            setTimeout(updateArrow, 50);
+        }
+    });
+
+    // --- Watch for dark mode toggle (optional - keep arrow visible) ---
+    const themeToggle = document.querySelector('#theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            setTimeout(function() {
+                // Re-apply visibility if items exist
+                if (hasSelectedItems()) {
+                    arrowBtn.style.opacity = '1';
+                    arrowBtn.style.transform = 'translateY(0) scale(1)';
+                    arrowBtn.style.pointerEvents = 'auto';
+                }
+            }, 100);
+        });
+    }
+
+    // --- Initial check ---
+    setTimeout(updateArrow, 200);
+    setTimeout(updateArrow, 500);
+
+    // --- Also update when meal preview changes (just in case) ---
+    const mealObserver = new MutationObserver(function() {
+        updateArrow();
+    });
+    const previewContainer = document.querySelector('#meal-preview-items');
+    if (previewContainer) {
+        mealObserver.observe(previewContainer, {
+            childList: true,
+            subtree: true,
+            characterData: true
+        });
+    }
+
+    console.log('✅ Floating arrow (scroll to cart) loaded.');
+})();
+
+// =========================================================
+// SERVICE WORKER - BETA FOOD
+// =========================================================
+
+const CACHE_NAME = 'beta-food-v4';
+
+// ← Increment every deploy
+
+const urlsToCache = [
+    '/',
+    '/home.html',
+    '/menu.html',
+    '/about.html',
+    '/reviews.html',
+    '/contact.html',
+    '/css/style.css?v=4',
+    '/js/script.js?v=4',
+    '/images/mlogo.png',
+    '/images/logo.png',
+    '/images/logo-192.png',
+    '/images/hero.jpg',
+    '/images/hero1.jpg',
+    '/images/Jollof Rice.jpg',
+    '/images/hero3.jpg',
+    '/images/fried rice.jpg',
+    'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css',
+    'https://unpkg.com/aos@2.3.4/dist/aos.css',
+    'https://unpkg.com/aos@2.3.4/dist/aos.js'
+];
+
+// Install event - cache files
+self.addEventListener('install', function(event) {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(function(cache) {
+                console.log('✅ Caching files');
+                return cache.addAll(urlsToCache);
+            })
+    );
+    self.skipWaiting(); // Force activation
+});
+
+// Activate event - clean old caches
+self.addEventListener('activate', function(event) {
+    event.waitUntil(
+        caches.keys().then(function(cacheNames) {
+            return Promise.all(
+                cacheNames.map(function(cacheName) {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log('❌ Deleting old cache:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
+    self.clients.claim(); // Take control immediately
+});
+
+// Fetch event - serve from cache, fallback to network
+self.addEventListener('fetch', function(event) {
+    event.respondWith(
+        caches.match(event.request)
+            .then(function(response) {
+                // Return cached response if found
+                if (response) {
+                    return response;
+                }
+                // Otherwise fetch from network
+                return fetch(event.request).then(function(networkResponse) {
+                    // Don't cache if not a valid response
+                    if (!networkResponse || networkResponse.status !== 200) {
+                        return networkResponse;
+                    }
+                    // Clone the response
+                    const responseClone = networkResponse.clone();
+                    caches.open(CACHE_NAME).then(function(cache) {
+                        cache.put(event.request, responseClone);
+                    });
+                    return networkResponse;
+                });
+            })
+    );
 });

@@ -10,15 +10,52 @@
     <meta property="og:description" content="Better Food For Better People. Our story and mission.">
     <meta property="og:image" content="images/logo.png">
     <meta property="og:type" content="website">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
     <title>About – Beta Food</title>
 
-    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="icon" type="image/png" href="images/mlogo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+
+<!-- Theme Color for Mobile -->
+<meta name="theme-color" content="#2e8b57">
+
+<!-- Apple Touch Icon (for iOS) -->
+<link rel="apple-touch-icon" href="images/logo-192.png">
+
+<!-- Service Worker Registration -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('✅ Service Worker registered:', registration);
+                })
+                .catch(function(error) {
+                    console.log('❌ Service Worker registration failed:', error);
+                });
+        });
+    }
+</script>
+
+<!-- Before -->
+<link rel="icon" type="image/png" href="images/logo.png">
+
+<!-- After -->
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<!-- OR keep both for compatibility -->
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+
 </head>
 
 <body>
@@ -27,7 +64,7 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <!-- LOADER -->
     <div id="loader">
-        <img src="images/logo.png" alt="Loading">
+        <img src="images/mlogo.png" alt="Loading">
     </div>
 
     <!-- WHATSAPP BUTTON -->
@@ -37,7 +74,7 @@
     NAVIGATION (SAME AS OTHER PAGES)
     ========================================================= -->
     <nav>
-        <img src="images/logo.png" alt="Beta Food Logo">
+        <img src="images/mlogo.png" alt="Beta Food Logo">
 
         <div class="menu-toggle">
             <i class="fa-solid fa-bars"></i>
@@ -302,5 +339,71 @@
     ]
 }
 </script>
+
+<!-- Add to Home Screen Prompt (PWA) -->
+<div id="install-banner" style="display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: white; padding: 20px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 99999; max-width: 400px; width: 90%; text-align: center; border: 2px solid #2e8b57;">
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px;">
+        <img src="images/logo-192.png" alt="Beta Food" style="width: 60px; height: 60px; border-radius: 12px;">
+        <div style="text-align: left;">
+            <h3 style="margin: 0; color: #2e8b57; font-size: 18px;">Beta Food</h3>
+            <p style="margin: 0; color: #666; font-size: 14px;">Better Food For Better People</p>
+        </div>
+    </div>
+    <p style="font-size: 14px; color: #555; margin-bottom: 15px;">Add Beta Food to your home screen for faster ordering! 🚀</p>
+    <div style="display: flex; gap: 10px; justify-content: center;">
+        <button onclick="closeInstallBanner()" style="padding: 10px 20px; background: #eee; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">Not Now</button>
+        <button id="install-btn" style="padding: 10px 24px; background: #2e8b57; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">📲 Add to Home Screen</button>
+    </div>
+</div>
+
+<script>
+    // Show install banner after a few seconds
+    let deferredPrompt;
+    const installBanner = document.getElementById('install-banner');
+
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        // Already installed – hide banner
+        installBanner.style.display = 'none';
+    } else {
+        // Show banner after 5 seconds
+        setTimeout(function() {
+            installBanner.style.display = 'block';
+        }, 5000);
+    }
+
+    // Close banner
+    function closeInstallBanner() {
+        installBanner.style.display = 'none';
+    }
+
+    // Listen for install prompt
+    window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBanner.style.display = 'block';
+    });
+
+    // Install button
+    document.getElementById('install-btn').addEventListener('click', function() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(function(result) {
+                if (result.outcome === 'accepted') {
+                    console.log('✅ App installed!');
+                } else {
+                    console.log('❌ App installation declined');
+                }
+                deferredPrompt = null;
+                installBanner.style.display = 'none';
+            });
+        } else {
+            // Fallback for iOS – show instructions
+            alert('📲 Tap the Share button and then "Add to Home Screen" to install Beta Food!');
+            installBanner.style.display = 'none';
+        }
+    });
+</script>
+
 </body>
 </html>
