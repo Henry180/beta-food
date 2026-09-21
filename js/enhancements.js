@@ -152,5 +152,43 @@
             });
         });
 
+        /* =====================================================
+           6. CANCEL ORDER
+           Clears the cart by driving the existing remove-item
+           buttons (safe: doesn't touch script.js's cart array
+           directly), resets the checkout form, and closes it.
+        ===================================================== */
+        var cancelBtn = document.getElementById("cancel-order");
+        if (cancelBtn) {
+            cancelBtn.addEventListener("click", function () {
+                if (!confirm("Cancel this order and empty your cart?")) return;
+
+                var guard = 0;
+                var btn;
+                while (guard < 200 && (btn = document.querySelector(".remove-btn, .remove-meal"))) {
+                    btn.click();
+                    guard++;
+                }
+
+                var nameField = document.getElementById("customer-name");
+                var phoneField = document.getElementById("customer-phone");
+                var addressField = document.getElementById("customer-address");
+                if (nameField) nameField.value = "";
+                if (phoneField) phoneField.value = "";
+                if (addressField) addressField.value = "";
+
+                var form = document.getElementById("checkout-form");
+                if (form) {
+                    form.classList.remove("open");
+                    form.style.display = "none";
+                }
+
+                var box = document.querySelector(".cart-box");
+                if (box) box.style.display = "none";
+
+                showToast("Your order has been cancelled.");
+            });
+        }
+
     });
 })();

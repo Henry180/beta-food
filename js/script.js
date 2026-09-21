@@ -3145,7 +3145,7 @@ if (
  ` Address: ${customerAddress}\n\n` +
  ` TOTAL: ₦${total}\n\n` +
  ` Payment confirmed.\n\n` +
- `Thank you for ordering from Beta Food! ️`;
+ `Thank you for ordering from Beta Food! `;
 
 
  const whatsappNumber =
@@ -3798,7 +3798,7 @@ if (
  class="delete-review"
  data-id="${review.id}"
  title="Delete this review">
- ️
+ 
  </button>
 
  </div>
@@ -3924,7 +3924,7 @@ if (
  arrowBtn = document.createElement('div');
  arrowBtn.id = 'floating-arrow';
  arrowBtn.innerHTML = `
- <span class="arrow-icon">️</span>
+ <span class="arrow-icon"></span>
  <span class="arrow-text">Add Meal to Cart</span>
  `;
  arrowBtn.style.position = 'fixed';
