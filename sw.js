@@ -1,11 +1,15 @@
 // =========================================================
-// SERVICE WORKER – Beta Food PWA
+// SERVICE WORKER - Beta Food PWA
+// =========================================================
+// v3.0: switched to network-first for pages/CSS/JS so a new
+// deploy always shows up immediately instead of being stuck
+// behind a stale cache. Images stay cache-first since they
+// rarely change and are heavier to re-download.
 // =========================================================
 
-const CACHE_NAME = 'betafood-v2.0';
+const CACHE_NAME = 'betafood-v3.0';
 
-// ✅ NO DUPLICATES – each file listed once
-const FILES_TO_CACHE = [
+const CORE_FILES = [
     '/',
     '/index.html',
     '/menu.html',
@@ -16,11 +20,17 @@ const FILES_TO_CACHE = [
     '/terms.html',
     '/css/style.css',
     '/js/script.js',
+    '/js/enhancements.js'
+];
+
+const IMAGE_FILES = [
     '/images/logo.png',
+    '/images/mlogo.png',
     '/images/logo-192.png',
     '/images/logo-512.png',
     '/images/hero.jpg',
     '/images/hero1.jpg',
+    '/images/hero2.jpg',
     '/images/hero3.jpg',
     '/images/Jollof Rice.jpg',
     '/images/fried rice.jpg',
@@ -39,66 +49,96 @@ const FILES_TO_CACHE = [
 ];
 
 // =========================================================
-// INSTALL – Cache files
+// INSTALL - pre-cache core + image files, then activate now
 // =========================================================
-
-self.addEventListener('install', function(event) {
+self.addEventListener('install', function (event) {
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then(function(cache) {
-                console.log('📦 Cache opened');
-                return cache.addAll(FILES_TO_CACHE);
+            .then(function (cache) {
+                return cache.addAll(CORE_FILES.concat(IMAGE_FILES)).catch(function () {
+                    // Don't fail install if one image 404s; cache what we can.
+                    return Promise.all(
+                        CORE_FILES.concat(IMAGE_FILES).map(function (url) {
+                            return cache.add(url).catch(function () {});
+                        })
+                    );
+                });
             })
-            .then(function() {
+            .then(function () {
                 self.skipWaiting();
             })
     );
 });
 
 // =========================================================
-// ACTIVATE – Clean old caches
+// ACTIVATE - delete any old-named caches, take control now
 // =========================================================
-
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', function (event) {
     event.waitUntil(
-        caches.keys().then(function(cacheNames) {
+        caches.keys().then(function (cacheNames) {
             return Promise.all(
-                cacheNames.map(function(cacheName) {
+                cacheNames.map(function (cacheName) {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('🗑️ Removing old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
-        }).then(function() {
-            self.clients.claim();
+        }).then(function () {
+            return self.clients.claim();
         })
     );
 });
 
 // =========================================================
-// FETCH – Serve from cache or network
+// FETCH
+//  - HTML/CSS/JS: network-first (always try the live server
+//    first so new deploys show up right away; fall back to
+//    cache only if offline).
+//  - Everything else (images, fonts, etc.): cache-first.
 // =========================================================
+self.addEventListener('fetch', function (event) {
+    if (event.request.method !== 'GET') return;
 
-self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        caches.match(event.request)
-            .then(function(response) {
-                if (response) {
-                    return response;
-                }
-                const fetchRequest = event.request.clone();
-                return fetch(fetchRequest).then(function(response) {
-                    if (!response || response.status !== 200 || response.type !== 'basic') {
-                        return response;
-                    }
-                    const responseToCache = response.clone();
-                    caches.open(CACHE_NAME)
-                        .then(function(cache) {
-                            cache.put(event.request, responseToCache);
+    const url = new URL(event.request.url);
+    const isCoreAsset = url.origin === self.location.origin &&
+        (event.request.mode === 'navigate' ||
+         url.pathname.endsWith('.html') ||
+         url.pathname.endsWith('.css') ||
+         url.pathname.endsWith('.js') ||
+         url.pathname === '/');
+
+    if (isCoreAsset) {
+        event.respondWith(
+            fetch(event.request)
+                .then(function (networkResponse) {
+                    if (networkResponse && networkResponse.status === 200) {
+                        const copy = networkResponse.clone();
+                        caches.open(CACHE_NAME).then(function (cache) {
+                            cache.put(event.request, copy);
                         });
-                    return response;
-                });
-            })
+                    }
+                    return networkResponse;
+                })
+                .catch(function () {
+                    return caches.match(event.request);
+                })
+        );
+        return;
+    }
+
+    // Cache-first for images and other static assets
+    event.respondWith(
+        caches.match(event.request).then(function (cached) {
+            if (cached) return cached;
+            return fetch(event.request).then(function (networkResponse) {
+                if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+                    const copy = networkResponse.clone();
+                    caches.open(CACHE_NAME).then(function (cache) {
+                        cache.put(event.request, copy);
+                    });
+                }
+                return networkResponse;
+            });
+        })
     );
 });
