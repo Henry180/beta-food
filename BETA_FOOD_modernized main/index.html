@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+ <!-- <i class="fa-solid fa-circle-check"></i> FORCE NO CACHING -->
+ <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+ <meta http-equiv="Pragma" content="no-cache">
+ <meta http-equiv="Expires" content="0">
+
+ <!-- Primary Meta Tags -->
+ <meta name="description" content="Beta Food – Fresh, delicious meals in Nsukka. Order Jollof Rice, Fried Rice, Spaghetti and more. Fast delivery, affordable prices.">
+ <meta name="keywords" content="Beta Food, Nsukka food, Food delivery, Jollof Rice, Fried Rice, Spaghetti, Chicken, Order food online">
+ <meta name="author" content="Beta Food">
+ <meta name="robots" content="index, follow">
+
+ <!-- Open Graph / Social Media -->
+ <meta property="og:title" content="Beta Food – Better Food For Better People">
+ <meta property="og:description" content="Fresh, delicious meals delivered to your door in Nsukka. Order now!">
+ <meta property="og:image" content="https://betafood.netlify.app/images/logo.png">
+ <meta property="og:url" content="https://betafood.netlify.app/">
+ <meta property="og:type" content="website">
+
+ <!-- Twitter Card -->
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Beta Food – Better Food For Better People">
+ <meta name="twitter:description" content="Fresh, delicious meals delivered to your door in Nsukka.">
+ <meta name="twitter:image" content="https://betafood.netlify.app/images/logo.png">
+
+ <title>Beta Food – Better Food For Better People</title>
+
+ <!-- Favicon -->
+ <link rel="icon" type="image/png" href="images/mlogo.png">
+ <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+ <!-- PWA Manifest -->
+ <link rel="manifest" href="manifest.json">
+
+ <!-- Theme Color for Mobile -->
+ <meta name="theme-color" content="#b5451d">
+
+ <!-- Apple Touch Icon -->
+ <link rel="apple-touch-icon" href="images/logo-192.png">
+
+ <!-- Fonts & Styles -->
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+ <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+ 
+ <!-- <i class="fa-solid fa-circle-check"></i> CSS WITH CACHE BUSTING v3 -->
+ <link rel="stylesheet" href="css/style.css?v=4">
+
+ <!-- Service Worker Registration -->
+ <script>
+ if ('serviceWorker' in navigator) {
+ window.addEventListener('load', function() {
+ navigator.serviceWorker.register('/sw.js')
+ .then(function(registration) {
+ console.log('<i class="fa-solid fa-circle-check"></i> Service Worker registered:', registration);
+ })
+ .catch(function(error) {
+ console.log('<i class="fa-solid fa-circle-xmark"></i> Service Worker registration failed:', error);
+ });
+ });
+ }
+ </script>
+
+ <!-- Schema.org Structured Data -->
+ <script type="application/ld+json">
+ {
+ "@context": "https://schema.org",
+ "@type": "Restaurant",
+ "name": "Beta Food",
+ "description": "Better Food For Better People. Fresh rice, pasta and fast delivery in Nsukka.",
+ "image": "https://betafood.netlify.app/images/logo.png",
+ "address": {
+ "@type": "PostalAddress",
+ "addressLocality": "Nsukka",
+ "addressRegion": "Enugu",
+ "addressCountry": "NG"
+ },
+ "telephone": "+2349169452392",
+ "openingHours": "Mo-Fr 08:00-20:00, Sa 09:00-21:00, Su 12:00-18:00",
+ "servesCuisine": "Nigerian, African",
+ "priceRange": "₦500 - ₦3,500",
+ "url": "https://betafood.netlify.app/",
+ "hasMenu": "https://betafood.netlify.app/menu.html",
+ "sameAs": [
+ "https://wa.me/2349169452392",
+ "mailto:betafood247@gmail.com"
+ ]
+ }
+ </script>
+</head>
+
+<body>
+<div id="announcement-bar">
+ <span><i class="fa-solid fa-fire"></i> Free delivery on orders above ₦5,000 this week — order now on the Menu page!</span>
+ <button class="close-announcement" id="close-announcement" aria-label="Dismiss"><i class="fa-solid fa-xmark"></i> </button>
+</div>
+
+ <!-- Skip Link -->
+ <a href="#main-content" class="skip-link">Skip to main content</a>
+
+ <!-- LOADER -->
+ <div id="loader">
+ <img src="images/mlogo.png" alt="Loading">
+ </div>
+
+ <!-- WHATSAPP BUTTON -->
+ <a href="https://wa.me/2349169452392?text=Hello%20Beta%20Food!" class="whatsapp" target="_blank">
+ <i class="fa-brands fa-whatsapp"></i>
+ </a>
+
+ <!-- =========================================================
+ NAVIGATION (SAME ON ALL PAGES)
+ ========================================================= -->
+ <nav>
+ <img src="images/mlogo.png" alt="Beta Food Logo">
+
+ <div class="menu-toggle">
+ <i class="fa-solid fa-bars"></i>
+ </div>
+
+ <div class="nav-links">
+ <a href="index.html" class="active">Home</a>
+ <a href="menu.html">Menu</a>
+ <a href="about.html">About</a>
+ <a href="reviews.html">Reviews</a>
+ <a href="contact.html">Contact</a>
+ </div>
+
+ <div class="cart-icon">
+ <i class="fa-solid fa-cart-shopping"></i>
+ <span id="cart-count">0</span>
+ </div>
+
+ <div class="theme-toggle" id="theme-toggle">
+ <i class="fa-solid fa-moon"></i>
+ </div>
+
+ <!-- CART BOX -->
+ <div class="cart-box">
+ <h3>Your Cart</h3>
+ <div id="cart-items">Your cart is empty</div>
+ <h4>Total: ₦<span id="cart-total">0</span></h4>
+ <button class="checkout-btn" id="checkout-btn">Checkout</button>
+
+ <!-- Checkout Form -->
+ <div class="checkout-form" id="checkout-form">
+ <h3>Complete Your Order</h3>
+ <input type="text" id="customer-name" placeholder="Your Name">
+ <input type="tel" id="customer-phone" placeholder="Phone Number">
+ <textarea id="customer-address" placeholder="Delivery Address"></textarea>
+ <button id="place-order">Proceed to Payment</button>
+ </div>
+
+ <!-- Payment Popup -->
+ <div class="payment-popup" id="payment-popup">
+ <h2><i class="fa-solid fa-champagne-glasses"></i> Thank You For Your Order!</h2>
+ <p>Please complete payment using the account below.</p>
+ <hr>
+ <p><strong>Bank:</strong> Opay</p>
+ <p><strong>Account Name:</strong> Tochukwu Beta Food</p>
+ <p><strong>Account Number:</strong> <span id="account-number">9169452392</span></p>
+ <button id="copy-account"><i class="fa-solid fa-clipboard-list"></i> Copy Account Number</button>
+ <br><br>
+ <label class="payment-check">
+ <input type="checkbox" id="payment-check">
+ I have completed my payment
+ </label>
+ <button id="payment-done">I've Made Payment</button>
+ </div>
+ </div>
+ </nav>
+
+ <!-- =========================================================
+ HOME PAGE CONTENT
+ ========================================================= -->
+
+ <!-- HERO -->
+ 
+ <section class="hero" id="home">
+ <div class="status-badge" id="status-badge"></div>
+ <h1>Better Food For Better People</h1>
+ <p>Freshly prepared Rice and Spaghetti Meals made with quality ingredients, served with love and care.</p>
+ <a href="menu.html" class="btn cta-glow"><i class="fa-solid fa-bowl-food"></i> ORDER FROM OUR MENU</a>
+ <div class="scroll-down">
+ <i class="fa-solid fa-chevron-down"></i>
+ </div>
+</section>
+
+ <!-- FEATURE STRIP -->
+ <div class="feature-strip" data-aos="fade-up">
+ <div class="feature-card">
+ <i class="fa-solid fa-bowl-food"></i>
+ <h4>Build Your Own Meal</h4>
+ <p>Mix rice, protein &amp; extras your way</p>
+ </div>
+ <div class="feature-card">
+ <i class="fa-solid fa-bolt"></i>
+ <h4>Fast Delivery</h4>
+ <p>Hot meals, quick to your door</p>
+ </div>
+ <div class="feature-card">
+ <i class="fa-solid fa-droplet"></i>
+ <h4>Free Water</h4>
+ <p>Complimentary with every main meal</p>
+ </div>
+ <div class="feature-card">
+ <i class="fa-brands fa-whatsapp"></i>
+ <h4>Order on WhatsApp</h4>
+ <p>Prefer chat? We're one tap away</p>
+ </div>
+ </div>
+
+ <!-- ABOUT (short version) -->
+ <section class="about" id="about" data-aos="fade-right">
+ <h2>About Beta Food</h2>
+ <p>At Beta Food, we believe everyone deserves fresh, delicious meals prepared with quality ingredients. Our mission is to serve tasty rice and spaghetti dishes that bring people together while delivering excellent customer service everyday.</p>
+ </section>
+
+ <!-- OPENING HOURS -->
+ <section class="hours">
+ <h2>Opening Hours</h2>
+ <p><strong>Monday - Friday:</strong> 8:00AM - 8:00PM</p>
+ <p><strong>Saturday:</strong> 9:00AM - 9:00PM</p>
+ <p><strong>Sunday:</strong> 12:00PM - 6:00PM</p>
+ <p>Last orders are accepted 30 minutes before closing.</p>
+ </section>
+
+ <!-- TESTIMONIALS -->
+ <section class="testimonials" data-aos="fade-left">
+ <h2>What Our Customers Say</h2>
+ <div class="testimonial-container">
+ <div class="testimonial">
+ <div class="testimonial-stars"><i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> </div>
+ <p>"The Jollof Rice was delicious and the service was excellent!"</p>
+ <h4>- Chioma</h4>
+ </div>
+ <div class="testimonial">
+ <div class="testimonial-stars"><i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> </div>
+ <p>"Affordable meals with generous portions. I'll definitely order again."</p>
+ <h4>- Emeka</h4>
+ </div>
+ <div class="testimonial">
+ <div class="testimonial-stars"><i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> <i class="fa-solid fa-star"></i> </div>
+ <p>"The spaghetti was fresh, tasty, and delivered on time."</p>
+ <h4>- Ada</h4>
+ </div>
+ </div>
+ </section>
+
+ <!-- FAQ -->
+ <section class="faq" data-aos="fade-up">
+ <h2>Frequently Asked <span>Questions</span></h2>
+ <div class="section-sub">Quick answers before you order.</div>
+
+ <div class="faq-item">
+ <div class="faq-question">How do I pay for my order? <i class="fa-solid fa-plus"></i></div>
+ <div class="faq-answer">Build your meal, checkout with your name, phone and address, then pay by bank transfer to the Opay account shown at checkout. Tick "I have completed my payment" once you're done.</div>
+ </div>
+ <div class="faq-item">
+ <div class="faq-question">How long does delivery take? <i class="fa-solid fa-plus"></i></div>
+ <div class="faq-answer">Most orders arrive within 30–45 minutes depending on your location and how busy we are. We'll confirm your order on WhatsApp once payment is received.</div>
+ </div>
+ <div class="faq-item">
+ <div class="faq-question">Do I really get free water? <i class="fa-solid fa-plus"></i></div>
+ <div class="faq-answer">Yes! One free can of water is included whenever your order includes a main meal — just add it in the "Free Water" section of the menu.</div>
+ </div>
+ <div class="faq-item">
+ <div class="faq-question">Can I track my order? <i class="fa-solid fa-plus"></i></div>
+ <div class="faq-answer">After checkout you'll get a digital receipt you can save or send straight to our WhatsApp — that's also the fastest way to ask about your order status.</div>
+ </div>
+ </section>
+
+ <!-- =========================================================
+ FOOTER (SAME ON ALL PAGES)
+ ========================================================= -->
+ <footer>
+ <h3>© 2026 Beta Food</h3>
+ <p>Better Food For Better People</p>
+ <p>Designed with <i class="fa-solid fa-heart"></i> ️ by Beta Food</p>
+ <p>
+ <a href="privacy.html">Privacy Policy</a> |
+ <a href="terms.html">Terms & Conditions</a>
+ </p>
+ </footer>
+
+ <!-- BACK TO TOP -->
+ <a href="#home" class="back-to-top">
+ <i class="fa-solid fa-arrow-up"></i>
+ </a>
+
+ <!-- =========================================================
+ RECEIPT CONTAINER (SAME ON ALL PAGES)
+ ========================================================= -->
+ <div id="receipt-container">
+ <div id="receipt">
+ <div class="receipt-header">
+ <img src="images/logo.png" alt="Beta Food Logo">
+ <h2>BETA FOOD</h2>
+ <p>Better Food For Better People</p>
+ <span>ORDER RECEIPT</span>
+ </div>
+ <div class="receipt-divider"></div>
+ <div class="receipt-info">
+ <p><strong>Order No:</strong> <span id="receipt-order-number"></span></p>
+ <p><strong>Date:</strong> <span id="receipt-date"></span></p>
+ </div>
+ <div class="receipt-customer">
+ <h3>CUSTOMER DETAILS</h3>
+ <p><strong>Name:</strong> <span id="receipt-customer-name"></span></p>
+ <p><strong>Phone:</strong> <span id="receipt-customer-phone"></span></p>
+ <p><strong>Address:</strong> <span id="receipt-customer-address"></span></p>
+ </div>
+ <div class="receipt-divider"></div>
+ <h3>YOUR ORDER</h3>
+ <div id="receipt-items"></div>
+ <div class="receipt-divider"></div>
+ <div class="receipt-total">
+ <span>TOTAL</span>
+ <strong>₦<span id="receipt-total"></span></strong>
+ </div>
+ <div class="receipt-payment">
+ <h3>PAYMENT DETAILS</h3>
+ <p><strong>Payment Method:</strong> Bank Transfer</p>
+ <p><strong>Bank:</strong> Opay</p>
+ <p><strong>Account Name:</strong> Tochukwu Beta Food</p>
+ <p><strong>Account Number:</strong> 9169452392</p>
+ <p><strong>Payment Status:</strong> <span class="payment-confirmed"><i class="fa-solid fa-check"></i> PAYMENT CONFIRMED</span></p>
+ </div>
+ <div class="receipt-footer">
+ <p>Thank you for ordering from Beta Food <i class="fa-solid fa-heart"></i> ️</p>
+ <p>Better Food For Better People</p>
+ <small>Please keep this receipt for your records.</small>
+ </div>
+ </div>
+ <div id="receipt-actions">
+ <button id="download-receipt"><i class="fa-solid fa-download"></i> Save Receipt</button>
+ <button id="send-receipt-whatsapp"><i class="fa-brands fa-whatsapp"></i> Send Receipt to WhatsApp</button>
+ </div>
+ </div>
+
+ <!-- =========================================================
+ SCRIPTS (SAME ON ALL PAGES)
+ ========================================================= -->
+ <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+ <script>
+ AOS.init();
+ </script>
+ 
+ <!-- <i class="fa-solid fa-circle-check"></i> JS WITH CACHE BUSTING v3 -->
+ <script src="js/script.js?v=4"></script>
+ <script src="js/enhancements.js"></script>
+
+ <!-- =========================================================
+ PWA INSTALL BANNER
+ ========================================================= -->
+ <div id="install-banner" style="display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: white; padding: 20px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 99999; max-width: 400px; width: 90%; text-align: center; border: 2px solid #b5451d;">
+ <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px;">
+ <img src="images/logo-192.png" alt="Beta Food" style="width: 60px; height: 60px; border-radius: 12px;" onerror="this.src='images/mlogo.png'">
+ <div style="text-align: left;">
+ <h3 style="margin: 0; color: #b5451d; font-size: 18px;">Beta Food</h3>
+ <p style="margin: 0; color: var(--text-muted); font-size: 14px;">Better Food For Better People</p>
+ </div>
+ </div>
+ <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">Add Beta Food to your home screen for faster ordering! <i class="fa-solid fa-bolt"></i> </p>
+ <div style="display: flex; gap: 10px; justify-content: center;">
+ <button id="install-banner-close" style="padding: 10px 20px; background: var(--border); border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">Not Now</button>
+ <button id="install-btn" style="padding: 10px 24px; background: #b5451d; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;"><i class="fa-solid fa-mobile-screen-button"></i> Add to Home Screen</button>
+ </div>
+ </div>
+
+ <script>
+ // PWA INSTALL BANNER
+ let deferredPrompt;
+ const installBanner = document.getElementById('install-banner');
+
+ if (window.matchMedia('(display-mode: standalone)').matches) {
+ if (installBanner) installBanner.style.display = 'none';
+ } else {
+ setTimeout(function() {
+ if (installBanner) installBanner.style.display = 'block';
+ }, 5000);
+ }
+
+ function closeInstallBanner() {
+ if (installBanner) installBanner.style.display = 'none';
+ }
+
+ window.addEventListener('beforeinstallprompt', function(e) {
+ e.preventDefault();
+ deferredPrompt = e;
+ console.log('<i class="fa-solid fa-circle-check"></i> Install prompt captured');
+ if (installBanner) installBanner.style.display = 'block';
+ });
+
+ document.getElementById('install-btn').addEventListener('click', function() {
+ if (deferredPrompt) {
+ deferredPrompt.prompt();
+ deferredPrompt.userChoice.then(function(result) {
+ if (result.outcome === 'accepted') {
+ console.log('<i class="fa-solid fa-circle-check"></i> App installed!');
+ } else {
+ console.log('<i class="fa-solid fa-circle-xmark"></i> App installation declined');
+ }
+ deferredPrompt = null;
+ if (installBanner) installBanner.style.display = 'none';
+ });
+ } else {
+ alert('<i class="fa-solid fa-mobile-screen-button"></i> Tap the Share button and then "Add to Home Screen" to install Beta Food!');
+ if (installBanner) installBanner.style.display = 'none';
+ }
+ });
+
+ document.getElementById('install-banner-close').addEventListener('click', function() {
+ closeInstallBanner();
+ });
+ </script>
+
+<script>
+window.addEventListener("load", function () {
+ const orderButton = document.querySelector(".cta-glow");
+
+ if (orderButton) {
+ // Force the browser to restart the animation
+ orderButton.classList.remove("cta-glow-active");
+
+ void orderButton.offsetWidth;
+
+ orderButton.classList.add("cta-glow-active");
+ }
+});
+</script>
+
+</body>
+</html>
