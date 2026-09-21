@@ -1,3913 +1,3913 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // =========================================================
-    // MOBILE MENU
-    // =========================================================
+ // =========================================================
+ // MOBILE MENU
+ // =========================================================
 
-    const menuToggle = document.querySelector(".menu-toggle");
-    const menu = document.querySelector(".nav-links");
-    const navLinks = document.querySelectorAll(".nav-links a");
+ const menuToggle = document.querySelector(".menu-toggle");
+ const menu = document.querySelector(".nav-links");
+ const navLinks = document.querySelectorAll(".nav-links a");
 
-    if (menuToggle && menu) {
-        menuToggle.addEventListener("click", function () {
-            menu.classList.toggle("active");
-        });
-    }
+ if (menuToggle && menu) {
+ menuToggle.addEventListener("click", function () {
+ menu.classList.toggle("active");
+ });
+ }
 
-    navLinks.forEach(function (link) {
-        link.addEventListener("click", function () {
-            if (menu) {
-                menu.classList.remove("active");
-            }
-        });
-    });
+ navLinks.forEach(function (link) {
+ link.addEventListener("click", function () {
+ if (menu) {
+ menu.classList.remove("active");
+ }
+ });
+ });
 
 
-    // =========================================================
-    // BACK TO TOP
-    // =========================================================
+ // =========================================================
+ // BACK TO TOP
+ // =========================================================
 
-    const backToTop = document.querySelector(".back-to-top");
+ const backToTop = document.querySelector(".back-to-top");
 
-    if (backToTop) {
-        window.addEventListener("scroll", function () {
+ if (backToTop) {
+ window.addEventListener("scroll", function () {
 
-            if (window.scrollY > 300) {
-                backToTop.classList.add("show");
-            } else {
-                backToTop.classList.remove("show");
-            }
+ if (window.scrollY > 300) {
+ backToTop.classList.add("show");
+ } else {
+ backToTop.classList.remove("show");
+ }
 
-        });
-    }
+ });
+ }
 
 
-    // =========================================================
-    // SEARCH
-    // =========================================================
+ // =========================================================
+ // SEARCH
+ // =========================================================
 
-    const search = document.querySelector("#search");
-    const foodCards = document.querySelectorAll(".food-card");
+ const search = document.querySelector("#search");
+ const foodCards = document.querySelectorAll(".food-card");
 
-    if (search) {
+ if (search) {
 
-        search.addEventListener("input", function () {
+ search.addEventListener("input", function () {
 
-            const searchValue =
-                search.value.toLowerCase().trim();
+ const searchValue =
+ search.value.toLowerCase().trim();
 
-            foodCards.forEach(function (card) {
+ foodCards.forEach(function (card) {
 
-                const heading =
-                    card.querySelector("h3");
+ const heading =
+ card.querySelector("h3");
 
-                if (!heading) return;
+ if (!heading) return;
 
-                const foodName =
-                    heading.textContent.toLowerCase();
+ const foodName =
+ heading.textContent.toLowerCase();
 
-                if (foodName.includes(searchValue)) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
+ if (foodName.includes(searchValue)) {
+ card.style.display = "block";
+ } else {
+ card.style.display = "none";
+ }
 
-            });
+ });
 
-        });
+ });
 
-    }
+ }
 
 
-    // =========================================================
-    // BUILD YOUR MEAL
-    // =========================================================
+ // =========================================================
+ // BUILD YOUR MEAL
+ // =========================================================
 
-    const mealOptions =
-        document.querySelectorAll(".meal-option");
+ const mealOptions =
+ document.querySelectorAll(".meal-option");
 
 
-    // =========================================================
-    // GET MAIN MEAL OPTIONS
-    // =========================================================
+ // =========================================================
+ // GET MAIN MEAL OPTIONS
+ // =========================================================
 
-    function getMainMealOptions() {
+ function getMainMealOptions() {
 
-        const mainMealCategory =
-            document.querySelector(
-                ".meal-category:not(.water-option)"
-            );
+ const mainMealCategory =
+ document.querySelector(
+ ".meal-category:not(.water-option)"
+ );
 
-        if (!mainMealCategory) {
-            return [];
-        }
+ if (!mainMealCategory) {
+ return [];
+ }
 
-        /*
-         * The first .meal-category in your HTML is Main Meals.
-         * We identify it using its heading instead of relying
-         * only on position.
-         */
+ /*
+ * The first .meal-category in your HTML is Main Meals.
+ * We identify it using its heading instead of relying
+ * only on position.
+ */
 
-        const categories =
-            document.querySelectorAll(".meal-category");
+ const categories =
+ document.querySelectorAll(".meal-category");
 
-        let mainCategory = null;
+ let mainCategory = null;
 
-        categories.forEach(function (category) {
+ categories.forEach(function (category) {
 
-            const heading =
-                category.querySelector("h3");
+ const heading =
+ category.querySelector("h3");
 
-            if (!heading) return;
+ if (!heading) return;
 
-            const text =
-                heading.textContent.toLowerCase();
+ const text =
+ heading.textContent.toLowerCase();
 
-            if (
-                text.includes("main meal")
-            ) {
-                mainCategory = category;
-            }
+ if (
+ text.includes("main meal")
+ ) {
+ mainCategory = category;
+ }
 
-        });
+ });
 
-        if (!mainCategory) {
-            return [];
-        }
+ if (!mainCategory) {
+ return [];
+ }
 
-        return Array.from(
-            mainCategory.querySelectorAll(".meal-option")
-        );
+ return Array.from(
+ mainCategory.querySelectorAll(".meal-option")
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // CHECK WHETHER MAIN MEAL HAS BEEN SELECTED
-    // =========================================================
+ // =========================================================
+ // CHECK WHETHER MAIN MEAL HAS BEEN SELECTED
+ // =========================================================
 
-    function hasMainMealSelected() {
+ function hasMainMealSelected() {
 
-        const mainMeals =
-            getMainMealOptions();
+ const mainMeals =
+ getMainMealOptions();
 
-        return mainMeals.some(function (meal) {
+ return mainMeals.some(function (meal) {
 
-            const quantityElement =
-                meal.querySelector(".quantity");
+ const quantityElement =
+ meal.querySelector(".quantity");
 
-            if (!quantityElement) {
-                return false;
-            }
+ if (!quantityElement) {
+ return false;
+ }
 
-            return (
-                Number(
-                    quantityElement.textContent
-                ) > 0
-            );
+ return (
+ Number(
+ quantityElement.textContent
+ ) > 0
+ );
 
-        });
+ });
 
-    }
+ }
 
 
-    // =========================================================
-    // CHECK WHETHER OPTION IS WATER
-    // =========================================================
+ // =========================================================
+ // CHECK WHETHER OPTION IS WATER
+ // =========================================================
 
-    function isWaterOption(option) {
+ function isWaterOption(option) {
 
-        if (!option) {
-            return false;
-        }
+ if (!option) {
+ return false;
+ }
 
-        const category =
-            option.closest(".meal-category");
+ const category =
+ option.closest(".meal-category");
 
-        if (
-            category &&
-            category.classList.contains(
-                "water-option"
-            )
-        ) {
-            return true;
-        }
+ if (
+ category &&
+ category.classList.contains(
+ "water-option"
+ )
+ ) {
+ return true;
+ }
 
-        const heading =
-            option.querySelector("h4");
+ const heading =
+ option.querySelector("h4");
 
-        if (!heading) {
-            return false;
-        }
+ if (!heading) {
+ return false;
+ }
 
-        return (
-            heading.textContent
-                .trim()
-                .toLowerCase() ===
-            "can of water"
-        );
+ return (
+ heading.textContent
+ .trim()
+ .toLowerCase() ===
+ "can of water"
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // GET WATER OPTION
-    // =========================================================
+ // =========================================================
+ // GET WATER OPTION
+ // =========================================================
 
-    function getWaterOption() {
+ function getWaterOption() {
 
-        let waterOption = null;
+ let waterOption = null;
 
-        mealOptions.forEach(function (option) {
+ mealOptions.forEach(function (option) {
 
-            if (isWaterOption(option)) {
-                waterOption = option;
-            }
+ if (isWaterOption(option)) {
+ waterOption = option;
+ }
 
-        });
+ });
 
-        return waterOption;
+ return waterOption;
 
-    }
+ }
 
 
-    // =========================================================
-    // REMOVE FREE WATER IF MAIN MEAL IS REMOVED
-    // =========================================================
+ // =========================================================
+ // REMOVE FREE WATER IF MAIN MEAL IS REMOVED
+ // =========================================================
 
-    function validateFreeWater() {
+ function validateFreeWater() {
 
-        const waterOption =
-            getWaterOption();
+ const waterOption =
+ getWaterOption();
 
-        if (!waterOption) {
-            return;
-        }
+ if (!waterOption) {
+ return;
+ }
 
-        const quantityElement =
-            waterOption.querySelector(".quantity");
+ const quantityElement =
+ waterOption.querySelector(".quantity");
 
-        if (!quantityElement) {
-            return;
-        }
+ if (!quantityElement) {
+ return;
+ }
 
-        const waterQuantity =
-            Number(
-                quantityElement.textContent
-            );
+ const waterQuantity =
+ Number(
+ quantityElement.textContent
+ );
 
-        /*
-         * If there is no main meal, water is no longer valid.
-         */
+ /*
+ * If there is no main meal, water is no longer valid.
+ */
 
-        if (
-            waterQuantity > 0 &&
-            !hasMainMealSelected()
-        ) {
+ if (
+ waterQuantity > 0 &&
+ !hasMainMealSelected()
+ ) {
 
-            quantityElement.textContent = "0";
+ quantityElement.textContent = "0";
 
-            alert(
-                "Your free water was removed because a main meal is required for the free water offer. 💧🍛"
-            );
+ alert(
+ "Your free water was removed because a main meal is required for the free water offer. "
+ );
 
-        }
+ }
 
-    }
+ }
 
 
-    // =========================================================
-    // QUANTITY CONTROLS
-    // =========================================================
+ // =========================================================
+ // QUANTITY CONTROLS
+ // =========================================================
 
-    mealOptions.forEach(function (option) {
+ mealOptions.forEach(function (option) {
 
-        const minusButton =
-            option.querySelector(
-                ".quantity-minus"
-            );
+ const minusButton =
+ option.querySelector(
+ ".quantity-minus"
+ );
 
-        const plusButton =
-            option.querySelector(
-                ".quantity-plus"
-            );
+ const plusButton =
+ option.querySelector(
+ ".quantity-plus"
+ );
 
-        const quantityDisplay =
-            option.querySelector(
-                ".quantity"
-            );
+ const quantityDisplay =
+ option.querySelector(
+ ".quantity"
+ );
 
-        if (
-            !minusButton ||
-            !plusButton ||
-            !quantityDisplay
-        ) {
-            return;
-        }
+ if (
+ !minusButton ||
+ !plusButton ||
+ !quantityDisplay
+ ) {
+ return;
+ }
 
 
-        // -----------------------------------------------------
-        // PLUS BUTTON
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // PLUS BUTTON
+ // -----------------------------------------------------
 
-        plusButton.addEventListener(
-            "click",
-            function () {
+ plusButton.addEventListener(
+ "click",
+ function () {
 
-                let quantity =
-                    Number(
-                        quantityDisplay.textContent
-                    );
+ let quantity =
+ Number(
+ quantityDisplay.textContent
+ );
 
 
-                // =================================================
-                // FREE WATER RULE
-                // =================================================
+ // =================================================
+ // FREE WATER RULE
+ // =================================================
 
-                if (isWaterOption(option)) {
+ if (isWaterOption(option)) {
 
-                    /*
-                     * Only one free water is allowed.
-                     */
+ /*
+ * Only one free water is allowed.
+ */
 
-                    if (quantity >= 1) {
+ if (quantity >= 1) {
 
-                        alert(
-                            "Only one free can of water is allowed with each order. 💧"
-                        );
+ alert(
+ "Only one free can of water is allowed with each order. "
+ );
 
-                        return;
+ return;
 
-                    }
+ }
 
 
-                    /*
-                     * IMPORTANT:
-                     * Water is tied specifically to a MAIN MEAL.
-                     *
-                     * A protein or extra alone does NOT qualify.
-                     */
+ /*
+ * IMPORTANT:
+ * Water is tied specifically to a MAIN MEAL.
+ *
+ * A protein or extra alone does NOT qualify.
+ */
 
-                    if (!hasMainMealSelected()) {
+ if (!hasMainMealSelected()) {
 
-                        alert(
-                            "Free water is available only when you order a main meal. 💧🍛"
-                        );
+ alert(
+ "Free water is available only when you order a main meal. "
+ );
 
-                        return;
+ return;
 
-                    }
+ }
 
-                }
+ }
 
 
-                quantity++;
+ quantity++;
 
-                quantityDisplay.textContent =
-                    quantity;
+ quantityDisplay.textContent =
+ quantity;
 
 
-                validateFreeWater();
+ validateFreeWater();
 
-            }
-        );
+ }
+ );
 
 
-        // -----------------------------------------------------
-        // MINUS BUTTON
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // MINUS BUTTON
+ // -----------------------------------------------------
 
-        minusButton.addEventListener(
-            "click",
-            function () {
+ minusButton.addEventListener(
+ "click",
+ function () {
 
-                let quantity =
-                    Number(
-                        quantityDisplay.textContent
-                    );
+ let quantity =
+ Number(
+ quantityDisplay.textContent
+ );
 
-                if (quantity > 0) {
+ if (quantity > 0) {
 
-                    quantity--;
+ quantity--;
 
-                    quantityDisplay.textContent =
-                        quantity;
+ quantityDisplay.textContent =
+ quantity;
 
-                }
+ }
 
 
-                /*
-                 * If a main meal was removed,
-                 * make sure free water is still valid.
-                 */
+ /*
+ * If a main meal was removed,
+ * make sure free water is still valid.
+ */
 
-                setTimeout(
-                    validateFreeWater,
-                    0
-                );
+ setTimeout(
+ validateFreeWater,
+ 0
+ );
 
-            }
-        );
+ }
+ );
 
-    });
+ });
 
 
-    // =========================================================
-    // MEAL PREVIEW
-    // =========================================================
+ // =========================================================
+ // MEAL PREVIEW
+ // =========================================================
 
-    const addMealButton =
-        document.querySelector(
-            "#add-built-meal"
-        );
+ const addMealButton =
+ document.querySelector(
+ "#add-built-meal"
+ );
 
-    if (addMealButton) {
+ if (addMealButton) {
 
-        const mealPreview =
-            document.createElement("div");
+ const mealPreview =
+ document.createElement("div");
 
-        mealPreview.id =
-            "meal-preview";
+ mealPreview.id =
+ "meal-preview";
 
-        mealPreview.innerHTML = `
-            <h3>Your Meal</h3>
+ mealPreview.innerHTML = `
+ <h3>Your Meal</h3>
 
-            <div id="meal-preview-images"></div>
+ <div id="meal-preview-images"></div>
 
-            <div id="meal-preview-items">
-                Select an item to preview your order.
-            </div>
+ <div id="meal-preview-items">
+ Select an item to preview your order.
+ </div>
 
-            <h4>
-                Meal Total: ₦
-                <span id="meal-preview-total">0</span>
-            </h4>
-        `;
+ <h4>
+ Meal Total: ₦
+ <span id="meal-preview-total">0</span>
+ </h4>
+ `;
 
 
-        addMealButton.parentNode.insertBefore(
-            mealPreview,
-            addMealButton
-        );
+ addMealButton.parentNode.insertBefore(
+ mealPreview,
+ addMealButton
+ );
 
 
-        function updateMealPreview() {
+ function updateMealPreview() {
 
-            let previewItems = [];
-            let previewTotal = 0;
+ let previewItems = [];
+ let previewTotal = 0;
 
 
-            validateFreeWater();
+ validateFreeWater();
 
 
-            mealOptions.forEach(function (option) {
+ mealOptions.forEach(function (option) {
 
-                const quantityElement =
-                    option.querySelector(
-                        ".quantity"
-                    );
+ const quantityElement =
+ option.querySelector(
+ ".quantity"
+ );
 
-                if (!quantityElement) {
-                    return;
-                }
+ if (!quantityElement) {
+ return;
+ }
 
-                const quantity =
-                    Number(
-                        quantityElement.textContent
-                    );
+ const quantity =
+ Number(
+ quantityElement.textContent
+ );
 
 
-                if (quantity > 0) {
+ if (quantity > 0) {
 
-                    const itemName =
-                        option.querySelector(
-                            "h4"
-                        ).textContent.trim();
+ const itemName =
+ option.querySelector(
+ "h4"
+ ).textContent.trim();
 
 
-                    const priceText =
-                        option.querySelector(
-                            "p"
-                        ).textContent;
+ const priceText =
+ option.querySelector(
+ "p"
+ ).textContent;
 
 
-                    /*
-                     * Water is always free.
-                     */
+ /*
+ * Water is always free.
+ */
 
-                    let price = 0;
+ let price = 0;
 
-                    if (
-                        !isWaterOption(option)
-                    ) {
+ if (
+ !isWaterOption(option)
+ ) {
 
-                        const priceMatch =
-                            priceText.match(
-                                /[\d,]+/
-                            );
+ const priceMatch =
+ priceText.match(
+ /[\d,]+/
+ );
 
-                        price =
-                            priceMatch
-                                ? Number(
-                                    priceMatch[0]
-                                        .replace(
-                                            /,/g,
-                                            ""
-                                        )
-                                )
-                                : 0;
+ price =
+ priceMatch
+ ? Number(
+ priceMatch[0]
+ .replace(
+ /,/g,
+ ""
+ )
+ )
+ : 0;
 
-                    }
+ }
 
 
-                    previewItems.push({
+ previewItems.push({
 
-                        name:
-                            itemName,
+ name:
+ itemName,
 
-                        quantity:
-                            quantity,
+ quantity:
+ quantity,
 
-                        price:
-                            price
+ price:
+ price
 
-                    });
+ });
 
 
-                    previewTotal +=
-                        price * quantity;
+ previewTotal +=
+ price * quantity;
 
-                }
+ }
 
-            });
+ });
 
 
-            const previewImagesContainer =
-                document.querySelector(
-                    "#meal-preview-images"
-                );
+ const previewImagesContainer =
+ document.querySelector(
+ "#meal-preview-images"
+ );
 
-            const previewItemsContainer =
-                document.querySelector(
-                    "#meal-preview-items"
-                );
+ const previewItemsContainer =
+ document.querySelector(
+ "#meal-preview-items"
+ );
 
-            const previewTotalElement =
-                document.querySelector(
-                    "#meal-preview-total"
-                );
+ const previewTotalElement =
+ document.querySelector(
+ "#meal-preview-total"
+ );
 
 
-            // -------------------------------------------------
-            // PREVIEW IMAGES
-            // -------------------------------------------------
+ // -------------------------------------------------
+ // PREVIEW IMAGES
+ // -------------------------------------------------
 
-            if (previewImagesContainer) {
+ if (previewImagesContainer) {
 
-                previewImagesContainer.innerHTML =
-                    "";
+ previewImagesContainer.innerHTML =
+ "";
 
-                mealOptions.forEach(
-                    function (option) {
+ mealOptions.forEach(
+ function (option) {
 
-                        const quantity =
-                            Number(
-                                option.querySelector(
-                                    ".quantity"
-                                ).textContent
-                            );
+ const quantity =
+ Number(
+ option.querySelector(
+ ".quantity"
+ ).textContent
+ );
 
-                        if (quantity > 0) {
+ if (quantity > 0) {
 
-                            const image =
-                                option.querySelector(
-                                    "img"
-                                );
+ const image =
+ option.querySelector(
+ "img"
+ );
 
-                            if (image) {
+ if (image) {
 
-                                const previewImage =
-                                    document.createElement(
-                                        "img"
-                                    );
+ const previewImage =
+ document.createElement(
+ "img"
+ );
 
-                                previewImage.src =
-                                    image.src;
+ previewImage.src =
+ image.src;
 
-                                previewImage.alt =
-                                    option.querySelector(
-                                        "h4"
-                                    )
-                                    .textContent
-                                    .trim();
+ previewImage.alt =
+ option.querySelector(
+ "h4"
+ )
+ .textContent
+ .trim();
 
-                                previewImagesContainer.appendChild(
-                                    previewImage
-                                );
+ previewImagesContainer.appendChild(
+ previewImage
+ );
 
-                            }
+ }
 
-                        }
+ }
 
-                    }
-                );
+ }
+ );
 
-            }
+ }
 
 
-            // -------------------------------------------------
-            // PREVIEW ITEMS
-            // -------------------------------------------------
+ // -------------------------------------------------
+ // PREVIEW ITEMS
+ // -------------------------------------------------
 
-            if (previewItemsContainer) {
+ if (previewItemsContainer) {
 
-                if (
-                    previewItems.length === 0
-                ) {
+ if (
+ previewItems.length === 0
+ ) {
 
-                    previewItemsContainer.innerHTML =
-                        "Select an item to preview your order.";
+ previewItemsContainer.innerHTML =
+ "Select an item to preview your order.";
 
-                } else {
+ } else {
 
-                    previewItemsContainer.innerHTML =
-                        "";
+ previewItemsContainer.innerHTML =
+ "";
 
-                    previewItems.forEach(
-                        function (item) {
+ previewItems.forEach(
+ function (item) {
 
-                            const row =
-                                document.createElement(
-                                    "p"
-                                );
+ const row =
+ document.createElement(
+ "p"
+ );
 
 
-                            if (
-                                item.price === 0 &&
-                                item.name
-                                    .toLowerCase()
-                                    .includes("water")
-                            ) {
+ if (
+ item.price === 0 &&
+ item.name
+ .toLowerCase()
+ .includes("water")
+ ) {
 
-                                row.textContent =
-                                    `${item.name} ×${item.quantity} — FREE 💧`;
+ row.textContent =
+ `${item.name} ×${item.quantity} — FREE `;
 
-                            } else {
+ } else {
 
-                                row.textContent =
-                                    `${item.name} ×${item.quantity}`;
+ row.textContent =
+ `${item.name} ×${item.quantity}`;
 
-                            }
+ }
 
 
-                            previewItemsContainer.appendChild(
-                                row
-                            );
+ previewItemsContainer.appendChild(
+ row
+ );
 
-                        }
-                    );
+ }
+ );
 
-                }
+ }
 
-            }
+ }
 
 
-            // -------------------------------------------------
-            // PREVIEW TOTAL
-            // -------------------------------------------------
+ // -------------------------------------------------
+ // PREVIEW TOTAL
+ // -------------------------------------------------
 
-            if (previewTotalElement) {
+ if (previewTotalElement) {
 
-                previewTotalElement.textContent =
-                    previewTotal.toLocaleString();
+ previewTotalElement.textContent =
+ previewTotal.toLocaleString();
 
-            }
+ }
 
-        }
+ }
 
 
-        mealOptions.forEach(function (option) {
+ mealOptions.forEach(function (option) {
 
-            const plus =
-                option.querySelector(
-                    ".quantity-plus"
-                );
+ const plus =
+ option.querySelector(
+ ".quantity-plus"
+ );
 
-            const minus =
-                option.querySelector(
-                    ".quantity-minus"
-                );
+ const minus =
+ option.querySelector(
+ ".quantity-minus"
+ );
 
-            if (plus) {
+ if (plus) {
 
-                plus.addEventListener(
-                    "click",
-                    updateMealPreview
-                );
+ plus.addEventListener(
+ "click",
+ updateMealPreview
+ );
 
-            }
+ }
 
-            if (minus) {
+ if (minus) {
 
-                minus.addEventListener(
-                    "click",
-                    updateMealPreview
-                );
+ minus.addEventListener(
+ "click",
+ updateMealPreview
+ );
 
-            }
+ }
 
-        });
+ });
 
 
-        updateMealPreview();
+ updateMealPreview();
 
-    }
+ }
 
 
-    // =========================================================
-    // SHOPPING CART
-    // =========================================================
+ // =========================================================
+ // SHOPPING CART
+ // =========================================================
 
-    let cart = [];
+ let cart = [];
 
 
-    // =========================================================
-    // DELIVERY
-    // =========================================================
+ // =========================================================
+ // DELIVERY
+ // =========================================================
 
-    const DELIVERY_FEE = 500;
-    const FREE_DELIVERY_THRESHOLD = 10000;
+ const DELIVERY_FEE = 500;
+ const FREE_DELIVERY_THRESHOLD = 10000;
 
-    let deliveryFee = 0;
+ let deliveryFee = 0;
 
 
-    function calculateDelivery(subtotal) {
+ function calculateDelivery(subtotal) {
 
-        if (subtotal <= 0) {
-            return 0;
-        }
+ if (subtotal <= 0) {
+ return 0;
+ }
 
-        if (
-            subtotal >=
-            FREE_DELIVERY_THRESHOLD
-        ) {
-            return 0;
-        }
+ if (
+ subtotal >=
+ FREE_DELIVERY_THRESHOLD
+ ) {
+ return 0;
+ }
 
-        return DELIVERY_FEE;
+ return DELIVERY_FEE;
 
-    }
+ }
 
 
-    // =========================================================
-    // CALCULATE CART SUBTOTAL
-    // =========================================================
+ // =========================================================
+ // CALCULATE CART SUBTOTAL
+ // =========================================================
 
-    function calculateCartSubtotal() {
+ function calculateCartSubtotal() {
 
-        let subtotal = 0;
+ let subtotal = 0;
 
 
-        cart.forEach(function (item) {
+ cart.forEach(function (item) {
 
-            if (item.type === "meal") {
+ if (item.type === "meal") {
 
-                subtotal +=
-                    Number(item.price) || 0;
+ subtotal +=
+ Number(item.price) || 0;
 
-            } else {
+ } else {
 
-                subtotal +=
-                    (
-                        Number(item.price) ||
-                        0
-                    ) *
-                    (
-                        Number(item.quantity) ||
-                        0
-                    );
+ subtotal +=
+ (
+ Number(item.price) ||
+ 0
+ ) *
+ (
+ Number(item.quantity) ||
+ 0
+ );
 
-            }
+ }
 
-        });
+ });
 
 
-        return subtotal;
+ return subtotal;
 
-    }
+ }
 
 
-    // =========================================================
-    // CART ELEMENTS
-    // =========================================================
+ // =========================================================
+ // CART ELEMENTS
+ // =========================================================
 
-    const addToCartButtons =
-        document.querySelectorAll(
-            ".add-to-cart"
-        );
+ const addToCartButtons =
+ document.querySelectorAll(
+ ".add-to-cart"
+ );
 
-    const cartCount =
-        document.querySelector(
-            "#cart-count"
-        );
+ const cartCount =
+ document.querySelector(
+ "#cart-count"
+ );
 
-    const cartItems =
-        document.querySelector(
-            "#cart-items"
-        );
+ const cartItems =
+ document.querySelector(
+ "#cart-items"
+ );
 
-    const cartTotal =
-        document.querySelector(
-            "#cart-total"
-        );
+ const cartTotal =
+ document.querySelector(
+ "#cart-total"
+ );
 
-    const addBuiltMealButton =
-        document.querySelector(
-            "#add-built-meal"
-        );
+ const addBuiltMealButton =
+ document.querySelector(
+ "#add-built-meal"
+ );
 
-    const cartIcon =
-        document.querySelector(
-            ".cart-icon"
-        );
+ const cartIcon =
+ document.querySelector(
+ ".cart-icon"
+ );
 
-    const cartBox =
-        document.querySelector(
-            ".cart-box"
-        );
+ const cartBox =
+ document.querySelector(
+ ".cart-box"
+ );
 
 
-    // =========================================================
-    // ADD OLD FOOD CARDS TO CART
-    // =========================================================
+ // =========================================================
+ // ADD OLD FOOD CARDS TO CART
+ // =========================================================
 
-    addToCartButtons.forEach(function (button) {
+ addToCartButtons.forEach(function (button) {
 
-        button.addEventListener(
-            "click",
-            function (e) {
+ button.addEventListener(
+ "click",
+ function (e) {
 
-                e.stopPropagation();
+ e.stopPropagation();
 
 
-                const card =
-                    button.closest(
-                        ".food-card"
-                    );
+ const card =
+ button.closest(
+ ".food-card"
+ );
 
-                if (!card) {
-                    return;
-                }
+ if (!card) {
+ return;
+ }
 
 
-                const foodNameElement =
-                    card.querySelector(
-                        "h3"
-                    );
+ const foodNameElement =
+ card.querySelector(
+ "h3"
+ );
 
-                if (!foodNameElement) {
-                    return;
-                }
+ if (!foodNameElement) {
+ return;
+ }
 
 
-                const foodName =
-                    foodNameElement.textContent.trim();
+ const foodName =
+ foodNameElement.textContent.trim();
 
 
-                const foodPrice =
-                    Number(
-                        button.dataset.price
-                    );
+ const foodPrice =
+ Number(
+ button.dataset.price
+ );
 
 
-                if (
-                    isNaN(foodPrice) ||
-                    foodPrice < 0
-                ) {
-                    return;
-                }
+ if (
+ isNaN(foodPrice) ||
+ foodPrice < 0
+ ) {
+ return;
+ }
 
 
-                cart.push({
+ cart.push({
 
-                    name:
-                        foodName,
+ name:
+ foodName,
 
-                    price:
-                        foodPrice,
+ price:
+ foodPrice,
 
-                    quantity:
-                        1
+ quantity:
+ 1
 
-                });
+ });
 
 
-                updateCart();
+ updateCart();
 
 
-                if (cartBox) {
-                    forceOpenCart();
-                }
+ if (cartBox) {
+ forceOpenCart();
+ }
 
-            }
-        );
+ }
+ );
 
-    });
+ });
 
 
-    // =========================================================
-    // ADD BUILT MEAL TO CART (MAIN BUTTON - NO AUTO-OPEN)
-    // =========================================================
+ // =========================================================
+ // ADD BUILT MEAL TO CART (MAIN BUTTON - NO AUTO-OPEN)
+ // =========================================================
 
-    if (addBuiltMealButton) {
+ if (addBuiltMealButton) {
 
-        addBuiltMealButton.addEventListener(
-            "click",
-            function (e) {
+ addBuiltMealButton.addEventListener(
+ "click",
+ function (e) {
 
-                e.stopPropagation();
+ e.stopPropagation();
 
 
-                /*
-                 * Make sure water is still valid before
-                 * creating the cart item.
-                 */
+ /*
+ * Make sure water is still valid before
+ * creating the cart item.
+ */
 
-                validateFreeWater();
+ validateFreeWater();
 
 
-                let selectedItems = [];
-                let mealTotal = 0;
+ let selectedItems = [];
+ let mealTotal = 0;
 
 
-                mealOptions.forEach(function (option) {
+ mealOptions.forEach(function (option) {
 
-                    const quantityElement =
-                        option.querySelector(
-                            ".quantity"
-                        );
+ const quantityElement =
+ option.querySelector(
+ ".quantity"
+ );
 
-                    if (!quantityElement) {
-                        return;
-                    }
+ if (!quantityElement) {
+ return;
+ }
 
 
-                    const quantity =
-                        Number(
-                            quantityElement.textContent
-                        );
+ const quantity =
+ Number(
+ quantityElement.textContent
+ );
 
 
-                    if (quantity <= 0) {
-                        return;
-                    }
+ if (quantity <= 0) {
+ return;
+ }
 
 
-                    const itemName =
-                        option.querySelector(
-                            "h4"
-                        )
-                        .textContent
-                        .trim();
+ const itemName =
+ option.querySelector(
+ "h4"
+ )
+ .textContent
+ .trim();
 
 
-                    const priceText =
-                        option.querySelector(
-                            "p"
-                        )
-                        .textContent;
+ const priceText =
+ option.querySelector(
+ "p"
+ )
+ .textContent;
 
 
-                    let itemPrice = 0;
+ let itemPrice = 0;
 
 
-                    // =================================================
-                    // WATER IS ALWAYS FREE
-                    // =================================================
+ // =================================================
+ // WATER IS ALWAYS FREE
+ // =================================================
 
-                    if (
-                        isWaterOption(option)
-                    ) {
+ if (
+ isWaterOption(option)
+ ) {
 
-                        itemPrice = 0;
+ itemPrice = 0;
 
-                    } else {
+ } else {
 
-                        const priceMatch =
-                            priceText.match(
-                                /[\d,]+/
-                            );
+ const priceMatch =
+ priceText.match(
+ /[\d,]+/
+ );
 
 
-                        itemPrice =
-                            priceMatch
-                                ? Number(
-                                    priceMatch[0]
-                                        .replace(
-                                            /,/g,
-                                            ""
-                                        )
-                                )
-                                : 0;
+ itemPrice =
+ priceMatch
+ ? Number(
+ priceMatch[0]
+ .replace(
+ /,/g,
+ ""
+ )
+ )
+ : 0;
 
-                    }
+ }
 
 
-                    selectedItems.push({
+ selectedItems.push({
 
-                        name:
-                            itemName,
+ name:
+ itemName,
 
-                        price:
-                            itemPrice,
+ price:
+ itemPrice,
 
-                        quantity:
-                            quantity
+ quantity:
+ quantity
 
-                    });
+ });
 
 
-                    mealTotal +=
-                        itemPrice *
-                        quantity;
+ mealTotal +=
+ itemPrice *
+ quantity;
 
-                });
+ });
 
 
-                // =================================================
-                // MAKE SURE SOMETHING WAS SELECTED
-                // =================================================
+ // =================================================
+ // MAKE SURE SOMETHING WAS SELECTED
+ // =================================================
 
-                if (
-                    selectedItems.length === 0
-                ) {
+ if (
+ selectedItems.length === 0
+ ) {
 
-                    alert(
-                        "Please select at least one item before adding to cart."
-                    );
+ alert(
+ "Please select at least one item before adding to cart."
+ );
 
-                    return;
+ return;
 
-                }
+ }
 
 
-                // =================================================
-                // MAIN MEAL CHECK
-                // =================================================
+ // =================================================
+ // MAIN MEAL CHECK
+ // =================================================
 
-                const mainMealSelected =
-                    hasMainMealSelected();
+ const mainMealSelected =
+ hasMainMealSelected();
 
 
-                // =================================================
-                // WATER CHECK
-                // =================================================
+ // =================================================
+ // WATER CHECK
+ // =================================================
 
-                const waterItems =
-                    selectedItems.filter(
-                        function (item) {
+ const waterItems =
+ selectedItems.filter(
+ function (item) {
 
-                            return (
-                                item.name
-                                    .toLowerCase() ===
-                                "can of water"
-                                    .toLowerCase()
-                            );
+ return (
+ item.name
+ .toLowerCase() ===
+ "can of water"
+ .toLowerCase()
+ );
 
-                        }
-                    );
+ }
+ );
 
 
-                /*
-                 * If water is selected, a MAIN MEAL
-                 * must also be selected.
-                 *
-                 * Protein alone or extras alone do NOT qualify.
-                 */
+ /*
+ * If water is selected, a MAIN MEAL
+ * must also be selected.
+ *
+ * Protein alone or extras alone do NOT qualify.
+ */
 
-                if (
-                    waterItems.length > 0 &&
-                    !mainMealSelected
-                ) {
+ if (
+ waterItems.length > 0 &&
+ !mainMealSelected
+ ) {
 
-                    alert(
-                        "Free water is available only with a main meal. Please select a main meal first. 💧🍛"
-                    );
+ alert(
+ "Free water is available only with a main meal. Please select a main meal first. "
+ );
 
-                    return;
+ return;
 
-                }
+ }
 
 
-                // =================================================
-                // WATER QUANTITY LIMIT
-                // =================================================
+ // =================================================
+ // WATER QUANTITY LIMIT
+ // =================================================
 
-                const waterQuantity =
-                    waterItems.reduce(
-                        function (total, item) {
+ const waterQuantity =
+ waterItems.reduce(
+ function (total, item) {
 
-                            return (
-                                total +
-                                item.quantity
-                            );
+ return (
+ total +
+ item.quantity
+ );
 
-                        },
-                        0
-                    );
+ },
+ 0
+ );
 
 
-                if (
-                    waterQuantity > 1
-                ) {
+ if (
+ waterQuantity > 1
+ ) {
 
-                    alert(
-                        "Only one free can of water is allowed per order. 💧"
-                    );
+ alert(
+ "Only one free can of water is allowed per order. "
+ );
 
-                    return;
+ return;
 
-                }
+ }
 
 
-                // =================================================
-                // ADD COMPLETE SELECTION TO CART
-                // =================================================
+ // =================================================
+ // ADD COMPLETE SELECTION TO CART
+ // =================================================
 
-                cart.push({
+ cart.push({
 
-                    type:
-                        "meal",
+ type:
+ "meal",
 
-                    items:
-                        selectedItems,
+ items:
+ selectedItems,
 
-                    price:
-                        mealTotal
+ price:
+ mealTotal
 
-                });
+ });
 
 
-                // =================================================
-                // RESET MEAL BUILDER
-                // =================================================
+ // =================================================
+ // RESET MEAL BUILDER
+ // =================================================
 
-                mealOptions.forEach(
-                    function (option) {
+ mealOptions.forEach(
+ function (option) {
 
-                        const quantity =
-                            option.querySelector(
-                                ".quantity"
-                            );
+ const quantity =
+ option.querySelector(
+ ".quantity"
+ );
 
-                        if (quantity) {
+ if (quantity) {
 
-                            quantity.textContent =
-                                "0";
+ quantity.textContent =
+ "0";
 
-                        }
+ }
 
-                    }
-                );
+ }
+ );
 
 
-                updateMealPreview();
+ updateMealPreview();
 
 
-                updateCart();
+ updateCart();
 
 
-                // =================================================
-                // ✅ OPEN CART AFTER ADDING MEAL
-                // =================================================
+ // =================================================
+ // OPEN CART AFTER ADDING MEAL
+ // =================================================
 
-                if (cartBox) {
-                    forceOpenCart();
-                }
+ if (cartBox) {
+ forceOpenCart();
+ }
 
-            }
-        );
+ }
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // UPDATE CART
-    // =========================================================
+ // =========================================================
+ // UPDATE CART
+ // =========================================================
 
-    function updateCart() {
+ function updateCart() {
 
-        if (!cartItems) {
-            return;
-        }
+ if (!cartItems) {
+ return;
+ }
 
 
-        cartItems.innerHTML = "";
+ cartItems.innerHTML = "";
 
 
-        let itemCount = 0;
+ let itemCount = 0;
 
 
-        // -----------------------------------------------------
-        // ALWAYS RECALCULATE SUBTOTAL
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // ALWAYS RECALCULATE SUBTOTAL
+ // -----------------------------------------------------
 
-        const subtotal =
-            calculateCartSubtotal();
+ const subtotal =
+ calculateCartSubtotal();
 
 
-        // -----------------------------------------------------
-        // DISPLAY CART ITEMS
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // DISPLAY CART ITEMS
+ // -----------------------------------------------------
 
-        cart.forEach(function (item, index) {
+ cart.forEach(function (item, index) {
 
-            const div =
-                document.createElement(
-                    "div"
-                );
+ const div =
+ document.createElement(
+ "div"
+ );
 
-            div.classList.add(
-                "cart-item"
-            );
+ div.classList.add(
+ "cart-item"
+ );
 
 
-            // =================================================
-            // BUILT MEAL
-            // =================================================
+ // =================================================
+ // BUILT MEAL
+ // =================================================
 
-            if (
-                item.type === "meal"
-            ) {
+ if (
+ item.type === "meal"
+ ) {
 
-                item.items.forEach(
-                    function (food) {
+ item.items.forEach(
+ function (food) {
 
-                        itemCount +=
-                            food.quantity;
+ itemCount +=
+ food.quantity;
 
-                    }
-                );
+ }
+ );
 
 
-                let mealHTML = `
-                    <div class="cart-meal">
+ let mealHTML = `
+ <div class="cart-meal">
 
-                        <div class="cart-meal-header">
+ <div class="cart-meal-header">
 
-                            <strong>
-                                🍛 Meal ${index + 1}
-                            </strong>
+ <strong>
+ Meal ${index + 1}
+ </strong>
 
-                            <button
-                                type="button"
-                                class="remove-meal"
-                                data-index="${index}">
-                                ❌
-                            </button>
+ <button
+ type="button"
+ class="remove-meal"
+ data-index="${index}">
+ 
+ </button>
 
-                        </div>
-                `;
+ </div>
+ `;
 
 
-                item.items.forEach(
-                    function (food) {
+ item.items.forEach(
+ function (food) {
 
-                        const isFreeWater =
-                            food.name
-                                .toLowerCase() ===
-                            "can of water"
-                                .toLowerCase();
+ const isFreeWater =
+ food.name
+ .toLowerCase() ===
+ "can of water"
+ .toLowerCase();
 
 
-                        const foodTotal =
-                            food.price *
-                            food.quantity;
+ const foodTotal =
+ food.price *
+ food.quantity;
 
 
-                        mealHTML += `
-                            <div class="cart-meal-item">
+ mealHTML += `
+ <div class="cart-meal-item">
 
-                                <span>
-                                    ${food.name} ×${food.quantity}
-                                </span>
+ <span>
+ ${food.name} ×${food.quantity}
+ </span>
 
-                                <span>
-                                    ${
-                                        isFreeWater
-                                            ? "FREE"
-                                            : "₦" +
-                                              foodTotal.toLocaleString()
-                                    }
-                                </span>
+ <span>
+ ${
+ isFreeWater
+ ? "FREE"
+ : "₦" +
+ foodTotal.toLocaleString()
+ }
+ </span>
 
-                            </div>
-                        `;
+ </div>
+ `;
 
-                    }
-                );
+ }
+ );
 
 
-                mealHTML += `
-                        <div class="cart-meal-total">
+ mealHTML += `
+ <div class="cart-meal-total">
 
-                            <strong>
-                                Meal Total:
-                                ₦${item.price.toLocaleString()}
-                            </strong>
+ <strong>
+ Meal Total:
+ ₦${item.price.toLocaleString()}
+ </strong>
 
-                        </div>
+ </div>
 
-                    </div>
-                `;
+ </div>
+ `;
 
 
-                div.innerHTML =
-                    mealHTML;
+ div.innerHTML =
+ mealHTML;
 
 
-            } else {
+ } else {
 
-                // =============================================
-                // NORMAL FOOD CARD ITEM
-                // =============================================
+ // =============================================
+ // NORMAL FOOD CARD ITEM
+ // =============================================
 
-                itemCount +=
-                    item.quantity;
+ itemCount +=
+ item.quantity;
 
 
-                div.innerHTML = `
-                    <div class="cart-item-row">
+ div.innerHTML = `
+ <div class="cart-item-row">
 
-                        <span class="food-name">
-                            ${item.name}
-                        </span>
+ <span class="food-name">
+ ${item.name}
+ </span>
 
-                        <span class="food-qty">
-                            ×${item.quantity}
-                        </span>
+ <span class="food-qty">
+ ×${item.quantity}
+ </span>
 
-                        <span>
-                            ₦${(
-                                item.price *
-                                item.quantity
-                            ).toLocaleString()}
-                        </span>
+ <span>
+ ₦${(
+ item.price *
+ item.quantity
+ ).toLocaleString()}
+ </span>
 
-                        <button
-                            type="button"
-                            class="remove-btn"
-                            data-index="${index}">
-                            ❌
-                        </button>
+ <button
+ type="button"
+ class="remove-btn"
+ data-index="${index}">
+ 
+ </button>
 
-                    </div>
-                `;
+ </div>
+ `;
 
-            }
+ }
 
 
-            cartItems.appendChild(
-                div
-            );
+ cartItems.appendChild(
+ div
+ );
 
-        });
+ });
 
 
-        // -----------------------------------------------------
-        // EMPTY CART
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // EMPTY CART
+ // -----------------------------------------------------
 
-        if (cart.length === 0) {
+ if (cart.length === 0) {
 
-            cartItems.innerHTML =
-                "Your cart is empty";
+ cartItems.innerHTML =
+ "Your cart is empty";
 
-        }
+ }
 
 
-        // =====================================================
-        // DELIVERY
-        // =====================================================
+ // =====================================================
+ // DELIVERY
+ // =====================================================
 
-        deliveryFee =
-            calculateDelivery(
-                subtotal
-            );
+ deliveryFee =
+ calculateDelivery(
+ subtotal
+ );
 
 
-        // =====================================================
-        // GRAND TOTAL
-        // =====================================================
+ // =====================================================
+ // GRAND TOTAL
+ // =====================================================
 
-        const grandTotal =
-            subtotal +
-            deliveryFee;
+ const grandTotal =
+ subtotal +
+ deliveryFee;
 
 
-        // -----------------------------------------------------
-        // CART COUNT
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // CART COUNT
+ // -----------------------------------------------------
 
-        if (cartCount) {
+ if (cartCount) {
 
-            cartCount.textContent =
-                itemCount;
+ cartCount.textContent =
+ itemCount;
 
-        }
+ }
 
 
-        // -----------------------------------------------------
-        // CART TOTAL
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // CART TOTAL
+ // -----------------------------------------------------
 
-        if (cartTotal) {
+ if (cartTotal) {
 
-            cartTotal.textContent =
-                grandTotal.toLocaleString();
+ cartTotal.textContent =
+ grandTotal.toLocaleString();
 
-        }
+ }
 
 
-        // =====================================================
-        // DELIVERY DISPLAY
-        // =====================================================
+ // =====================================================
+ // DELIVERY DISPLAY
+ // =====================================================
 
-        let deliveryDisplay =
-            document.querySelector(
-                "#cart-delivery"
-            );
+ let deliveryDisplay =
+ document.querySelector(
+ "#cart-delivery"
+ );
 
 
-        if (
-            !deliveryDisplay &&
-            cartItems.parentNode
-        ) {
+ if (
+ !deliveryDisplay &&
+ cartItems.parentNode
+ ) {
 
-            deliveryDisplay =
-                document.createElement(
-                    "div"
-                );
+ deliveryDisplay =
+ document.createElement(
+ "div"
+ );
 
-            deliveryDisplay.id =
-                "cart-delivery";
+ deliveryDisplay.id =
+ "cart-delivery";
 
-            deliveryDisplay.style.marginTop =
-                "10px";
+ deliveryDisplay.style.marginTop =
+ "10px";
 
-            deliveryDisplay.style.padding =
-                "10px 0";
+ deliveryDisplay.style.padding =
+ "10px 0";
 
-            deliveryDisplay.style.borderTop =
-                "1px solid #ddd";
+ deliveryDisplay.style.borderTop =
+ "1px solid #ddd";
 
 
-            const totalElement =
-                cartTotal
-                    ? cartTotal.closest(
-                        "h4"
-                    )
-                    : null;
+ const totalElement =
+ cartTotal
+ ? cartTotal.closest(
+ "h4"
+ )
+ : null;
 
 
-            if (totalElement) {
+ if (totalElement) {
 
-                totalElement.parentNode.insertBefore(
-                    deliveryDisplay,
-                    totalElement
-                );
+ totalElement.parentNode.insertBefore(
+ deliveryDisplay,
+ totalElement
+ );
 
-            } else {
+ } else {
 
-                cartItems.parentNode.appendChild(
-                    deliveryDisplay
-                );
+ cartItems.parentNode.appendChild(
+ deliveryDisplay
+ );
 
-            }
+ }
 
-        }
+ }
 
 
-        if (deliveryDisplay) {
+ if (deliveryDisplay) {
 
-            if (subtotal === 0) {
+ if (subtotal === 0) {
 
-                deliveryDisplay.innerHTML =
-                    "";
+ deliveryDisplay.innerHTML =
+ "";
 
-            } else if (
-                deliveryFee === 0
-            ) {
+ } else if (
+ deliveryFee === 0
+ ) {
 
-                deliveryDisplay.innerHTML = `
-                    🚚 Delivery:
-                    <strong>FREE</strong>
-                `;
+ deliveryDisplay.innerHTML = `
+ Delivery:
+ <strong>FREE</strong>
+ `;
 
-            } else {
+ } else {
 
-                deliveryDisplay.innerHTML = `
-                    🚚 Delivery:
-                    <strong>
-                        ₦${deliveryFee.toLocaleString()}
-                    </strong>
-                `;
+ deliveryDisplay.innerHTML = `
+ Delivery:
+ <strong>
+ ₦${deliveryFee.toLocaleString()}
+ </strong>
+ `;
 
-            }
+ }
 
-        }
+ }
 
 
-        // =====================================================
-        // FREE DELIVERY MESSAGE
-        // =====================================================
+ // =====================================================
+ // FREE DELIVERY MESSAGE
+ // =====================================================
 
-        let freeDeliveryMessage =
-            document.querySelector(
-                "#free-delivery-message"
-            );
+ let freeDeliveryMessage =
+ document.querySelector(
+ "#free-delivery-message"
+ );
 
 
-        if (
-            !freeDeliveryMessage &&
-            cartItems.parentNode
-        ) {
+ if (
+ !freeDeliveryMessage &&
+ cartItems.parentNode
+ ) {
 
-            freeDeliveryMessage =
-                document.createElement(
-                    "p"
-                );
+ freeDeliveryMessage =
+ document.createElement(
+ "p"
+ );
 
-            freeDeliveryMessage.id =
-                "free-delivery-message";
+ freeDeliveryMessage.id =
+ "free-delivery-message";
 
-            freeDeliveryMessage.style.fontSize =
-                "13px";
+ freeDeliveryMessage.style.fontSize =
+ "13px";
 
-            freeDeliveryMessage.style.marginTop =
-                "8px";
+ freeDeliveryMessage.style.marginTop =
+ "8px";
 
 
-            const totalElement =
-                cartTotal
-                    ? cartTotal.closest(
-                        "h4"
-                    )
-                    : null;
+ const totalElement =
+ cartTotal
+ ? cartTotal.closest(
+ "h4"
+ )
+ : null;
 
 
-            if (totalElement) {
+ if (totalElement) {
 
-                totalElement.parentNode.insertBefore(
-                    freeDeliveryMessage,
-                    totalElement
-                );
+ totalElement.parentNode.insertBefore(
+ freeDeliveryMessage,
+ totalElement
+ );
 
-            } else {
+ } else {
 
-                cartItems.parentNode.appendChild(
-                    freeDeliveryMessage
-                );
+ cartItems.parentNode.appendChild(
+ freeDeliveryMessage
+ );
 
-            }
+ }
 
-        }
+ }
 
 
-        if (freeDeliveryMessage) {
+ if (freeDeliveryMessage) {
 
-            if (subtotal === 0) {
+ if (subtotal === 0) {
 
-                freeDeliveryMessage.textContent =
-                    "";
+ freeDeliveryMessage.textContent =
+ "";
 
-            } else if (
-                subtotal >=
-                FREE_DELIVERY_THRESHOLD
-            ) {
+ } else if (
+ subtotal >=
+ FREE_DELIVERY_THRESHOLD
+ ) {
 
-                freeDeliveryMessage.textContent =
-                    "🎉 You qualify for FREE delivery!";
+ freeDeliveryMessage.textContent =
+ " You qualify for FREE delivery!";
 
-            } else {
+ } else {
 
-                const remaining =
-                    FREE_DELIVERY_THRESHOLD -
-                    subtotal;
+ const remaining =
+ FREE_DELIVERY_THRESHOLD -
+ subtotal;
 
-                freeDeliveryMessage.textContent =
-                    `Add ₦${remaining.toLocaleString()} more ` +
-                    `to get FREE delivery! 🚚`;
+ freeDeliveryMessage.textContent =
+ `Add ₦${remaining.toLocaleString()} more ` +
+ `to get FREE delivery! `;
 
-            }
+ }
 
-        }
+ }
 
 
-        // =====================================================
-        // REMOVE COMPLETE MEAL
-        // =====================================================
+ // =====================================================
+ // REMOVE COMPLETE MEAL
+ // =====================================================
 
-        const removeMeals =
-            document.querySelectorAll(
-                ".remove-meal"
-            );
+ const removeMeals =
+ document.querySelectorAll(
+ ".remove-meal"
+ );
 
 
-        removeMeals.forEach(
-            function (button) {
+ removeMeals.forEach(
+ function (button) {
 
-                button.addEventListener(
-                    "click",
-                    function (e) {
+ button.addEventListener(
+ "click",
+ function (e) {
 
-                        e.stopPropagation();
+ e.stopPropagation();
 
 
-                        const index =
-                            Number(
-                                button.dataset.index
-                            );
+ const index =
+ Number(
+ button.dataset.index
+ );
 
 
-                        if (cart[index]) {
+ if (cart[index]) {
 
-                            cart.splice(
-                                index,
-                                1
-                            );
+ cart.splice(
+ index,
+ 1
+ );
 
-                            updateCart();
+ updateCart();
 
-                        }
+ }
 
-                    }
-                );
+ }
+ );
 
-            }
-        );
+ }
+ );
 
 
-        // =====================================================
-        // REMOVE NORMAL CART ITEM
-        // =====================================================
+ // =====================================================
+ // REMOVE NORMAL CART ITEM
+ // =====================================================
 
-        const removeButtons =
-            document.querySelectorAll(
-                ".remove-btn"
-            );
+ const removeButtons =
+ document.querySelectorAll(
+ ".remove-btn"
+ );
 
 
-        removeButtons.forEach(
-            function (button) {
+ removeButtons.forEach(
+ function (button) {
 
-                button.addEventListener(
-                    "click",
-                    function (e) {
+ button.addEventListener(
+ "click",
+ function (e) {
 
-                        e.stopPropagation();
+ e.stopPropagation();
 
 
-                        const index =
-                            Number(
-                                button.dataset.index
-                            );
+ const index =
+ Number(
+ button.dataset.index
+ );
 
 
-                        if (cart[index]) {
+ if (cart[index]) {
 
-                            cart.splice(
-                                index,
-                                1
-                            );
+ cart.splice(
+ index,
+ 1
+ );
 
-                            updateCart();
+ updateCart();
 
-                        }
+ }
 
-                    }
-                );
+ }
+ );
 
-            }
-        );
+ }
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // FORCE CART OPEN
-    // =========================================================
+ // =========================================================
+ // FORCE CART OPEN
+ // =========================================================
 
-    function forceOpenCart() {
+ function forceOpenCart() {
 
-        if (!cartBox) {
-            return;
-        }
+ if (!cartBox) {
+ return;
+ }
 
 
-        cartBox.style.display =
-            "block";
+ cartBox.style.display =
+ "block";
 
 
-        if (
-            window.innerWidth <= 768
-        ) {
+ if (
+ window.innerWidth <= 768
+ ) {
 
-            cartBox.style.position =
-                "fixed";
+ cartBox.style.position =
+ "fixed";
 
-            cartBox.style.top =
-                "120px";
+ cartBox.style.top =
+ "120px";
 
-            cartBox.style.right =
-                "10px";
+ cartBox.style.right =
+ "10px";
 
-            cartBox.style.left =
-                "auto";
+ cartBox.style.left =
+ "auto";
 
-            cartBox.style.width =
-                "92vw";
+ cartBox.style.width =
+ "92vw";
 
-            cartBox.style.maxWidth =
-                "420px";
+ cartBox.style.maxWidth =
+ "420px";
 
-            cartBox.style.maxHeight =
-                "80vh";
+ cartBox.style.maxHeight =
+ "80vh";
 
-            cartBox.style.zIndex =
-                "999999";
+ cartBox.style.zIndex =
+ "999999";
 
-            cartBox.style.background =
-                "#ffffff";
+ cartBox.style.background =
+ "#ffffff";
 
-            cartBox.style.padding =
-                "20px";
+ cartBox.style.padding =
+ "20px";
 
-            cartBox.style.borderRadius =
-                "12px";
+ cartBox.style.borderRadius =
+ "12px";
 
-            cartBox.style.boxShadow =
-                "0 15px 40px rgba(0,0,0,0.3)";
+ cartBox.style.boxShadow =
+ "0 15px 40px rgba(0,0,0,0.3)";
 
-            cartBox.style.overflowY =
-                "auto";
+ cartBox.style.overflowY =
+ "auto";
 
-            cartBox.style.boxSizing =
-                "border-box";
+ cartBox.style.boxSizing =
+ "border-box";
 
-        } else {
+ } else {
 
-            cartBox.style.position =
-                "";
+ cartBox.style.position =
+ "";
 
-            cartBox.style.top =
-                "";
+ cartBox.style.top =
+ "";
 
-            cartBox.style.right =
-                "";
+ cartBox.style.right =
+ "";
 
-            cartBox.style.left =
-                "";
+ cartBox.style.left =
+ "";
 
-            cartBox.style.width =
-                "";
+ cartBox.style.width =
+ "";
 
-            cartBox.style.maxWidth =
-                "";
+ cartBox.style.maxWidth =
+ "";
 
-            cartBox.style.maxHeight =
-                "";
+ cartBox.style.maxHeight =
+ "";
 
-            cartBox.style.zIndex =
-                "";
+ cartBox.style.zIndex =
+ "";
 
-            cartBox.style.background =
-                "";
+ cartBox.style.background =
+ "";
 
-            cartBox.style.padding =
-                "";
+ cartBox.style.padding =
+ "";
 
-            cartBox.style.borderRadius =
-                "";
+ cartBox.style.borderRadius =
+ "";
 
-            cartBox.style.boxShadow =
-                "";
+ cartBox.style.boxShadow =
+ "";
 
-            cartBox.style.overflowY =
-                "";
+ cartBox.style.overflowY =
+ "";
 
-        }
+ }
 
-    }
+ }
 
 
-    // =========================================================
-    // CLOSE CART
-    // =========================================================
+ // =========================================================
+ // CLOSE CART
+ // =========================================================
 
-    function closeCart() {
+ function closeCart() {
 
-        if (cartBox) {
+ if (cartBox) {
 
-            cartBox.style.display =
-                "none";
+ cartBox.style.display =
+ "none";
 
-        }
+ }
 
-    }
+ }
 
 
-    // =========================================================
-    // CART TOGGLE
-    // =========================================================
+ // =========================================================
+ // CART TOGGLE
+ // =========================================================
 
-    if (
-        cartIcon &&
-        cartBox
-    ) {
+ if (
+ cartIcon &&
+ cartBox
+ ) {
 
-        cartIcon.addEventListener(
-            "click",
-            function (e) {
+ cartIcon.addEventListener(
+ "click",
+ function (e) {
 
-                e.stopPropagation();
+ e.stopPropagation();
 
 
-                if (
-                    cartBox.style.display ===
-                    "block"
-                ) {
+ if (
+ cartBox.style.display ===
+ "block"
+ ) {
 
-                    closeCart();
+ closeCart();
 
-                } else {
+ } else {
 
-                    forceOpenCart();
+ forceOpenCart();
 
-                }
+ }
 
-            }
-        );
+ }
+ );
 
 
-        cartBox.addEventListener(
-            "click",
-            function (e) {
+ cartBox.addEventListener(
+ "click",
+ function (e) {
 
-                e.stopPropagation();
+ e.stopPropagation();
 
-            }
-        );
+ }
+ );
 
 
-        document.addEventListener(
-            "click",
-            function (e) {
+ document.addEventListener(
+ "click",
+ function (e) {
 
-                if (
-                    cartBox.style.display ===
-                    "block" &&
-                    !cartBox.contains(
-                        e.target
-                    ) &&
-                    !cartIcon.contains(
-                        e.target
-                    )
-                ) {
+ if (
+ cartBox.style.display ===
+ "block" &&
+ !cartBox.contains(
+ e.target
+ ) &&
+ !cartIcon.contains(
+ e.target
+ )
+ ) {
 
-                    closeCart();
+ closeCart();
 
-                }
+ }
 
-            }
-        );
+ }
+ );
 
-    }
+ }
 
 
-    // =========================================================
+ // =========================================================
 // CHECKOUT (POP-UP WITH ANIMATION)
 // =========================================================
 
 const checkoutBtn =
-    document.querySelector(
-        "#checkout-btn"
-    );
+ document.querySelector(
+ "#checkout-btn"
+ );
 
 const checkoutForm =
-    document.querySelector(
-        "#checkout-form"
-    );
+ document.querySelector(
+ "#checkout-form"
+ );
 
 
 if (
-    checkoutBtn &&
-    checkoutForm
+ checkoutBtn &&
+ checkoutForm
 ) {
 
-    checkoutBtn.addEventListener(
-        "click",
-        function (e) {
+ checkoutBtn.addEventListener(
+ "click",
+ function (e) {
 
-            e.stopPropagation();
-
-
-            if (
-                cart.length === 0
-            ) {
-
-                alert(
-                    "Your cart is empty!"
-                );
-
-                return;
-
-            }
+ e.stopPropagation();
 
 
-            // Toggle the 'open' class for smooth animation
-            const isOpen =
-                checkoutForm.classList.contains("open");
+ if (
+ cart.length === 0
+ ) {
 
-            if (isOpen) {
+ alert(
+ "Your cart is empty!"
+ );
 
-                // Close the form
-                checkoutForm.classList.remove("open");
+ return;
 
-                // After animation ends, hide it completely
-                setTimeout(function() {
-                    if (!checkoutForm.classList.contains("open")) {
-                        checkoutForm.style.display = "none";
-                    }
-                }, 400);
+ }
 
-            } else {
 
-                // Show the form
-                checkoutForm.style.display = "block";
+ // Toggle the 'open' class for smooth animation
+ const isOpen =
+ checkoutForm.classList.contains("open");
 
-                // Small delay to trigger the transition
-                setTimeout(function() {
-                    checkoutForm.classList.add("open");
-                }, 20);
+ if (isOpen) {
 
-                // 🔥 AUTO-SCROLL TO THE FORM
-                setTimeout(function() {
-                    checkoutForm.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
+ // Close the form
+ checkoutForm.classList.remove("open");
 
-                    // Auto-focus first input
-                    const firstNameInput = document.querySelector("#customer-name");
-                    if (firstNameInput) {
-                        firstNameInput.focus();
-                    }
-                }, 300);
+ // After animation ends, hide it completely
+ setTimeout(function() {
+ if (!checkoutForm.classList.contains("open")) {
+ checkoutForm.style.display = "none";
+ }
+ }, 400);
 
-            }
+ } else {
 
-        }
-    );
+ // Show the form
+ checkoutForm.style.display = "block";
+
+ // Small delay to trigger the transition
+ setTimeout(function() {
+ checkoutForm.classList.add("open");
+ }, 20);
+
+ // AUTO-SCROLL TO THE FORM
+ setTimeout(function() {
+ checkoutForm.scrollIntoView({
+ behavior: 'smooth',
+ block: 'center'
+ });
+
+ // Auto-focus first input
+ const firstNameInput = document.querySelector("#customer-name");
+ if (firstNameInput) {
+ firstNameInput.focus();
+ }
+ }, 300);
+
+ }
+
+ }
+ );
 
 }
 
-    // =========================================================
-    // PAYMENT VARIABLES
-    // =========================================================
-
-    const placeOrder =
-        document.querySelector(
-            "#place-order"
-        );
+ // =========================================================
+ // PAYMENT VARIABLES
+ // =========================================================
+
+ const placeOrder =
+ document.querySelector(
+ "#place-order"
+ );
 
-    const paymentPopup =
-        document.querySelector(
-            "#payment-popup"
-        );
+ const paymentPopup =
+ document.querySelector(
+ "#payment-popup"
+ );
 
-    const paymentCheck =
-        document.querySelector(
-            "#payment-check"
-        );
+ const paymentCheck =
+ document.querySelector(
+ "#payment-check"
+ );
 
-    const paymentDone =
-        document.querySelector(
-            "#payment-done"
-        );
+ const paymentDone =
+ document.querySelector(
+ "#payment-done"
+ );
 
-    const copyAccount =
-        document.querySelector(
-            "#copy-account"
-        );
+ const copyAccount =
+ document.querySelector(
+ "#copy-account"
+ );
 
-    const accountNumber =
-        document.querySelector(
-            "#account-number"
-        );
+ const accountNumber =
+ document.querySelector(
+ "#account-number"
+ );
 
 
-    let orderMessage = "";
+ let orderMessage = "";
 
 
-    // =========================================================
-    // RECEIPT ELEMENTS
-    // =========================================================
+ // =========================================================
+ // RECEIPT ELEMENTS
+ // =========================================================
 
-    const receiptContainer =
-        document.querySelector(
-            "#receipt"
-        );
+ const receiptContainer =
+ document.querySelector(
+ "#receipt"
+ );
 
-    const receiptOrderNumber =
-        document.querySelector(
-            "#receipt-order-number"
-        );
+ const receiptOrderNumber =
+ document.querySelector(
+ "#receipt-order-number"
+ );
 
-    const receiptDate =
-        document.querySelector(
-            "#receipt-date"
-        );
+ const receiptDate =
+ document.querySelector(
+ "#receipt-date"
+ );
 
-    const receiptCustomerName =
-        document.querySelector(
-            "#receipt-customer-name"
-        );
+ const receiptCustomerName =
+ document.querySelector(
+ "#receipt-customer-name"
+ );
 
-    const receiptCustomerPhone =
-        document.querySelector(
-            "#receipt-customer-phone"
-        );
+ const receiptCustomerPhone =
+ document.querySelector(
+ "#receipt-customer-phone"
+ );
 
-    const receiptCustomerAddress =
-        document.querySelector(
-            "#receipt-customer-address"
-        );
+ const receiptCustomerAddress =
+ document.querySelector(
+ "#receipt-customer-address"
+ );
 
-    const receiptItems =
-        document.querySelector(
-            "#receipt-items"
-        );
+ const receiptItems =
+ document.querySelector(
+ "#receipt-items"
+ );
 
-    const receiptTotal =
-        document.querySelector(
-            "#receipt-total"
-        );
+ const receiptTotal =
+ document.querySelector(
+ "#receipt-total"
+ );
 
-    const downloadReceipt =
-        document.querySelector(
-            "#download-receipt"
-        );
+ const downloadReceipt =
+ document.querySelector(
+ "#download-receipt"
+ );
 
-    const sendReceiptWhatsApp =
-        document.querySelector(
-            "#send-receipt-whatsapp"
-        );
+ const sendReceiptWhatsApp =
+ document.querySelector(
+ "#send-receipt-whatsapp"
+ );
 
 
-    // =========================================================
-    // CURRENT ORDER DATA
-    // =========================================================
+ // =========================================================
+ // CURRENT ORDER DATA
+ // =========================================================
 
-    let currentOrderNumber = "";
-    let currentOrderDate = "";
+ let currentOrderNumber = "";
+ let currentOrderDate = "";
 
 
-    // =========================================================
-    // PROCEED TO PAYMENT
-    // =========================================================
+ // =========================================================
+ // PROCEED TO PAYMENT
+ // =========================================================
 
-    if (placeOrder) {
+ if (placeOrder) {
 
-        placeOrder.addEventListener(
-            "click",
-            function (e) {
+ placeOrder.addEventListener(
+ "click",
+ function (e) {
 
-                e.preventDefault();
+ e.preventDefault();
 
 
-                const nameInput =
-                    document.querySelector(
-                        "#customer-name"
-                    );
+ const nameInput =
+ document.querySelector(
+ "#customer-name"
+ );
 
-                const phoneInput =
-                    document.querySelector(
-                        "#customer-phone"
-                    );
+ const phoneInput =
+ document.querySelector(
+ "#customer-phone"
+ );
 
-                const addressInput =
-                    document.querySelector(
-                        "#customer-address"
-                    );
+ const addressInput =
+ document.querySelector(
+ "#customer-address"
+ );
 
 
-                const name =
-                    nameInput
-                        ? nameInput.value.trim()
-                        : "";
+ const name =
+ nameInput
+ ? nameInput.value.trim()
+ : "";
 
-                const phone =
-                    phoneInput
-                        ? phoneInput.value.trim()
-                        : "";
+ const phone =
+ phoneInput
+ ? phoneInput.value.trim()
+ : "";
 
-                const address =
-                    addressInput
-                        ? addressInput.value.trim()
-                        : "";
+ const address =
+ addressInput
+ ? addressInput.value.trim()
+ : "";
 
 
-                // -------------------------------------------------
-                // CART CHECK
-                // -------------------------------------------------
+ // -------------------------------------------------
+ // CART CHECK
+ // -------------------------------------------------
 
-                if (
-                    cart.length === 0
-                ) {
+ if (
+ cart.length === 0
+ ) {
 
-                    alert(
-                        "Your cart is empty!"
-                    );
+ alert(
+ "Your cart is empty!"
+ );
 
-                    return;
+ return;
 
-                }
+ }
 
 
-                // -------------------------------------------------
-                // CUSTOMER DETAILS CHECK
-                // -------------------------------------------------
+ // -------------------------------------------------
+ // CUSTOMER DETAILS CHECK
+ // -------------------------------------------------
 
-                if (
-                    name === "" ||
-                    phone === "" ||
-                    address === ""
-                ) {
+ if (
+ name === "" ||
+ phone === "" ||
+ address === ""
+ ) {
 
-                    alert(
-                        "Please fill in all your details."
-                    );
+ alert(
+ "Please fill in all your details."
+ );
 
-                    return;
+ return;
 
-                }
+ }
 
 
-                // =================================================
-                // CALCULATE FINAL TOTAL
-                // =================================================
+ // =================================================
+ // CALCULATE FINAL TOTAL
+ // =================================================
 
-                const subtotal =
-                    calculateCartSubtotal();
+ const subtotal =
+ calculateCartSubtotal();
 
 
-                deliveryFee =
-                    calculateDelivery(
-                        subtotal
-                    );
+ deliveryFee =
+ calculateDelivery(
+ subtotal
+ );
 
 
-                const grandTotal =
-                    subtotal +
-                    deliveryFee;
+ const grandTotal =
+ subtotal +
+ deliveryFee;
 
 
-                // =================================================
-                // BUILD WHATSAPP ORDER MESSAGE
-                // =================================================
+ // =================================================
+ // BUILD WHATSAPP ORDER MESSAGE
+ // =================================================
 
-                let items = "";
+ let items = "";
 
 
-                cart.forEach(
-                    function (item, index) {
+ cart.forEach(
+ function (item, index) {
 
-                        if (
-                            item.type ===
-                            "meal"
-                        ) {
+ if (
+ item.type ===
+ "meal"
+ ) {
 
-                            items +=
-                                `\n🍛 MEAL ${index + 1}\n`;
+ items +=
+ `\n MEAL ${index + 1}\n`;
 
 
-                            item.items.forEach(
-                                function (food) {
+ item.items.forEach(
+ function (food) {
 
-                                    const foodTotal =
-                                        food.price *
-                                        food.quantity;
+ const foodTotal =
+ food.price *
+ food.quantity;
 
 
-                                    const isFreeWater =
-                                        food.name
-                                            .toLowerCase() ===
-                                        "can of water"
-                                            .toLowerCase();
+ const isFreeWater =
+ food.name
+ .toLowerCase() ===
+ "can of water"
+ .toLowerCase();
 
 
-                                    items +=
-                                        `• ${food.name} ×${food.quantity} — ` +
-                                        (
-                                            isFreeWater
-                                                ? "FREE"
-                                                : `₦${foodTotal.toLocaleString()}`
-                                        ) +
-                                        `\n`;
+ items +=
+ `• ${food.name} ×${food.quantity} — ` +
+ (
+ isFreeWater
+ ? "FREE"
+ : `₦${foodTotal.toLocaleString()}`
+ ) +
+ `\n`;
 
-                                }
-                            );
+ }
+ );
 
 
-                            items +=
-                                `Meal Total: ₦${item.price.toLocaleString()}\n`;
+ items +=
+ `Meal Total: ₦${item.price.toLocaleString()}\n`;
 
 
-                        } else {
+ } else {
 
-                            const itemTotal =
-                                item.price *
-                                item.quantity;
+ const itemTotal =
+ item.price *
+ item.quantity;
 
 
-                            items +=
-                                `• ${item.name} ×${item.quantity} — ` +
-                                `₦${itemTotal.toLocaleString()}\n`;
+ items +=
+ `• ${item.name} ×${item.quantity} — ` +
+ `₦${itemTotal.toLocaleString()}\n`;
 
-                        }
+ }
 
-                    }
-                );
+ }
+ );
 
 
-                // =================================================
-                // WHATSAPP MESSAGE
-                // =================================================
+ // =================================================
+ // WHATSAPP MESSAGE
+ // =================================================
 
-                orderMessage =
-                    `Hello Beta Food! 🍛\n\n` +
-                    `*NEW ORDER*\n\n` +
-                    `👤 Customer: ${name}\n\n` +
-                    `📞 Phone: ${phone}\n\n` +
-                    `📍 Address:\n${address}\n\n` +
-                    `🛒 ORDER:\n${items}\n` +
-                    `\n💵 SUBTOTAL: ₦${subtotal.toLocaleString()}\n` +
-                    `🚚 DELIVERY: ${
-                        deliveryFee === 0
-                            ? "FREE"
-                            : "₦" +
-                              deliveryFee.toLocaleString()
-                    }\n` +
-                    `💰 TOTAL: ₦${grandTotal.toLocaleString()}`;
+ orderMessage =
+ `Hello Beta Food! \n\n` +
+ `*NEW ORDER*\n\n` +
+ ` Customer: ${name}\n\n` +
+ ` Phone: ${phone}\n\n` +
+ ` Address:\n${address}\n\n` +
+ ` ORDER:\n${items}\n` +
+ `\n SUBTOTAL: ₦${subtotal.toLocaleString()}\n` +
+ ` DELIVERY: ${
+ deliveryFee === 0
+ ? "FREE"
+ : "₦" +
+ deliveryFee.toLocaleString()
+ }\n` +
+ ` TOTAL: ₦${grandTotal.toLocaleString()}`;
 
 
-                // =================================================
-                // HIDE CHECKOUT
-                // =================================================
+ // =================================================
+ // HIDE CHECKOUT
+ // =================================================
 
-                if (checkoutForm) {
+ if (checkoutForm) {
 
-                    checkoutForm.style.display =
-                        "none";
+ checkoutForm.style.display =
+ "none";
 
-                }
+ }
 
 
-                // =================================================
-                // SHOW PAYMENT POPUP
-                // =================================================
+ // =================================================
+ // SHOW PAYMENT POPUP
+ // =================================================
 
-                if (paymentPopup) {
+ if (paymentPopup) {
 
-                    paymentPopup.style.display =
-                        "block";
+ paymentPopup.style.display =
+ "block";
 
-                }
+ }
 
 
-                // =================================================
-                // RESET PAYMENT CONFIRMATION
-                // =================================================
+ // =================================================
+ // RESET PAYMENT CONFIRMATION
+ // =================================================
 
-                if (paymentCheck) {
+ if (paymentCheck) {
 
-                    paymentCheck.checked =
-                        false;
+ paymentCheck.checked =
+ false;
 
-                }
+ }
 
 
-                if (paymentDone) {
+ if (paymentDone) {
 
-                    paymentDone.disabled =
-                        true;
+ paymentDone.disabled =
+ true;
 
-                    paymentDone.style.opacity =
-                        "0.5";
+ paymentDone.style.opacity =
+ "0.5";
 
-                    paymentDone.style.pointerEvents =
-                        "none";
+ paymentDone.style.pointerEvents =
+ "none";
 
-                }
+ }
 
-            }
-        );
+ }
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // COPY ACCOUNT NUMBER
-    // =========================================================
+ // =========================================================
+ // COPY ACCOUNT NUMBER
+ // =========================================================
 
-    if (
-        copyAccount &&
-        accountNumber
-    ) {
+ if (
+ copyAccount &&
+ accountNumber
+ ) {
 
-        copyAccount.addEventListener(
-            "click",
-            function () {
+ copyAccount.addEventListener(
+ "click",
+ function () {
 
-                const text =
-                    accountNumber.textContent.trim();
+ const text =
+ accountNumber.textContent.trim();
 
 
-                if (
-                    navigator.clipboard &&
-                    navigator.clipboard.writeText
-                ) {
+ if (
+ navigator.clipboard &&
+ navigator.clipboard.writeText
+ ) {
 
-                    navigator.clipboard
-                        .writeText(text)
-                        .then(function () {
+ navigator.clipboard
+ .writeText(text)
+ .then(function () {
 
-                            alert(
-                                "Account number copied successfully!"
-                            );
+ alert(
+ "Account number copied successfully!"
+ );
 
-                        })
-                        .catch(function () {
+ })
+ .catch(function () {
 
-                            fallbackCopy(text);
+ fallbackCopy(text);
 
-                        });
+ });
 
-                } else {
+ } else {
 
-                    fallbackCopy(text);
+ fallbackCopy(text);
 
-                }
+ }
 
-            }
-        );
+ }
+ );
 
-    }
+ }
 
 
-    function fallbackCopy(text) {
+ function fallbackCopy(text) {
 
-        const textArea =
-            document.createElement(
-                "textarea"
-            );
+ const textArea =
+ document.createElement(
+ "textarea"
+ );
 
-        textArea.value =
-            text;
+ textArea.value =
+ text;
 
-        document.body.appendChild(
-            textArea
-        );
+ document.body.appendChild(
+ textArea
+ );
 
-        textArea.select();
+ textArea.select();
 
-        document.execCommand(
-            "copy"
-        );
+ document.execCommand(
+ "copy"
+ );
 
-        document.body.removeChild(
-            textArea
-        );
+ document.body.removeChild(
+ textArea
+ );
 
-        alert(
-            "Account number copied successfully!"
-        );
+ alert(
+ "Account number copied successfully!"
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // ENABLE PAYMENT BUTTON
-    // =========================================================
+ // =========================================================
+ // ENABLE PAYMENT BUTTON
+ // =========================================================
 
-    if (
-        paymentCheck &&
-        paymentDone
-    ) {
+ if (
+ paymentCheck &&
+ paymentDone
+ ) {
 
-        paymentCheck.addEventListener(
-            "change",
-            function () {
+ paymentCheck.addEventListener(
+ "change",
+ function () {
 
-                if (
-                    paymentCheck.checked
-                ) {
+ if (
+ paymentCheck.checked
+ ) {
 
-                    paymentDone.disabled =
-                        false;
+ paymentDone.disabled =
+ false;
 
-                    paymentDone.style.opacity =
-                        "1";
+ paymentDone.style.opacity =
+ "1";
 
-                    paymentDone.style.pointerEvents =
-                        "auto";
+ paymentDone.style.pointerEvents =
+ "auto";
 
-                } else {
+ } else {
 
-                    paymentDone.disabled =
-                        true;
+ paymentDone.disabled =
+ true;
 
-                    paymentDone.style.opacity =
-                        "0.5";
+ paymentDone.style.opacity =
+ "0.5";
 
-                    paymentDone.style.pointerEvents =
-                        "none";
+ paymentDone.style.pointerEvents =
+ "none";
 
-                }
+ }
 
-            }
-        );
+ }
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // GENERATE RESTAURANT RECEIPT
-    // =========================================================
+ // =========================================================
+ // GENERATE RESTAURANT RECEIPT
+ // =========================================================
 
-    window.generateReceipt =
-        function generateReceipt() {
+ window.generateReceipt =
+ function generateReceipt() {
 
-            if (!receiptContainer) {
-                return;
-            }
+ if (!receiptContainer) {
+ return;
+ }
 
 
-            // -------------------------------------------------
-            // ORDER NUMBER
-            // -------------------------------------------------
+ // -------------------------------------------------
+ // ORDER NUMBER
+ // -------------------------------------------------
 
-            const orderNumber =
-                "BF-" +
-                Date.now()
-                    .toString()
-                    .slice(-6);
+ const orderNumber =
+ "BF-" +
+ Date.now()
+ .toString()
+ .slice(-6);
 
 
-            currentOrderNumber =
-                orderNumber;
+ currentOrderNumber =
+ orderNumber;
 
 
-            // -------------------------------------------------
-            // DATE AND TIME
-            // -------------------------------------------------
+ // -------------------------------------------------
+ // DATE AND TIME
+ // -------------------------------------------------
 
-            const now =
-                new Date();
+ const now =
+ new Date();
 
 
-            const date =
-                now.toLocaleDateString(
-                    "en-NG",
-                    {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric"
-                    }
-                );
+ const date =
+ now.toLocaleDateString(
+ "en-NG",
+ {
+ day: "2-digit",
+ month: "short",
+ year: "numeric"
+ }
+ );
 
 
-            const time =
-                now.toLocaleTimeString(
-                    "en-NG",
-                    {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }
-                );
+ const time =
+ now.toLocaleTimeString(
+ "en-NG",
+ {
+ hour: "2-digit",
+ minute: "2-digit"
+ }
+ );
 
 
-            currentOrderDate =
-                date +
-                " • " +
-                time;
+ currentOrderDate =
+ date +
+ " • " +
+ time;
 
 
-            // -------------------------------------------------
-            // CUSTOMER DETAILS
-            // -------------------------------------------------
+ // -------------------------------------------------
+ // CUSTOMER DETAILS
+ // -------------------------------------------------
 
-            const customerName =
-                document.querySelector(
-                    "#customer-name"
-                )?.value.trim() || "";
+ const customerName =
+ document.querySelector(
+ "#customer-name"
+ )?.value.trim() || "";
 
 
-            const customerPhone =
-                document.querySelector(
-                    "#customer-phone"
-                )?.value.trim() || "";
+ const customerPhone =
+ document.querySelector(
+ "#customer-phone"
+ )?.value.trim() || "";
 
 
-            const customerAddress =
-                document.querySelector(
-                    "#customer-address"
-                )?.value.trim() || "";
+ const customerAddress =
+ document.querySelector(
+ "#customer-address"
+ )?.value.trim() || "";
 
 
-            // -------------------------------------------------
-            // PUT INFORMATION INTO RECEIPT
-            // -------------------------------------------------
+ // -------------------------------------------------
+ // PUT INFORMATION INTO RECEIPT
+ // -------------------------------------------------
 
-            if (receiptOrderNumber) {
+ if (receiptOrderNumber) {
 
-                receiptOrderNumber.textContent =
-                    orderNumber;
+ receiptOrderNumber.textContent =
+ orderNumber;
 
-            }
+ }
 
 
-            if (receiptDate) {
+ if (receiptDate) {
 
-                receiptDate.textContent =
-                    currentOrderDate;
+ receiptDate.textContent =
+ currentOrderDate;
 
-            }
+ }
 
 
-            if (receiptCustomerName) {
+ if (receiptCustomerName) {
 
-                receiptCustomerName.textContent =
-                    customerName;
+ receiptCustomerName.textContent =
+ customerName;
 
-            }
+ }
 
 
-            if (receiptCustomerPhone) {
+ if (receiptCustomerPhone) {
 
-                receiptCustomerPhone.textContent =
-                    customerPhone;
+ receiptCustomerPhone.textContent =
+ customerPhone;
 
-            }
+ }
 
 
-            if (receiptCustomerAddress) {
+ if (receiptCustomerAddress) {
 
-                receiptCustomerAddress.textContent =
-                    customerAddress;
+ receiptCustomerAddress.textContent =
+ customerAddress;
 
-            }
+ }
 
 
-            // -------------------------------------------------
-            // CLEAR OLD RECEIPT ITEMS
-            // -------------------------------------------------
+ // -------------------------------------------------
+ // CLEAR OLD RECEIPT ITEMS
+ // -------------------------------------------------
 
-            if (receiptItems) {
+ if (receiptItems) {
 
-                receiptItems.innerHTML =
-                    "";
+ receiptItems.innerHTML =
+ "";
 
 
-                // -------------------------------------------------
-                // ADD CART ITEMS
-                // -------------------------------------------------
+ // -------------------------------------------------
+ // ADD CART ITEMS
+ // -------------------------------------------------
 
-                cart.forEach(
-                    function (item, index) {
+ cart.forEach(
+ function (item, index) {
 
-                        if (
-                            item.type ===
-                            "meal"
-                        ) {
+ if (
+ item.type ===
+ "meal"
+ ) {
 
-                            const mealHeading =
-                                document.createElement(
-                                    "div"
-                                );
+ const mealHeading =
+ document.createElement(
+ "div"
+ );
 
 
-                            mealHeading.style.fontWeight =
-                                "600";
+ mealHeading.style.fontWeight =
+ "600";
 
-                            mealHeading.style.marginTop =
-                                "12px";
+ mealHeading.style.marginTop =
+ "12px";
 
 
-                            mealHeading.textContent =
-                                `🍛 Meal ${index + 1}`;
+ mealHeading.textContent =
+ ` Meal ${index + 1}`;
 
 
-                            receiptItems.appendChild(
-                                mealHeading
-                            );
+ receiptItems.appendChild(
+ mealHeading
+ );
 
 
-                            item.items.forEach(
-                                function (food) {
+ item.items.forEach(
+ function (food) {
 
-                                    const row =
-                                        document.createElement(
-                                            "div"
-                                        );
+ const row =
+ document.createElement(
+ "div"
+ );
 
 
-                                    row.className =
-                                        "receipt-item";
+ row.className =
+ "receipt-item";
 
 
-                                    const isFreeWater =
-                                        food.name
-                                            .toLowerCase() ===
-                                        "can of water"
-                                            .toLowerCase();
+ const isFreeWater =
+ food.name
+ .toLowerCase() ===
+ "can of water"
+ .toLowerCase();
 
 
-                                    row.innerHTML = `
-                                        <span class="receipt-item-name">
-                                            ${escapeHTML(food.name)} ×${food.quantity}
-                                        </span>
+ row.innerHTML = `
+ <span class="receipt-item-name">
+ ${escapeHTML(food.name)} ×${food.quantity}
+ </span>
 
-                                        <span class="receipt-item-price">
-                                            ${
-                                                isFreeWater
-                                                    ? "FREE"
-                                                    : "₦" +
-                                                      (
-                                                          food.price *
-                                                          food.quantity
-                                                      ).toLocaleString()
-                                            }
-                                        </span>
-                                    `;
+ <span class="receipt-item-price">
+ ${
+ isFreeWater
+ ? "FREE"
+ : "₦" +
+ (
+ food.price *
+ food.quantity
+ ).toLocaleString()
+ }
+ </span>
+ `;
 
 
-                                    receiptItems.appendChild(
-                                        row
-                                    );
+ receiptItems.appendChild(
+ row
+ );
 
-                                }
-                            );
+ }
+ );
 
 
-                        } else {
+ } else {
 
-                            const row =
-                                document.createElement(
-                                    "div"
-                                );
+ const row =
+ document.createElement(
+ "div"
+ );
 
 
-                            row.className =
-                                "receipt-item";
+ row.className =
+ "receipt-item";
 
 
-                            row.innerHTML = `
-                                <span class="receipt-item-name">
-                                    ${escapeHTML(item.name)} ×${item.quantity}
-                                </span>
+ row.innerHTML = `
+ <span class="receipt-item-name">
+ ${escapeHTML(item.name)} ×${item.quantity}
+ </span>
 
-                                <span class="receipt-item-price">
-                                    ₦${(
-                                        item.price *
-                                        item.quantity
-                                    ).toLocaleString()}
-                                </span>
-                            `;
+ <span class="receipt-item-price">
+ ₦${(
+ item.price *
+ item.quantity
+ ).toLocaleString()}
+ </span>
+ `;
 
 
-                            receiptItems.appendChild(
-                                row
-                            );
+ receiptItems.appendChild(
+ row
+ );
 
-                        }
+ }
 
-                    }
-                );
+ }
+ );
 
-            }
+ }
 
 
-            // -------------------------------------------------
-            // RECEIPT TOTAL
-            // -------------------------------------------------
+ // -------------------------------------------------
+ // RECEIPT TOTAL
+ // -------------------------------------------------
 
-            const finalSubtotal =
-                calculateCartSubtotal();
+ const finalSubtotal =
+ calculateCartSubtotal();
 
 
-            const finalDelivery =
-                calculateDelivery(
-                    finalSubtotal
-                );
+ const finalDelivery =
+ calculateDelivery(
+ finalSubtotal
+ );
 
 
-            const finalGrandTotal =
-                finalSubtotal +
-                finalDelivery;
+ const finalGrandTotal =
+ finalSubtotal +
+ finalDelivery;
 
 
-            if (receiptTotal) {
+ if (receiptTotal) {
 
-                receiptTotal.textContent =
-                    finalGrandTotal.toLocaleString();
+ receiptTotal.textContent =
+ finalGrandTotal.toLocaleString();
 
-            }
+ }
 
 
-            // -------------------------------------------------
-            // SHOW RECEIPT
-            // -------------------------------------------------
+ // -------------------------------------------------
+ // SHOW RECEIPT
+ // -------------------------------------------------
 
-            receiptContainer.style.display =
-                "block";
+ receiptContainer.style.display =
+ "block";
 
 
-            /*
-             * Scroll to the receipt so the customer
-             * can see it immediately.
-             */
+ /*
+ * Scroll to the receipt so the customer
+ * can see it immediately.
+ */
 
-            setTimeout(
-                function () {
+ setTimeout(
+ function () {
 
-                    receiptContainer.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
+ receiptContainer.scrollIntoView({
+ behavior: "smooth",
+ block: "start"
+ });
 
-                },
-                100
-            );
+ },
+ 100
+ );
 
-        };
+ };
 
 
-    // =========================================================
-    // SEND ORDER TO WHATSAPP
-    // =========================================================
+ // =========================================================
+ // SEND ORDER TO WHATSAPP
+ // =========================================================
 
-    function sendWhatsAppMessage() {
+ function sendWhatsAppMessage() {
 
-        if (
-            !orderMessage ||
-            orderMessage === ""
-        ) {
+ if (
+ !orderMessage ||
+ orderMessage === ""
+ ) {
 
-            alert(
-                "Please place an order first."
-            );
+ alert(
+ "Please place an order first."
+ );
 
-            return;
+ return;
 
-        }
+ }
 
 
-        const whatsappNumber =
-            "2349169452392";
+ const whatsappNumber =
+ "2349169452392";
 
 
-        const whatsappURL =
-            "https://wa.me/" +
-            whatsappNumber +
-            "?text=" +
-            encodeURIComponent(
-                orderMessage +
-                "\n\n" +
-                "✅ I have completed payment." +
-                "\n\n" +
-                "I am about to attach my payment receipt."
-            );
+ const whatsappURL =
+ "https://wa.me/" +
+ whatsappNumber +
+ "?text=" +
+ encodeURIComponent(
+ orderMessage +
+ "\n\n" +
+ " I have completed payment." +
+ "\n\n" +
+ "I am about to attach my payment receipt."
+ );
 
 
-        window.open(
-            whatsappURL,
-            "_blank"
-        );
+ window.open(
+ whatsappURL,
+ "_blank"
+ );
 
 
-        /*
-         * IMPORTANT:
-         * The receipt must be generated BEFORE
-         * the cart is cleared.
-         */
+ /*
+ * IMPORTANT:
+ * The receipt must be generated BEFORE
+ * the cart is cleared.
+ */
 
-        window.generateReceipt();
+ window.generateReceipt();
 
 
-        // =====================================================
-        // RESET EVERYTHING
-        // =====================================================
+ // =====================================================
+ // RESET EVERYTHING
+ // =====================================================
 
-        cart = [];
+ cart = [];
 
-        deliveryFee = 0;
+ deliveryFee = 0;
 
 
-        updateCart();
+ updateCart();
 
 
-        if (paymentPopup) {
+ if (paymentPopup) {
 
-            paymentPopup.style.display =
-                "none";
+ paymentPopup.style.display =
+ "none";
 
-        }
+ }
 
 
-        if (checkoutForm) {
+ if (checkoutForm) {
 
-            checkoutForm.style.display =
-                "none";
+ checkoutForm.style.display =
+ "none";
 
-        }
+ }
 
 
-        if (paymentCheck) {
+ if (paymentCheck) {
 
-            paymentCheck.checked =
-                false;
+ paymentCheck.checked =
+ false;
 
-        }
+ }
 
 
-        if (paymentDone) {
+ if (paymentDone) {
 
-            paymentDone.disabled =
-                true;
+ paymentDone.disabled =
+ true;
 
-            paymentDone.style.opacity =
-                "0.5";
+ paymentDone.style.opacity =
+ "0.5";
 
-            paymentDone.style.pointerEvents =
-                "none";
+ paymentDone.style.pointerEvents =
+ "none";
 
-        }
+ }
 
 
-        const customerName =
-            document.querySelector(
-                "#customer-name"
-            );
+ const customerName =
+ document.querySelector(
+ "#customer-name"
+ );
 
-        const customerPhone =
-            document.querySelector(
-                "#customer-phone"
-            );
+ const customerPhone =
+ document.querySelector(
+ "#customer-phone"
+ );
 
-        const customerAddress =
-            document.querySelector(
-                "#customer-address"
-            );
+ const customerAddress =
+ document.querySelector(
+ "#customer-address"
+ );
 
 
-        if (customerName) {
-            customerName.value = "";
-        }
+ if (customerName) {
+ customerName.value = "";
+ }
 
 
-        if (customerPhone) {
-            customerPhone.value = "";
-        }
+ if (customerPhone) {
+ customerPhone.value = "";
+ }
 
 
-        if (customerAddress) {
-            customerAddress.value = "";
-        }
+ if (customerAddress) {
+ customerAddress.value = "";
+ }
 
 
-        alert(
-            "Thank you! Kindly attach your payment receipt in WhatsApp and send it."
-        );
+ alert(
+ "Thank you! Kindly attach your payment receipt in WhatsApp and send it."
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // PAYMENT BUTTON
-    // =========================================================
+ // =========================================================
+ // PAYMENT BUTTON
+ // =========================================================
 
-    if (paymentDone) {
+ if (paymentDone) {
 
-        paymentDone.addEventListener(
-            "click",
-            function (e) {
+ paymentDone.addEventListener(
+ "click",
+ function (e) {
 
-                e.preventDefault();
+ e.preventDefault();
 
 
-                /*
-                 * Generate the receipt first while
-                 * the cart and customer information
-                 * are still available.
-                 */
+ /*
+ * Generate the receipt first while
+ * the cart and customer information
+ * are still available.
+ */
 
-                window.generateReceipt();
+ window.generateReceipt();
 
 
-                /*
-                 * Send the order to WhatsApp.
-                 */
+ /*
+ * Send the order to WhatsApp.
+ */
 
-                sendWhatsAppMessage();
+ sendWhatsAppMessage();
 
-            }
-        );
+ }
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // SAVE RECEIPT
-    // =========================================================
+ // =========================================================
+ // SAVE RECEIPT
+ // =========================================================
 
-    if (downloadReceipt) {
+ if (downloadReceipt) {
 
-        downloadReceipt.addEventListener(
-            "click",
-            function () {
+ downloadReceipt.addEventListener(
+ "click",
+ function () {
 
-                if (
-                    !receiptContainer ||
-                    receiptContainer.style.display ===
-                    "none"
-                ) {
+ if (
+ !receiptContainer ||
+ receiptContainer.style.display ===
+ "none"
+ ) {
 
-                    alert(
-                        "Please complete an order first."
-                    );
+ alert(
+ "Please complete an order first."
+ );
 
-                    return;
+ return;
 
-                }
+ }
 
 
-                /*
-                 * Print the receipt.
-                 * The customer can choose
-                 * "Save as PDF" from the browser.
-                 */
+ /*
+ * Print the receipt.
+ * The customer can choose
+ * "Save as PDF" from the browser.
+ */
 
-                const receiptContent =
-                    receiptContainer.innerHTML;
+ const receiptContent =
+ receiptContainer.innerHTML;
 
 
-                const printWindow =
-                    window.open(
-                        "",
-                        "_blank",
-                        "width=800,height=900"
-                    );
+ const printWindow =
+ window.open(
+ "",
+ "_blank",
+ "width=800,height=900"
+ );
 
 
-                if (!printWindow) {
+ if (!printWindow) {
 
-                    alert(
-                        "Please allow pop-ups in your browser to save the receipt."
-                    );
+ alert(
+ "Please allow pop-ups in your browser to save the receipt."
+ );
 
-                    return;
+ return;
 
-                }
+ }
 
 
-                printWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html>
+ printWindow.document.write(`
+ <!DOCTYPE html>
+ <html>
 
-                    <head>
+ <head>
 
-                        <title>Beta Food Receipt ${currentOrderNumber}</title>
+ <title>Beta Food Receipt ${currentOrderNumber}</title>
 
-                        <meta charset="UTF-8">
+ <meta charset="UTF-8">
 
-                        <style>
+ <style>
 
-                            * {
-                                box-sizing: border-box;
-                            }
+ * {
+ box-sizing: border-box;
+ }
 
-                            body {
-                                font-family: Arial, sans-serif;
-                                background: #ffffff;
-                                color: #222;
-                                padding: 30px;
-                                margin: 0;
-                            }
+ body {
+ font-family: Arial, sans-serif;
+ background: #ffffff;
+ color: #222;
+ padding: 30px;
+ margin: 0;
+ }
 
-                            #receipt {
-                                max-width: 700px;
-                                margin: 0 auto;
-                            }
+ #receipt {
+ max-width: 700px;
+ margin: 0 auto;
+ }
 
-                            img {
-                                max-width: 150px;
-                                height: auto;
-                            }
+ img {
+ max-width: 150px;
+ height: auto;
+ }
 
-                            .receipt-item {
-                                display: flex;
-                                justify-content: space-between;
-                                gap: 20px;
-                                padding: 8px 0;
-                                border-bottom: 1px solid #ddd;
-                            }
+ .receipt-item {
+ display: flex;
+ justify-content: space-between;
+ gap: 20px;
+ padding: 8px 0;
+ border-bottom: 1px solid #ddd;
+ }
 
-                            .receipt-divider {
-                                border-top: 1px solid #222;
-                                margin: 15px 0;
-                            }
+ .receipt-divider {
+ border-top: 1px solid #222;
+ margin: 15px 0;
+ }
 
-                            .receipt-total {
-                                display: flex;
-                                justify-content: space-between;
-                                font-size: 20px;
-                                font-weight: bold;
-                                padding: 15px 0;
-                            }
+ .receipt-total {
+ display: flex;
+ justify-content: space-between;
+ font-size: 20px;
+ font-weight: bold;
+ padding: 15px 0;
+ }
 
-                            .payment-confirmed {
-                                font-weight: bold;
-                            }
+ .payment-confirmed {
+ font-weight: bold;
+ }
 
-                            button {
-                                display: none;
-                            }
+ button {
+ display: none;
+ }
 
-                            @media print {
-                                body {
-                                    padding: 0;
-                                }
-                            }
+ @media print {
+ body {
+ padding: 0;
+ }
+ }
 
-                        </style>
+ </style>
 
-                    </head>
+ </head>
 
-                    <body>
+ <body>
 
-                        <div id="receipt">
-                            ${receiptContent}
-                        </div>
+ <div id="receipt">
+ ${receiptContent}
+ </div>
 
-                    </body>
+ </body>
 
-                    </html>
-                `);
+ </html>
+ `);
 
 
-                printWindow.document.close();
+ printWindow.document.close();
 
 
-                printWindow.focus();
+ printWindow.focus();
 
 
-                setTimeout(
-                    function () {
+ setTimeout(
+ function () {
 
-                        printWindow.print();
+ printWindow.print();
 
-                    },
-                    500
-                );
+ },
+ 500
+ );
 
-            }
-        );
+ }
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // SEND RECEIPT TO WHATSAPP
-    // =========================================================
+ // =========================================================
+ // SEND RECEIPT TO WHATSAPP
+ // =========================================================
 
-    if (sendReceiptWhatsApp) {
+ if (sendReceiptWhatsApp) {
 
-        sendReceiptWhatsApp.addEventListener(
-            "click",
-            function () {
+ sendReceiptWhatsApp.addEventListener(
+ "click",
+ function () {
 
-                if (
-                    !currentOrderNumber
-                ) {
+ if (
+ !currentOrderNumber
+ ) {
 
-                    alert(
-                        "Please complete an order first."
-                    );
+ alert(
+ "Please complete an order first."
+ );
 
-                    return;
+ return;
 
-                }
+ }
 
 
-                const customerName =
-                    document.querySelector(
-                        "#receipt-customer-name"
-                    )?.textContent || "";
+ const customerName =
+ document.querySelector(
+ "#receipt-customer-name"
+ )?.textContent || "";
 
 
-                const customerPhone =
-                    document.querySelector(
-                        "#receipt-customer-phone"
-                    )?.textContent || "";
+ const customerPhone =
+ document.querySelector(
+ "#receipt-customer-phone"
+ )?.textContent || "";
 
 
-                const customerAddress =
-                    document.querySelector(
-                        "#receipt-customer-address"
-                    )?.textContent || "";
+ const customerAddress =
+ document.querySelector(
+ "#receipt-customer-address"
+ )?.textContent || "";
 
 
-                const total =
-                    receiptTotal
-                        ? receiptTotal.textContent
-                        : "0";
+ const total =
+ receiptTotal
+ ? receiptTotal.textContent
+ : "0";
 
 
-                const receiptMessage =
-                    `Hello Beta Food! 🍛\n\n` +
-                    `*ORDER RECEIPT*\n\n` +
-                    `🧾 Order No: ${currentOrderNumber}\n` +
-                    `📅 Date: ${currentOrderDate}\n\n` +
-                    `👤 Name: ${customerName}\n` +
-                    `📞 Phone: ${customerPhone}\n` +
-                    `📍 Address: ${customerAddress}\n\n` +
-                    `💰 TOTAL: ₦${total}\n\n` +
-                    `✅ Payment confirmed.\n\n` +
-                    `Thank you for ordering from Beta Food! ❤️`;
+ const receiptMessage =
+ `Hello Beta Food! \n\n` +
+ `*ORDER RECEIPT*\n\n` +
+ ` Order No: ${currentOrderNumber}\n` +
+ ` Date: ${currentOrderDate}\n\n` +
+ ` Name: ${customerName}\n` +
+ ` Phone: ${customerPhone}\n` +
+ ` Address: ${customerAddress}\n\n` +
+ ` TOTAL: ₦${total}\n\n` +
+ ` Payment confirmed.\n\n` +
+ `Thank you for ordering from Beta Food! ️`;
 
 
-                const whatsappNumber =
-                    "2349169452392";
+ const whatsappNumber =
+ "2349169452392";
 
 
-                const whatsappURL =
-                    "https://wa.me/" +
-                    whatsappNumber +
-                    "?text=" +
-                    encodeURIComponent(
-                        receiptMessage
-                    );
+ const whatsappURL =
+ "https://wa.me/" +
+ whatsappNumber +
+ "?text=" +
+ encodeURIComponent(
+ receiptMessage
+ );
 
 
-                window.open(
-                    whatsappURL,
-                    "_blank"
-                );
+ window.open(
+ whatsappURL,
+ "_blank"
+ );
 
-            }
-        );
+ }
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // ESCAPE HTML
-    // =========================================================
+ // =========================================================
+ // ESCAPE HTML
+ // =========================================================
 
-    function escapeHTML(text) {
+ function escapeHTML(text) {
 
-        const div =
-            document.createElement(
-                "div"
-            );
+ const div =
+ document.createElement(
+ "div"
+ );
 
-        div.textContent =
-            text;
+ div.textContent =
+ text;
 
-        return div.innerHTML;
+ return div.innerHTML;
 
-    }
+ }
 
 
-    // =========================================================
-    // DARK MODE
-    // =========================================================
+ // =========================================================
+ // DARK MODE
+ // =========================================================
 
-    const themeToggle =
-        document.querySelector(
-            "#theme-toggle"
-        );
+ const themeToggle =
+ document.querySelector(
+ "#theme-toggle"
+ );
 
 
-    if (themeToggle) {
+ if (themeToggle) {
 
-        if (
-            localStorage.getItem(
-                "theme"
-            ) === "dark"
-        ) {
+ if (
+ localStorage.getItem(
+ "theme"
+ ) === "dark"
+ ) {
 
-            document.body.classList.add(
-                "dark"
-            );
+ document.body.classList.add(
+ "dark"
+ );
 
-            themeToggle.innerHTML =
-                '<i class="fa-solid fa-sun"></i>';
+ themeToggle.innerHTML =
+ '<i class="fa-solid fa-sun"></i>';
 
-        }
+ }
 
 
-        themeToggle.addEventListener(
-            "click",
-            function () {
+ themeToggle.addEventListener(
+ "click",
+ function () {
 
-                document.body.classList.toggle(
-                    "dark"
-                );
+ document.body.classList.toggle(
+ "dark"
+ );
 
 
-                if (
-                    document.body.classList.contains(
-                        "dark"
-                    )
-                ) {
+ if (
+ document.body.classList.contains(
+ "dark"
+ )
+ ) {
 
-                    localStorage.setItem(
-                        "theme",
-                        "dark"
-                    );
+ localStorage.setItem(
+ "theme",
+ "dark"
+ );
 
-                    themeToggle.innerHTML =
-                        '<i class="fa-solid fa-sun"></i>';
+ themeToggle.innerHTML =
+ '<i class="fa-solid fa-sun"></i>';
 
-                } else {
+ } else {
 
-                    localStorage.setItem(
-                        "theme",
-                        "light"
-                    );
+ localStorage.setItem(
+ "theme",
+ "light"
+ );
 
-                    themeToggle.innerHTML =
-                        '<i class="fa-solid fa-moon"></i>';
+ themeToggle.innerHTML =
+ '<i class="fa-solid fa-moon"></i>';
 
-                }
+ }
 
 
-                fixPlusButtons();
+ fixPlusButtons();
 
-            }
-        );
+ }
+ );
 
-    }
+ }
 
 
-    // =========================================================
-    // FIX PLUS BUTTONS IN DARK MODE
-    // =========================================================
+ // =========================================================
+ // FIX PLUS BUTTONS IN DARK MODE
+ // =========================================================
 
-    function fixPlusButtons() {
+ function fixPlusButtons() {
 
-        const isDark =
-            document.body.classList.contains(
-                "dark"
-            );
+ const isDark =
+ document.body.classList.contains(
+ "dark"
+ );
 
 
-        const plusButtons =
-            document.querySelectorAll(
-                ".quantity-plus"
-            );
+ const plusButtons =
+ document.querySelectorAll(
+ ".quantity-plus"
+ );
 
 
-        plusButtons.forEach(
-            function (btn) {
+ plusButtons.forEach(
+ function (btn) {
 
-                if (isDark) {
+ if (isDark) {
 
-                    btn.style.backgroundColor =
-                        "#4CAF50";
+ btn.style.backgroundColor =
+ "#4CAF50";
 
-                    btn.style.borderColor =
-                        "#4CAF50";
+ btn.style.borderColor =
+ "#4CAF50";
 
-                    btn.style.color =
-                        "#ffffff";
+ btn.style.color =
+ "#ffffff";
 
-                } else {
+ } else {
 
-                    btn.style.backgroundColor =
-                        "";
+ btn.style.backgroundColor =
+ "";
 
-                    btn.style.borderColor =
-                        "";
+ btn.style.borderColor =
+ "";
 
-                    btn.style.color =
-                        "";
+ btn.style.color =
+ "";
 
-                }
+ }
 
-            }
-        );
+ }
+ );
 
-    }
+ }
 
 
-    setTimeout(
-        fixPlusButtons,
-        100
-    );
+ setTimeout(
+ fixPlusButtons,
+ 100
+ );
 
-    setTimeout(
-        fixPlusButtons,
-        300
-    );
+ setTimeout(
+ fixPlusButtons,
+ 300
+ );
 
 
-    // =========================================================
-    // CUSTOMER REVIEWS SYSTEM
-    // =========================================================
+ // =========================================================
+ // CUSTOMER REVIEWS SYSTEM
+ // =========================================================
 
-    (function () {
+ (function () {
 
-        const stars =
-            document.querySelectorAll(
-                ".star"
-            );
+ const stars =
+ document.querySelectorAll(
+ ".star"
+ );
 
 
-        let selectedRating =
-            0;
+ let selectedRating =
+ 0;
 
 
-        const ratingText =
-            document.querySelector(
-                ".rating-text"
-            );
+ const ratingText =
+ document.querySelector(
+ ".rating-text"
+ );
 
 
-        // -----------------------------------------------------
-        // STAR RATING
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // STAR RATING
+ // -----------------------------------------------------
 
-        stars.forEach(
-            function (star) {
+ stars.forEach(
+ function (star) {
 
-                star.addEventListener(
-                    "click",
-                    function () {
+ star.addEventListener(
+ "click",
+ function () {
 
-                        selectedRating =
-                            parseInt(
-                                this.dataset.value,
-                                10
-                            );
+ selectedRating =
+ parseInt(
+ this.dataset.value,
+ 10
+ );
 
 
-                        updateStars(
-                            selectedRating
-                        );
+ updateStars(
+ selectedRating
+ );
 
 
-                        if (ratingText) {
+ if (ratingText) {
 
-                            const messages = [
-                                "",
-                                "⭐ Poor - We'll do better!",
-                                "⭐⭐ Fair - Room for improvement!",
-                                "⭐⭐⭐ Good - Thank you!",
-                                "⭐⭐⭐⭐ Great - We appreciate you!",
-                                "⭐⭐⭐⭐⭐ Excellent - You made our day!"
-                            ];
+ const messages = [
+ "",
+ " Poor - We'll do better!",
+ " Fair - Room for improvement!",
+ " Good - Thank you!",
+ " Great - We appreciate you!",
+ " Excellent - You made our day!"
+ ];
 
 
-                            ratingText.textContent =
-                                messages[
-                                    selectedRating
-                                ] ||
-                                "Tap a star to rate";
+ ratingText.textContent =
+ messages[
+ selectedRating
+ ] ||
+ "Tap a star to rate";
 
 
-                            ratingText.style.color =
-                                "#FF6B35";
+ ratingText.style.color =
+ "#FF6B35";
 
 
-                            ratingText.style.fontWeight =
-                                "600";
+ ratingText.style.fontWeight =
+ "600";
 
-                        }
+ }
 
-                    }
-                );
+ }
+ );
 
 
-                star.addEventListener(
-                    "mouseenter",
-                    function () {
+ star.addEventListener(
+ "mouseenter",
+ function () {
 
-                        const value =
-                            parseInt(
-                                this.dataset.value,
-                                10
-                            );
+ const value =
+ parseInt(
+ this.dataset.value,
+ 10
+ );
 
 
-                        updateStars(
-                            value
-                        );
+ updateStars(
+ value
+ );
 
-                    }
-                );
+ }
+ );
 
 
-                star.addEventListener(
-                    "mouseleave",
-                    function () {
+ star.addEventListener(
+ "mouseleave",
+ function () {
 
-                        updateStars(
-                            selectedRating
-                        );
+ updateStars(
+ selectedRating
+ );
 
-                    }
-                );
+ }
+ );
 
-            }
-        );
+ }
+ );
 
 
-        function updateStars(rating) {
+ function updateStars(rating) {
 
-            stars.forEach(
-                function (star) {
+ stars.forEach(
+ function (star) {
 
-                    const value =
-                        parseInt(
-                            star.dataset.value,
-                            10
-                        );
+ const value =
+ parseInt(
+ star.dataset.value,
+ 10
+ );
 
 
-                    if (
-                        value <=
-                        rating
-                    ) {
+ if (
+ value <=
+ rating
+ ) {
 
-                        star.classList.add(
-                            "active"
-                        );
+ star.classList.add(
+ "active"
+ );
 
-                    } else {
+ } else {
 
-                        star.classList.remove(
-                            "active"
-                        );
+ star.classList.remove(
+ "active"
+ );
 
-                    }
+ }
 
-                }
-            );
+ }
+ );
 
-        }
+ }
 
 
-        // -----------------------------------------------------
-        // SUBMIT REVIEW
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // SUBMIT REVIEW
+ // -----------------------------------------------------
 
-        const submitBtn =
-            document.getElementById(
-                "submit-review"
-            );
+ const submitBtn =
+ document.getElementById(
+ "submit-review"
+ );
 
 
-        if (!submitBtn) {
-            return;
-        }
+ if (!submitBtn) {
+ return;
+ }
 
 
-        submitBtn.addEventListener(
-            "click",
-            function () {
+ submitBtn.addEventListener(
+ "click",
+ function () {
 
-                const comment =
-                    document.getElementById(
-                        "review-comment"
-                    );
+ const comment =
+ document.getElementById(
+ "review-comment"
+ );
 
 
-                const nameInput =
-                    document.getElementById(
-                        "review-name"
-                    );
+ const nameInput =
+ document.getElementById(
+ "review-name"
+ );
 
 
-                if (
-                    selectedRating ===
-                    0
-                ) {
+ if (
+ selectedRating ===
+ 0
+ ) {
 
-                    alert(
-                        "Please select a star rating! ⭐"
-                    );
+ alert(
+ "Please select a star rating! "
+ );
 
-                    return;
+ return;
 
-                }
+ }
 
 
-                if (
-                    !comment ||
-                    !comment.value.trim()
-                ) {
+ if (
+ !comment ||
+ !comment.value.trim()
+ ) {
 
-                    alert(
-                        "Please write your review! 📝"
-                    );
+ alert(
+ "Please write your review! "
+ );
 
-                    return;
+ return;
 
-                }
+ }
 
 
-                const review = {
+ const review = {
 
-                    rating:
-                        selectedRating,
+ rating:
+ selectedRating,
 
-                    comment:
-                        comment.value.trim(),
+ comment:
+ comment.value.trim(),
 
-                    name:
-                        nameInput &&
-                        nameInput.value.trim()
-                            ? nameInput.value.trim()
-                            : "Anonymous",
+ name:
+ nameInput &&
+ nameInput.value.trim()
+ ? nameInput.value.trim()
+ : "Anonymous",
 
-                    date:
-                        new Date().toLocaleDateString(
-                            "en-US",
-                            {
-                                year:
-                                    "numeric",
+ date:
+ new Date().toLocaleDateString(
+ "en-US",
+ {
+ year:
+ "numeric",
 
-                                month:
-                                    "long",
+ month:
+ "long",
 
-                                day:
-                                    "numeric"
-                            }
-                        ),
+ day:
+ "numeric"
+ }
+ ),
 
-                    id:
-                        Date.now()
+ id:
+ Date.now()
 
-                };
+ };
 
 
-                saveReview(
-                    review
-                );
+ saveReview(
+ review
+ );
 
 
-                comment.value =
-                    "";
+ comment.value =
+ "";
 
 
-                if (nameInput) {
+ if (nameInput) {
 
-                    nameInput.value =
-                        "";
+ nameInput.value =
+ "";
 
-                }
+ }
 
 
-                selectedRating =
-                    0;
+ selectedRating =
+ 0;
 
 
-                updateStars(
-                    0
-                );
+ updateStars(
+ 0
+ );
 
 
-                if (ratingText) {
+ if (ratingText) {
 
-                    ratingText.textContent =
-                        "Tap a star to rate";
+ ratingText.textContent =
+ "Tap a star to rate";
 
 
-                    ratingText.style.color =
-                        "#888";
+ ratingText.style.color =
+ "#888";
 
 
-                    ratingText.style.fontWeight =
-                        "400";
+ ratingText.style.fontWeight =
+ "400";
 
-                }
+ }
 
 
-                displayReviews();
+ displayReviews();
 
 
-                const btn =
-                    this;
+ const btn =
+ this;
 
 
-                const originalText =
-                    btn.textContent;
+ const originalText =
+ btn.textContent;
 
 
-                btn.textContent =
-                    "✅ Review Submitted!";
+ btn.textContent =
+ " Review Submitted!";
 
 
-                btn.style.background =
-                    "#28a745";
+ btn.style.background =
+ "#28a745";
 
 
-                setTimeout(
-                    function () {
+ setTimeout(
+ function () {
 
-                        btn.textContent =
-                            originalText;
+ btn.textContent =
+ originalText;
 
 
-                        btn.style.background =
-                            "#FF6B35";
+ btn.style.background =
+ "#FF6B35";
 
-                    },
-                    2000
-                );
+ },
+ 2000
+ );
 
-            }
-        );
+ }
+ );
 
 
-        // -----------------------------------------------------
-        // SAVE REVIEW
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // SAVE REVIEW
+ // -----------------------------------------------------
 
-        function saveReview(review) {
+ function saveReview(review) {
 
-            let reviews =
-                JSON.parse(
-                    localStorage.getItem(
-                        "betaFoodReviews"
-                    ) || "[]"
-                );
+ let reviews =
+ JSON.parse(
+ localStorage.getItem(
+ "betaFoodReviews"
+ ) || "[]"
+ );
 
 
-            reviews.unshift(
-                review
-            );
+ reviews.unshift(
+ review
+ );
 
 
-            localStorage.setItem(
-                "betaFoodReviews",
-                JSON.stringify(
-                    reviews
-                )
-            );
+ localStorage.setItem(
+ "betaFoodReviews",
+ JSON.stringify(
+ reviews
+ )
+ );
 
-        }
+ }
 
 
-        // -----------------------------------------------------
-        // DELETE REVIEW
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // DELETE REVIEW
+ // -----------------------------------------------------
 
-        function deleteReview(id) {
+ function deleteReview(id) {
 
-            if (
-                !confirm(
-                    "Delete this review? This cannot be undone."
-                )
-            ) {
+ if (
+ !confirm(
+ "Delete this review? This cannot be undone."
+ )
+ ) {
 
-                return;
+ return;
 
-            }
+ }
 
 
-            let reviews =
-                JSON.parse(
-                    localStorage.getItem(
-                        "betaFoodReviews"
-                    ) || "[]"
-                );
+ let reviews =
+ JSON.parse(
+ localStorage.getItem(
+ "betaFoodReviews"
+ ) || "[]"
+ );
 
 
-            reviews =
-                reviews.filter(
-                    function (review) {
+ reviews =
+ reviews.filter(
+ function (review) {
 
-                        return (
-                            review.id !==
-                            id
-                        );
+ return (
+ review.id !==
+ id
+ );
 
-                    }
-                );
+ }
+ );
 
 
-            localStorage.setItem(
-                "betaFoodReviews",
-                JSON.stringify(
-                    reviews
-                )
-            );
+ localStorage.setItem(
+ "betaFoodReviews",
+ JSON.stringify(
+ reviews
+ )
+ );
 
 
-            displayReviews();
+ displayReviews();
 
-        }
+ }
 
 
-        // -----------------------------------------------------
-        // DISPLAY REVIEWS
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // DISPLAY REVIEWS
+ // -----------------------------------------------------
 
-        function displayReviews() {
+ function displayReviews() {
 
-            const container =
-                document.getElementById(
-                    "reviews-list"
-                );
+ const container =
+ document.getElementById(
+ "reviews-list"
+ );
 
 
-            if (!container) {
-                return;
-            }
+ if (!container) {
+ return;
+ }
 
 
-            const reviews =
-                JSON.parse(
-                    localStorage.getItem(
-                        "betaFoodReviews"
-                    ) || "[]"
-                );
+ const reviews =
+ JSON.parse(
+ localStorage.getItem(
+ "betaFoodReviews"
+ ) || "[]"
+ );
 
 
-            if (
-                reviews.length === 0
-            ) {
+ if (
+ reviews.length === 0
+ ) {
 
-                container.innerHTML =
-                    '<p class="no-reviews">Be the first to leave a review! 🌟</p>';
+ container.innerHTML =
+ '<p class="no-reviews">Be the first to leave a review! </p>';
 
-                return;
+ return;
 
-            }
+ }
 
 
-            let html =
-                "";
+ let html =
+ "";
 
 
-            reviews.forEach(
-                function (review) {
+ reviews.forEach(
+ function (review) {
 
-                    const starsHTML =
-                        "⭐".repeat(
-                            review.rating
-                        ) +
-                        "☆".repeat(
-                            5 -
-                            review.rating
-                        );
+ const starsHTML =
+ "".repeat(
+ review.rating
+ ) +
+ "".repeat(
+ 5 -
+ review.rating
+ );
 
 
-                    html += `
-                        <div class="review-item">
+ html += `
+ <div class="review-item">
 
-                            <div class="review-header">
+ <div class="review-header">
 
-                                <span class="review-name">
-                                    ${escapeHTML(review.name)}
-                                </span>
+ <span class="review-name">
+ ${escapeHTML(review.name)}
+ </span>
 
-                                <div>
+ <div>
 
-                                    <span class="review-stars">
-                                        ${starsHTML}
-                                    </span>
+ <span class="review-stars">
+ ${starsHTML}
+ </span>
 
-                                    <button
-                                        type="button"
-                                        class="delete-review"
-                                        data-id="${review.id}"
-                                        title="Delete this review">
-                                        🗑️
-                                    </button>
+ <button
+ type="button"
+ class="delete-review"
+ data-id="${review.id}"
+ title="Delete this review">
+ ️
+ </button>
 
-                                </div>
+ </div>
 
-                            </div>
+ </div>
 
-                            <p class="review-comment">
-                                ${escapeHTML(review.comment)}
-                            </p>
+ <p class="review-comment">
+ ${escapeHTML(review.comment)}
+ </p>
 
-                            <span class="review-date">
-                                ${review.date}
-                            </span>
+ <span class="review-date">
+ ${review.date}
+ </span>
 
-                        </div>
-                    `;
+ </div>
+ `;
 
-                }
-            );
+ }
+ );
 
 
-            container.innerHTML =
-                html;
+ container.innerHTML =
+ html;
 
-        }
+ }
 
 
-        // -----------------------------------------------------
-        // DELETE CLICK
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // DELETE CLICK
+ // -----------------------------------------------------
 
-        document.addEventListener(
-            "click",
-            function (e) {
+ document.addEventListener(
+ "click",
+ function (e) {
 
-                const deleteBtn =
-                    e.target.closest(
-                        ".delete-review"
-                    );
+ const deleteBtn =
+ e.target.closest(
+ ".delete-review"
+ );
 
 
-                if (deleteBtn) {
+ if (deleteBtn) {
 
-                    const id =
-                        parseInt(
-                            deleteBtn.dataset.id,
-                            10
-                        );
+ const id =
+ parseInt(
+ deleteBtn.dataset.id,
+ 10
+ );
 
 
-                    deleteReview(
-                        id
-                    );
+ deleteReview(
+ id
+ );
 
-                }
+ }
 
-            }
-        );
+ }
+ );
 
 
-        // -----------------------------------------------------
-        // LOAD REVIEWS
-        // -----------------------------------------------------
+ // -----------------------------------------------------
+ // LOAD REVIEWS
+ // -----------------------------------------------------
 
-        displayReviews();
+ displayReviews();
 
-    })();
+ })();
 
 
-    // =========================================================
-    // INITIAL CART UPDATE
-    // =========================================================
+ // =========================================================
+ // INITIAL CART UPDATE
+ // =========================================================
 
-    updateCart();
+ updateCart();
 
 
-    // =========================================================
-    // LOADER
-    // =========================================================
+ // =========================================================
+ // LOADER
+ // =========================================================
 
-    window.addEventListener(
-        "load",
-        function () {
+ window.addEventListener(
+ "load",
+ function () {
 
-            const loader =
-                document.getElementById(
-                    "loader"
-                );
+ const loader =
+ document.getElementById(
+ "loader"
+ );
 
 
-            if (loader) {
+ if (loader) {
 
-                loader.classList.add(
-                    "hide"
-                );
+ loader.classList.add(
+ "hide"
+ );
 
-            }
+ }
 
-        }
-    );
+ }
+ );
 
 
-    // =========================================================
-    // FINAL CONSOLE MESSAGE
-    // =========================================================
+ // =========================================================
+ // FINAL CONSOLE MESSAGE
+ // =========================================================
 
-    console.log(
-        "✅ Beta Food script loaded successfully."
-    );
+ console.log(
+ " Beta Food script loaded successfully."
+ );
 
 });
 
@@ -3916,157 +3916,157 @@ if (
 // =========================================
 
 (function() {
-    'use strict';
+ 'use strict';
 
-    // --- Create the floating arrow button ---
-    let arrowBtn = document.getElementById('floating-arrow');
-    if (!arrowBtn) {
-        arrowBtn = document.createElement('div');
-        arrowBtn.id = 'floating-arrow';
-        arrowBtn.innerHTML = `
-            <span class="arrow-icon">⬇️</span>
-            <span class="arrow-text">Add Meal to Cart</span>
-        `;
-        arrowBtn.style.position = 'fixed';
-        arrowBtn.style.bottom = '30px';
-        arrowBtn.style.right = '20px';
-        arrowBtn.style.zIndex = '999999';
-        arrowBtn.style.display = 'flex';
-        arrowBtn.style.alignItems = 'center';
-        arrowBtn.style.gap = '10px';
-        arrowBtn.style.padding = '14px 22px';
-        arrowBtn.style.background = '#FF6B35';
-        arrowBtn.style.color = '#fff';
-        arrowBtn.style.borderRadius = '50px';
-        arrowBtn.style.boxShadow = '0 8px 25px rgba(255, 107, 53, 0.4)';
-        arrowBtn.style.fontSize = '16px';
-        arrowBtn.style.fontWeight = '600';
-        arrowBtn.style.cursor = 'pointer';
-        arrowBtn.style.opacity = '0';
-        arrowBtn.style.transform = 'translateY(30px) scale(0.9)';
-        arrowBtn.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        arrowBtn.style.pointerEvents = 'none';
-        arrowBtn.style.userSelect = 'none';
-        arrowBtn.style.fontFamily = "'Poppins', sans-serif";
-        arrowBtn.style.border = 'none';
-        arrowBtn.style.boxSizing = 'border-box';
-        arrowBtn.style.whiteSpace = 'nowrap';
+ // --- Create the floating arrow button ---
+ let arrowBtn = document.getElementById('floating-arrow');
+ if (!arrowBtn) {
+ arrowBtn = document.createElement('div');
+ arrowBtn.id = 'floating-arrow';
+ arrowBtn.innerHTML = `
+ <span class="arrow-icon">️</span>
+ <span class="arrow-text">Add Meal to Cart</span>
+ `;
+ arrowBtn.style.position = 'fixed';
+ arrowBtn.style.bottom = '30px';
+ arrowBtn.style.right = '20px';
+ arrowBtn.style.zIndex = '999999';
+ arrowBtn.style.display = 'flex';
+ arrowBtn.style.alignItems = 'center';
+ arrowBtn.style.gap = '10px';
+ arrowBtn.style.padding = '14px 22px';
+ arrowBtn.style.background = '#FF6B35';
+ arrowBtn.style.color = '#fff';
+ arrowBtn.style.borderRadius = '50px';
+ arrowBtn.style.boxShadow = '0 8px 25px rgba(255, 107, 53, 0.4)';
+ arrowBtn.style.fontSize = '16px';
+ arrowBtn.style.fontWeight = '600';
+ arrowBtn.style.cursor = 'pointer';
+ arrowBtn.style.opacity = '0';
+ arrowBtn.style.transform = 'translateY(30px) scale(0.9)';
+ arrowBtn.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+ arrowBtn.style.pointerEvents = 'none';
+ arrowBtn.style.userSelect = 'none';
+ arrowBtn.style.fontFamily = "'Poppins', sans-serif";
+ arrowBtn.style.border = 'none';
+ arrowBtn.style.boxSizing = 'border-box';
+ arrowBtn.style.whiteSpace = 'nowrap';
 
-        // Style the icon
-        const icon = arrowBtn.querySelector('.arrow-icon');
-        if (icon) {
-            icon.style.fontSize = '20px';
-            icon.style.display = 'inline-block';
-            icon.style.transform = 'translateY(1px)';
-        }
+ // Style the icon
+ const icon = arrowBtn.querySelector('.arrow-icon');
+ if (icon) {
+ icon.style.fontSize = '20px';
+ icon.style.display = 'inline-block';
+ icon.style.transform = 'translateY(1px)';
+ }
 
-        // Style the text
-        const text = arrowBtn.querySelector('.arrow-text');
-        if (text) {
-            text.style.fontSize = '15px';
-            text.style.fontWeight = '600';
-        }
+ // Style the text
+ const text = arrowBtn.querySelector('.arrow-text');
+ if (text) {
+ text.style.fontSize = '15px';
+ text.style.fontWeight = '600';
+ }
 
-        document.body.appendChild(arrowBtn);
-    }
+ document.body.appendChild(arrowBtn);
+ }
 
-    // --- Helper: Check if any item is selected ---
-    function hasSelectedItems() {
-        const quantities = document.querySelectorAll('.quantity');
-        let total = 0;
-        quantities.forEach(function(el) {
-            total += parseInt(el.textContent || '0', 10);
-        });
-        return total > 0;
-    }
+ // --- Helper: Check if any item is selected ---
+ function hasSelectedItems() {
+ const quantities = document.querySelectorAll('.quantity');
+ let total = 0;
+ quantities.forEach(function(el) {
+ total += parseInt(el.textContent || '0', 10);
+ });
+ return total > 0;
+ }
 
-    // --- Scroll to the "Add Meal to Cart" button ---
-    function scrollToAddMeal() {
-        const targetBtn = document.getElementById('add-built-meal');
-        if (targetBtn) {
-            // Smooth scroll to the button
-            targetBtn.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
+ // --- Scroll to the "Add Meal to Cart" button ---
+ function scrollToAddMeal() {
+ const targetBtn = document.getElementById('add-built-meal');
+ if (targetBtn) {
+ // Smooth scroll to the button
+ targetBtn.scrollIntoView({
+ behavior: 'smooth',
+ block: 'center'
+ });
 
-            // Add a subtle highlight effect
-            targetBtn.style.transition = 'box-shadow 0.3s ease';
-            targetBtn.style.boxShadow = '0 0 0 4px #FF6B35, 0 8px 30px rgba(255, 107, 53, 0.5)';
-            setTimeout(function() {
-                targetBtn.style.boxShadow = '';
-            }, 2000);
-        }
-    }
+ // Add a subtle highlight effect
+ targetBtn.style.transition = 'box-shadow 0.3s ease';
+ targetBtn.style.boxShadow = '0 0 0 4px #FF6B35, 0 8px 30px rgba(255, 107, 53, 0.5)';
+ setTimeout(function() {
+ targetBtn.style.boxShadow = '';
+ }, 2000);
+ }
+ }
 
-    // --- Click handler for the arrow ---
-    arrowBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        scrollToAddMeal();
-    });
+ // --- Click handler for the arrow ---
+ arrowBtn.addEventListener('click', function(e) {
+ e.preventDefault();
+ scrollToAddMeal();
+ });
 
-    // --- State tracking ---
-    let isArrowVisible = false;
+ // --- State tracking ---
+ let isArrowVisible = false;
 
-    // --- Update the arrow visibility ---
-    function updateArrow() {
-        const hasItems = hasSelectedItems();
+ // --- Update the arrow visibility ---
+ function updateArrow() {
+ const hasItems = hasSelectedItems();
 
-        if (hasItems && !isArrowVisible) {
-            // SHOW the arrow with animation
-            isArrowVisible = true;
-            arrowBtn.style.pointerEvents = 'auto';
-            arrowBtn.style.opacity = '1';
-            arrowBtn.style.transform = 'translateY(0) scale(1)';
-        } else if (!hasItems && isArrowVisible) {
-            // HIDE the arrow
-            isArrowVisible = false;
-            arrowBtn.style.pointerEvents = 'none';
-            arrowBtn.style.opacity = '0';
-            arrowBtn.style.transform = 'translateY(30px) scale(0.9)';
-        }
-    }
+ if (hasItems && !isArrowVisible) {
+ // SHOW the arrow with animation
+ isArrowVisible = true;
+ arrowBtn.style.pointerEvents = 'auto';
+ arrowBtn.style.opacity = '1';
+ arrowBtn.style.transform = 'translateY(0) scale(1)';
+ } else if (!hasItems && isArrowVisible) {
+ // HIDE the arrow
+ isArrowVisible = false;
+ arrowBtn.style.pointerEvents = 'none';
+ arrowBtn.style.opacity = '0';
+ arrowBtn.style.transform = 'translateY(30px) scale(0.9)';
+ }
+ }
 
-    // --- Watch for quantity changes ---
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.quantity-plus, .quantity-minus')) {
-            setTimeout(updateArrow, 50);
-        }
-    });
+ // --- Watch for quantity changes ---
+ document.addEventListener('click', function(e) {
+ if (e.target.closest('.quantity-plus, .quantity-minus')) {
+ setTimeout(updateArrow, 50);
+ }
+ });
 
-    // --- Watch for dark mode toggle (optional - keep arrow visible) ---
-    const themeToggle = document.querySelector('#theme-toggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            setTimeout(function() {
-                // Re-apply visibility if items exist
-                if (hasSelectedItems()) {
-                    arrowBtn.style.opacity = '1';
-                    arrowBtn.style.transform = 'translateY(0) scale(1)';
-                    arrowBtn.style.pointerEvents = 'auto';
-                }
-            }, 100);
-        });
-    }
+ // --- Watch for dark mode toggle (optional - keep arrow visible) ---
+ const themeToggle = document.querySelector('#theme-toggle');
+ if (themeToggle) {
+ themeToggle.addEventListener('click', function() {
+ setTimeout(function() {
+ // Re-apply visibility if items exist
+ if (hasSelectedItems()) {
+ arrowBtn.style.opacity = '1';
+ arrowBtn.style.transform = 'translateY(0) scale(1)';
+ arrowBtn.style.pointerEvents = 'auto';
+ }
+ }, 100);
+ });
+ }
 
-    // --- Initial check ---
-    setTimeout(updateArrow, 200);
-    setTimeout(updateArrow, 500);
+ // --- Initial check ---
+ setTimeout(updateArrow, 200);
+ setTimeout(updateArrow, 500);
 
-    // --- Also update when meal preview changes (just in case) ---
-    const mealObserver = new MutationObserver(function() {
-        updateArrow();
-    });
-    const previewContainer = document.querySelector('#meal-preview-items');
-    if (previewContainer) {
-        mealObserver.observe(previewContainer, {
-            childList: true,
-            subtree: true,
-            characterData: true
-        });
-    }
+ // --- Also update when meal preview changes (just in case) ---
+ const mealObserver = new MutationObserver(function() {
+ updateArrow();
+ });
+ const previewContainer = document.querySelector('#meal-preview-items');
+ if (previewContainer) {
+ mealObserver.observe(previewContainer, {
+ childList: true,
+ subtree: true,
+ characterData: true
+ });
+ }
 
-    console.log('✅ Floating arrow (scroll to cart) loaded.');
+ console.log(' Floating arrow (scroll to cart) loaded.');
 })();
 
 // =========================================================
@@ -4075,82 +4075,82 @@ if (
 
 const CACHE_NAME = 'beta-food-v4';
 
-// ← Increment every deploy
+// Increment every deploy
 
 const urlsToCache = [
-    '/',
-    '/home.html',
-    '/menu.html',
-    '/about.html',
-    '/reviews.html',
-    '/contact.html',
-    '/css/style.css?v=4',
-    '/js/script.js?v=4',
-    '/images/mlogo.png',
-    '/images/logo.png',
-    '/images/logo-192.png',
-    '/images/hero.jpg',
-    '/images/hero1.jpg',
-    '/images/Jollof Rice.jpg',
-    '/images/hero3.jpg',
-    '/images/fried rice.jpg',
-    'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css',
-    'https://unpkg.com/aos@2.3.4/dist/aos.css',
-    'https://unpkg.com/aos@2.3.4/dist/aos.js'
+ '/',
+ '/home.html',
+ '/menu.html',
+ '/about.html',
+ '/reviews.html',
+ '/contact.html',
+ '/css/style.css?v=4',
+ '/js/script.js?v=4',
+ '/images/mlogo.png',
+ '/images/logo.png',
+ '/images/logo-192.png',
+ '/images/hero.jpg',
+ '/images/hero1.jpg',
+ '/images/Jollof Rice.jpg',
+ '/images/hero3.jpg',
+ '/images/fried rice.jpg',
+ 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
+ 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css',
+ 'https://unpkg.com/aos@2.3.4/dist/aos.css',
+ 'https://unpkg.com/aos@2.3.4/dist/aos.js'
 ];
 
 // Install event - cache files
 self.addEventListener('install', function(event) {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(function(cache) {
-                console.log('✅ Caching files');
-                return cache.addAll(urlsToCache);
-            })
-    );
-    self.skipWaiting(); // Force activation
+ event.waitUntil(
+ caches.open(CACHE_NAME)
+ .then(function(cache) {
+ console.log(' Caching files');
+ return cache.addAll(urlsToCache);
+ })
+ );
+ self.skipWaiting(); // Force activation
 });
 
 // Activate event - clean old caches
 self.addEventListener('activate', function(event) {
-    event.waitUntil(
-        caches.keys().then(function(cacheNames) {
-            return Promise.all(
-                cacheNames.map(function(cacheName) {
-                    if (cacheName !== CACHE_NAME) {
-                        console.log('❌ Deleting old cache:', cacheName);
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        })
-    );
-    self.clients.claim(); // Take control immediately
+ event.waitUntil(
+ caches.keys().then(function(cacheNames) {
+ return Promise.all(
+ cacheNames.map(function(cacheName) {
+ if (cacheName !== CACHE_NAME) {
+ console.log(' Deleting old cache:', cacheName);
+ return caches.delete(cacheName);
+ }
+ })
+ );
+ })
+ );
+ self.clients.claim(); // Take control immediately
 });
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        caches.match(event.request)
-            .then(function(response) {
-                // Return cached response if found
-                if (response) {
-                    return response;
-                }
-                // Otherwise fetch from network
-                return fetch(event.request).then(function(networkResponse) {
-                    // Don't cache if not a valid response
-                    if (!networkResponse || networkResponse.status !== 200) {
-                        return networkResponse;
-                    }
-                    // Clone the response
-                    const responseClone = networkResponse.clone();
-                    caches.open(CACHE_NAME).then(function(cache) {
-                        cache.put(event.request, responseClone);
-                    });
-                    return networkResponse;
-                });
-            })
-    );
+ event.respondWith(
+ caches.match(event.request)
+ .then(function(response) {
+ // Return cached response if found
+ if (response) {
+ return response;
+ }
+ // Otherwise fetch from network
+ return fetch(event.request).then(function(networkResponse) {
+ // Don't cache if not a valid response
+ if (!networkResponse || networkResponse.status !== 200) {
+ return networkResponse;
+ }
+ // Clone the response
+ const responseClone = networkResponse.clone();
+ caches.open(CACHE_NAME).then(function(cache) {
+ cache.put(event.request, responseClone);
+ });
+ return networkResponse;
+ });
+ })
+ );
 });
