@@ -7,28 +7,28 @@
 
 /* ---------- 1. TOKENS ---------- */
 :root {
-    --primary: #b5451d;
-    --primary-dark: #7c2e12;
-    --primary-light: #fbe9e0;
-    --accent: #d9a441;
-    --accent-dark: #b3822e;
-    --gold: #c9a227;
+    --primary: #23384d;
+    --primary-dark: #16232f;
+    --primary-light: #e7edf1;
+    --accent: #a8632e;
+    --accent-dark: #8b4e22;
+    --gold: #b08d57;
 
-    --bg: #fff9f2;
+    --bg: #faf6ef;
     --surface: #ffffff;
-    --surface-2: #f7efe4;
-    --text: #2b1b12;
-    --text-muted: #6b5a4e;
-    --border: #ecdfc8;
+    --surface-2: #f2ebdd;
+    --text: #232323;
+    --text-muted: #6b6459;
+    --border: #e5ddcc;
 
     --radius-sm: 10px;
     --radius-md: 16px;
     --radius-lg: 24px;
     --radius-pill: 999px;
 
-    --shadow-sm: 0 2px 8px rgba(60, 30, 10, 0.07);
-    --shadow-md: 0 10px 30px rgba(60, 30, 10, 0.12);
-    --shadow-lg: 0 24px 60px rgba(60, 30, 10, 0.18);
+    --shadow-sm: 0 2px 8px rgba(35, 40, 50, 0.07);
+    --shadow-md: 0 10px 30px rgba(35, 40, 50, 0.12);
+    --shadow-lg: 0 24px 60px rgba(35, 40, 50, 0.18);
 
     --font: "Poppins", system-ui, sans-serif;
     --nav-h: 62px;
@@ -38,17 +38,21 @@
     --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
 }
 
-body.dark {
-    --bg: #181210;
-    --surface: #241a15;
-    --surface-2: #2c2019;
-    --text: #f3e9de;
-    --text-muted: #b9a793;
-    --border: #3a2c22;
-    --primary-light: #3a211a;
-    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35);
-    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
-    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
+/* Dark mode now follows the visitor's OS/browser setting automatically
+   (no manual toggle) via prefers-color-scheme, further down this file. */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #171b20;
+        --surface: #212730;
+        --surface-2: #262d37;
+        --text: #eef1f4;
+        --text-muted: #a7b0ba;
+        --border: #333c47;
+        --primary-light: #232e3a;
+        --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35);
+        --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
+        --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
+    }
 }
 
 /* ---------- 2. RESET ---------- */
@@ -134,6 +138,9 @@ section h2 span { color: var(--accent); }
     z-index: 1001;
 }
 #announcement-bar span { letter-spacing: 0.2px; }
+@media (max-width: 480px) {
+    #announcement-bar { font-size: 11.5px; padding: 7px 36px 7px 10px; }
+}
 #announcement-bar .close-announcement {
     position: absolute;
     right: 10px;
@@ -234,18 +241,7 @@ nav a.active {
     border: 2px solid var(--primary);
 }
 
-.theme-toggle {
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.12);
-    margin-left: 6px;
-    transition: all var(--transition);
-}
-.theme-toggle:hover { background: rgba(255,255,255,0.22); transform: rotate(20deg); }
+/* theme toggle removed — site now follows the OS/browser color-scheme automatically */
 
 /* CART PANEL (JS toggles this with display:block/none directly) */
 .cart-box {
@@ -352,6 +348,25 @@ nav a.active {
 }
 .checkout-form textarea { min-height: 70px; resize: vertical; }
 #place-order { width: 100%; }
+#cancel-order {
+    width: 100%;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1.5px solid var(--border);
+    padding: 12px 24px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+#cancel-order:hover {
+    background: var(--surface-2);
+    color: var(--text);
+    border-color: var(--text-muted);
+    transform: none;
+    box-shadow: none;
+}
 
 /* PAYMENT POPUP (MODAL) — JS toggles inline display:block/none directly */
 .payment-popup {
@@ -429,16 +444,48 @@ nav a.active {
     justify-content: center;
     text-align: center;
     padding: 40px 24px;
-    background:
-        linear-gradient(160deg, rgba(10, 20, 15, 0.72), rgba(181, 69, 29, 0.55)),
-        url("../images/hero.jpg") center/cover no-repeat;
     overflow: hidden;
+    background: var(--primary-dark);
+}
+.hero-slideshow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    animation: heroFade 20s infinite;
+}
+.hero-slide::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(10, 14, 20, 0.72), rgba(35, 56, 77, 0.55));
+}
+.hero-slide:nth-child(1) { background-image: url("../images/hero.jpg"); animation-delay: 0s; }
+.hero-slide:nth-child(2) { background-image: url("../images/hero1.jpg"); animation-delay: 5s; }
+.hero-slide:nth-child(3) { background-image: url("../images/hero2.jpg"); animation-delay: 10s; }
+.hero-slide:nth-child(4) { background-image: url("../images/hero3.jpg"); animation-delay: 15s; }
+@keyframes heroFade {
+    0% { opacity: 0; }
+    4% { opacity: 1; }
+    21% { opacity: 1; }
+    25% { opacity: 0; }
+    100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .hero-slide { animation: none; opacity: 0; }
+    .hero-slide:nth-child(1) { opacity: 1; }
 }
 .hero::before {
     content: "";
     position: absolute; inset: 0;
+    z-index: 1;
     background:
-        radial-gradient(circle at 20% 20%, rgba(217,164,65,0.28), transparent 45%),
+        radial-gradient(circle at 20% 20%, rgba(217,164,65,0.22), transparent 45%),
         repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 2px, transparent 2px, transparent 14px);
     pointer-events: none;
 }
@@ -449,6 +496,7 @@ nav a.active {
     letter-spacing: -0.02em;
     text-shadow: 0 4px 24px rgba(0,0,0,0.3);
     position: relative;
+    z-index: 2;
 }
 .hero p {
     color: rgba(255,255,255,0.92);
@@ -456,11 +504,13 @@ nav a.active {
     margin: 18px 0 32px;
     font-size: 17px;
     position: relative;
+    z-index: 2;
 }
 .hero .btn, .hero .cta-glow {
     font-size: 16px;
     padding: 16px 34px;
     position: relative;
+    z-index: 2;
 }
 .cta-glow-active {
     animation: ctaPulse 1.8s ease-in-out infinite;
@@ -475,6 +525,7 @@ nav a.active {
     color: rgba(255,255,255,0.8);
     font-size: 20px;
     animation: bounce 2s infinite;
+    z-index: 2;
 }
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
@@ -496,6 +547,7 @@ nav a.active {
     margin-bottom: 22px;
     backdrop-filter: blur(6px);
     position: relative;
+    z-index: 2;
 }
 .status-dot {
     width: 9px; height: 9px;
@@ -676,6 +728,47 @@ nav a.active {
     margin: 10px auto 0;
     min-width: 240px;
 }
+
+/* MEAL PREVIEW (live summary shown above the Add-to-Cart button) */
+#meal-preview {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    margin: 0 0 18px;
+}
+#meal-preview h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+#meal-preview-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+#meal-preview-images img {
+    width: 46px;
+    height: 46px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+}
+#meal-preview-items {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+#meal-preview h4 {
+    font-size: 15px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    justify-content: space-between;
+}
+#meal-preview-total { color: var(--accent-dark); font-weight: 700; }
 
 /* Food grid (menu.html style-listing cards, if used) */
 .food-card {
@@ -1006,7 +1099,8 @@ footer a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 768px) {
-    .menu-toggle { display: flex; }
+    .menu-toggle { display: flex; order: 3; }
+    .cart-icon { order: 2; }
     .nav-links {
         position: fixed;
         top: var(--nav-h);
@@ -1026,6 +1120,13 @@ footer a:hover { text-decoration: underline; }
     .cart-box { max-width: 100%; }
     #mobile-order-bar { display: flex; }
     .hero { padding-bottom: 90px; }
+
+    /* Lift other floating buttons above the sticky mobile order bar
+       so nothing overlaps it (WhatsApp float, back-to-top, and the
+       "scroll to Add Meal" arrow created dynamically by script.js) */
+    .whatsapp { bottom: 92px; }
+    .back-to-top { bottom: 92px; }
+    #floating-arrow { bottom: 92px !important; }
 }
 
 @media (max-width: 600px) {
