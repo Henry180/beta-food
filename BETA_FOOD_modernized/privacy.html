@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy | Beta Food</title>
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/png" href="images/mlogo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f6e4f">
+<link rel="apple-touch-icon" href="images/logo-192.png">
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js').catch(function(){});
+        });
+    }
+</script>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" style="display:flex;align-items:center;"><img src="images/mlogo.png" alt="Beta Food Logo"></a>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a href="index.html" style="color:#fff;font-weight:600;padding:8px 14px;border-radius:999px;">Home</a>
+        <a href="menu.html" style="color:#fff;font-weight:600;padding:8px 14px;border-radius:999px;">Menu</a>
+    </div>
+</nav>
+
+<section class="about" style="text-align:left; padding-top:70px;">
+    <h2 style="text-align:left;">Privacy Policy</h2>
+    <p style="margin-bottom:16px;">At Beta Food, we respect your privacy. Here's a plain-language summary of how we handle your information:</p>
+    <ul style="margin:0 0 24px 20px; color:var(--text-muted); line-height:1.9;">
+        <li>Your name, phone number and delivery address are used only to process and deliver your food orders.</li>
+        <li>We do not sell, rent or share your personal information with third parties.</li>
+        <li>Payment is handled directly through the bank transfer details we provide — we never store your banking credentials.</li>
+        <li>Order history saved on this device (for receipts) stays on your device unless you clear your browser data.</li>
+        <li>By using this website or placing an order, you agree to this privacy policy.</li>
+    </ul>
+    <p style="margin-bottom:28px;">Questions about your data? Reach us anytime on <a href="https://wa.me/2349169452392" style="color:var(--primary); font-weight:600;">WhatsApp</a>.</p>
+    <a href="index.html" class="btn">← Back to Home</a>
+</section>
+
+<footer>
+    <h3>© 2026 Beta Food</h3>
+    <p>Better Food For Better People</p>
+    <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms &amp; Conditions</a></p>
+</footer>
+
+<script src="js/enhancements.js"></script>
+</body>
+</html>
